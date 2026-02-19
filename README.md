@@ -38,4 +38,14 @@ TODO
 ```sh
 ```
 
+## K3s scripts
 
+### Worker node joining
+```sh
+curl -sfL https://get.k3s.io | K3S_URL="https://<ip_addr>:6443" K3S_TOKEN="<TOKEN>" sh -
+```
+
+### Worker node k3s agent deletion
+```sh
+sudo /usr/local/bin/k3s-agent-uninstall.sh
+```
