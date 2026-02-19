@@ -1,7 +1,7 @@
 # Swarmchestrate-Decentralised-Auto-Scaling
 The repo documents the materials to launch online-boutique application on an existing k3s cluster.
 Then one could perform monitoring to record the training data for the autoscaler. 
-One could also deploy HPA to test the performance of app.
+One could also deploy k3s default HPA to test the performance of app.
 
 ## Setup
 
@@ -17,19 +17,19 @@ export KUBECONFIG=/etc/rancher/k3s/k3s.yaml
 ```
 
 ### 3. Clone this repostory to the master VM
-TODO
+Github key should be copied first
 ```sh
+git clone git@github.com:ZeWang42/Swarmchestrate-Decentralised-Auto-Scaling.git
 ```
 
 ### 4. Deploy application
-TODO
 ```sh
 cd ./Swarmchestrate-Decentralised-Auto-Scaling/artifacts/sh
 ./restartOnline-boutique.sh
 ```
 
 ### 5. Generate loads
-TODO
+TODO: this should be on a separate machine
 ```sh
 ```
 
