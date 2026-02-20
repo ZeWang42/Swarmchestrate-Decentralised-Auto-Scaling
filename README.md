@@ -48,6 +48,11 @@ Be careful with creating a k3s master master, do not use external ip but to use 
 curl -sfL https://get.k3s.io | INSTALL_K3S_EXEC="server --node-ip <private_ip> --advertise-address <private_ip>" sh -
 ```
 
+Fetch token
+```sh
+sudo cat /var/lib/rancher/k3s/server/node-token
+```
+
 ### Worker node joining
 ```sh
 curl -sfL https://get.k3s.io | K3S_URL="https://<ip_addr>:6443" K3S_TOKEN="<TOKEN>" sh -
