@@ -5,8 +5,8 @@ One could also deploy k3s default HPA to test the performance of app.
 
 ## Setup
 
-### 1. Create cluster
-Create a cluster of VM using Swarmchestrate platform.
+### 1. k3s cluster creation
+Create a cluster of VM and k3s using Swarmchestrate platform.
 Enters the master node.
 
 ### 2. Release sudo control
@@ -40,6 +40,14 @@ TODO
 
 ## K3s scripts
 
+### Master node creation
+
+Be careful with creating a k3s master master, do not use external ip but to use private ip otherwise worker node will points to wrong server api.
+
+```sh
+curl -sfL https://get.k3s.io | INSTALL_K3S_EXEC="server --node-ip <private_ip> --advertise-address <private_ip>" sh -
+```
+
 ### Worker node joining
 ```sh
 curl -sfL https://get.k3s.io | K3S_URL="https://<ip_addr>:6443" K3S_TOKEN="<TOKEN>" sh -
@@ -50,6 +58,4 @@ curl -sfL https://get.k3s.io | K3S_URL="https://<ip_addr>:6443" K3S_TOKEN="<TOKE
 sudo /usr/local/bin/k3s-agent-uninstall.sh
 ```
 
-### Pitfalls
 
-Be careful with creating k3s master, do not use external ip but to use private ip otherwise worker node will points to wrong server api.
