@@ -49,3 +49,7 @@ curl -sfL https://get.k3s.io | K3S_URL="https://<ip_addr>:6443" K3S_TOKEN="<TOKE
 ```sh
 sudo /usr/local/bin/k3s-agent-uninstall.sh
 ```
+
+### Pitfalls
+
+Be careful with creating k3s master, do not use external ip but to use private ip otherwise worker node will points to wrong server api.
