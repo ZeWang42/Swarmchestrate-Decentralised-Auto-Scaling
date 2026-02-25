@@ -30,12 +30,14 @@ cd ./Swarmchestrate-Decentralised-Auto-Scaling/artifacts/sh
 
 ### 5. Generate loads
 TODO: this should be on a separate machine
+
 ```sh
 ```
 
 ### 6. Monitor
-TODO
+Set prometheus server, istio amibent mode, run monitor script
 ```sh
+
 ```
 
 ## K3s scripts
