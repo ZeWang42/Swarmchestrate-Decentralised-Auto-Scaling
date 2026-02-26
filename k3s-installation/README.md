@@ -25,3 +25,10 @@ Run worker installation script
 ```sh
 ./3-install-worker.sh
 ``` 
+---
+## Step 4: validation
+On master node
+```sh
+kubectl get nodes
+```
+
