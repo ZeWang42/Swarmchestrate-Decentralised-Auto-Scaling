@@ -2,6 +2,8 @@
 
 ## Step 1: install master node
 Edit private ip of master-config
+Be careful with creating a k3s master master, do not use external ip but to use private ip otherwise worker node will points to wrong server api.
+
 ```sh
 vim master-config.json
 ```
