@@ -6,19 +6,15 @@ One could also deploy k3s default HPA to test the performance of app.
 ## Setup
 
 ### 1. k3s cluster creation
-Create a cluster of VM and k3s using Swarmchestrate platform.
-Enters the master node.
+Create a cluster of VM. 
+Create a k3s cluster.
 Requirements:
 Memory > 2GB
 
-### 2. Release sudo control
-Bypass sudo control
-```sh
-sudo chown $USER:$USER /etc/rancher/k3s/k3s.yaml
-export KUBECONFIG=/etc/rancher/k3s/k3s.yaml
-```
+Follow the instructions in /k3s-installation
 
-### 3. Clone this repostory to the master VM
+
+### . Clone this repostory to the master VM
 Github key should be copied first
 ```sh
 git clone git@github.com:ZeWang42/Swarmchestrate-Decentralised-Auto-Scaling.git
