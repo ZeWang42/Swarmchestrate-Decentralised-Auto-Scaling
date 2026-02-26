@@ -29,7 +29,7 @@ cd ./Swarmchestrate-Decentralised-Auto-Scaling/artifacts/sh
 ```
 
 ### 5. Generate loads
-TODO: this should be on a separate machine
+TODO: this should be on a separate machine, should add a new folder for locust and how to use it, then just follow the instructions on there 
 
 ```sh
 ```
