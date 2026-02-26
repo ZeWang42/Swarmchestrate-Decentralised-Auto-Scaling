@@ -8,6 +8,8 @@ One could also deploy k3s default HPA to test the performance of app.
 ### 1. k3s cluster creation
 Create a cluster of VM and k3s using Swarmchestrate platform.
 Enters the master node.
+Requirements:
+Memory > 2GB
 
 ### 2. Release sudo control
 Bypass sudo control
@@ -36,8 +38,21 @@ TODO: this should be on a separate machine, should add a new folder for locust a
 
 ### 6. Monitor
 Set prometheus server, istio amibent mode, run monitor script
-```sh
+Dowload Istio
 
+```sh
+curl -L https://istio.io/downloadIstio | sh -
+```
+
+Install Istio with ambient mode, not using sidecar since it introduces severe CPU overhead
+```sh
+sudo $PWD/istio-1.29.0/bin/istioctl install \
+  --kubeconfig /etc/rancher/k3s/k3s.yaml \
+  --set profile=ambient \
+  --set values.global.platform=k3s \
+  --set values.cni.cniConfDir=/var/lib/rancher/k3s/agent/etc/cni/net.d \
+  --set values.cni.cniBinDir=/var/lib/rancher/k3s/data/current/bin \
+  -y
 ```
 
 ## K3s scripts
