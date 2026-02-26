@@ -14,25 +14,20 @@ Memory > 2GB
 Follow the instructions in /k3s-installation
 
 
-### . Clone this repostory to the master VM
+### 2. Clone this repostory to the master VM
 Github key should be copied first
 ```sh
 git clone git@github.com:ZeWang42/Swarmchestrate-Decentralised-Auto-Scaling.git
 ```
 
-### 4. Deploy application
+### 3. Deploy application
 ```sh
 cd ./Swarmchestrate-Decentralised-Auto-Scaling/artifacts/sh
 ./restartOnline-boutique.sh
 ```
 
-### 5. Generate loads
-TODO: this should be on a separate machine, should add a new folder for locust and how to use it, then just follow the instructions on there 
-
-```sh
-```
-
-### 6. Monitor
+### 4. Monitor
+Follow the instructions in /monitor
 Set prometheus server, istio amibent mode, run monitor script
 Dowload Istio
 
@@ -51,29 +46,12 @@ sudo $PWD/istio-1.29.0/bin/istioctl install \
   -y
 ```
 
-## K3s scripts
-
-### Master node creation
-
-Be careful with creating a k3s master master, do not use external ip but to use private ip otherwise worker node will points to wrong server api.
-
+### 5. Generate loads
+TODO: this should be on a separate machine, should add a new folder for locust and how to use it, then just follow the instructions on there 
+Follow the instructions in /load-generation
 ```sh
-curl -sfL https://get.k3s.io | INSTALL_K3S_EXEC="server --node-ip <private_ip> --advertise-address <private_ip>" sh -
 ```
 
-Fetch token
-```sh
-sudo cat /var/lib/rancher/k3s/server/node-token
-```
 
-### Worker node joining
-```sh
-curl -sfL https://get.k3s.io | K3S_URL="https://<ip_addr>:6443" K3S_TOKEN="<TOKEN>" sh -
-```
-
-### Worker node k3s agent deletion
-```sh
-sudo /usr/local/bin/k3s-agent-uninstall.sh
-```
 
 
