@@ -14,14 +14,14 @@ INSTALL_K3S_EXEC="server --node-ip ${PRIVATE_IP} --advertise-address ${PRIVATE_I
 sh -
 
 # Wait until k3s is ready
-echo "Waiting for k3s to be ready..."
-sleep 1
+#echo "Waiting for k3s to be ready..."
+#sleep 1
 
 # Extract token (requires sudo)
-sudo cat /var/lib/rancher/k3s/server/node-token > token.txt
+#sudo cat /var/lib/rancher/k3s/server/node-token > token.txt
 
-echo "Token saved to token.txt"
+#echo "Token saved to token.txt"
 # Bypass sudo
 #
-sudo chown $USER:$USER /etc/rancher/k3s/k3s.yaml
-export KUBECONFIG=/etc/rancher/k3s/k3s.yaml
+#sudo chown $USER:$USER /etc/rancher/k3s/k3s.yaml
+#export KUBECONFIG=/etc/rancher/k3s/k3s.yaml
