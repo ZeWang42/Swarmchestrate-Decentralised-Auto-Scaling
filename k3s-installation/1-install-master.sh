@@ -1,5 +1,13 @@
 # modify the private ip in master-config.json and the run:
-PRIVATE_IP=$(jq -r '.private_ip' master-config.json)
+# Detect private IP from primary outbound interface
+PRIVATE_IP=$(ip route get 1.1.1.1 | awk '{print $7; exit}')
+
+# Write it into master-config.json
+cat > master-config.json <<EOF
+{
+  "private_ip": "${PRIVATE_IP}"
+}
+EOF
 
 if [ -z "$PRIVATE_IP" ]; then
   echo "ERROR: private_ip not found in master-config.json"
