@@ -10,6 +10,8 @@ Create a cluster of VM.
 Create a k3s cluster.
 Requirements:
 Memory > 2GB
+TCP ports 
+UDP ports
 
 Follow the instructions in /k3s-installation
 
