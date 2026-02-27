@@ -88,3 +88,12 @@ open prometheus listener
 kubectl -n istio-system port-forward svc/prometheus 9090:9090
 ```
 
+run this on master node, it maps prometheus pod to ec2's localhost
+```sh
+istioctl dashboard prometheus --address 0.0.0.0
+```
+
+On local laptop create a tunnel to connect laptop to the ec2 instance
+```sh
+ssh -i your-key.pem -L 9090:localhost:9090 ec2-user@<EC2-PUBLIC-IP>
+```
