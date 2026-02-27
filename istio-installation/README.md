@@ -22,8 +22,26 @@ kubectl apply --server-side -f https://github.com/kubernetes-sigs/gateway-api/re
 ```
 
 ## Step 4: add default namespace to the mesh
+
 ```sh
 kubectl label namespace default istio.io/dataplane-mode=ambient
 ```
 
+## Step 5: install prometheus
+
+install prometheus and enable metrics scraping
+```sh
+kubectl apply -f samples/addons/prometheus.yaml
+kubectl -n istio-system annotate svc ztunnel-metrics \
+  prometheus.io/scrape="true" \
+  prometheus.io/port="15020" \
+  prometheus.io/path="/metrics" --overwrite
+```
+
+
+open prometheus listener
+
+```sh
+kubectl -n istio-system port-forward svc/prometheus 9090:9090
+```
 
