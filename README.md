@@ -1,5 +1,5 @@
 # Swarmchestrate-Decentralised-Auto-Scaling
-The repo documents the materials to launch online-boutique application on an existing k3s cluster.
+The repo documents the neccessary materials and steps to launch, stress, and monitor an e-commerce applciation, i.e., online-boutique.
 Then one could perform monitoring to record the training data for the autoscaler. 
 One could also deploy k3s default HPA to test the performance of app.
 
