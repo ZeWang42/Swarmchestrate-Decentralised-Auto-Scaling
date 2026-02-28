@@ -50,6 +50,13 @@ Install and config locust to generate loads and stress the deployed application.
 
 Follow the instructions in /load-generation
 
+## Contact
+
+Have a smooth setup process and have fun. 
+
+Feel free to enquire and report any issues to:
+
+Ze Wang - email: z.wang3@napier.ac.uk
 
 
 
