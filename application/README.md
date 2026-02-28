@@ -12,8 +12,11 @@ After successfully deployed istio on a k3s cluster, one should follow the steps 
 
 Note that a gateway must be created for driving traffic through waypoints so that istio could monitor http requests
 ```sh
-cd ./sh
-./1-restart-online-boutique.sh
+sudo kubectl delete -f ../yaml/online-boutique.yaml
+sudo kubectl delete -f ../yaml/hpa-online-boutique.yaml
+sudo kubectl apply -f ../yaml/online-boutique.yaml
+sudo kubectl apply -f ../yaml/frontend-gateway.yaml
+sudo kubectl port-forward -n default svc/frontend-gateway-istio 8080:80 --address 0.0.0.0 &
 ```
 
 ## Step 2: export prometheus
