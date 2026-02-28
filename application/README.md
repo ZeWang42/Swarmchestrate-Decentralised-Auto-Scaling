@@ -23,7 +23,7 @@ sudo kubectl port-forward -n default svc/frontend-gateway-istio 8080:80 --addres
 
 Export prometheus using nodeport so that monitoring scripts could scrape metrics
 ```sh
-./2-export-prometheus.sh
+kubectl port-forward svc/prometheus -n istio-system 9090:9090
 ```
 
 ## Step 3: monitor
