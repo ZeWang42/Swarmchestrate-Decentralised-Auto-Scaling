@@ -98,6 +98,12 @@ On local laptop create a tunnel to connect laptop to the ec2 instance
 ssh -i your-key.pem -L 9090:localhost:9090 ec2-user@<EC2-PUBLIC-IP>
 ```
 
+## (optional) Step 7: kiali
+
+Kiali enables you to visualise traffic flow diagram among microservices.
+
+kubectl apply -f ${ISTIO_HOME}/samples/addons/kiali.yaml
+
 ## Pitfalls
 
 Locust via NodePort: If Locust is hitting http://<Node-IP>:31444, the traffic goes: Locust -> NodePort -> Frontend Pod. It completely bypasses the Waypoint because NodePorts connect directly to the pod's network.
