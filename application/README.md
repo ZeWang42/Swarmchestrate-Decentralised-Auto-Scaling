@@ -28,7 +28,14 @@ kubectl port-forward svc/prometheus -n istio-system 9090:9090
 
 ## Step 3: monitor
 
-Run scripts to monitor: http requests/latency, grpc requests/latency, CPU usage in ms, Mem usage in MiB, number of replica of microservices.
+Run scripts to monitor: 
+
+1) http requests/latency
+2) grpc requests/latency
+3) CPU usage in ms
+4) Mem usage in MiB
+5) #replicas
+   
 Http requests only enter frontend gateway and the frontend microservice communicates to the others through grpc call.
 
 ```sh
