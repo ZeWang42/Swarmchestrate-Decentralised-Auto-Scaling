@@ -54,6 +54,11 @@ Label the ns for waypoint use to ensure services know to route through the proxy
 kubectl label namespace default istio.io/use-waypoint=waypoint
 ```
 
+expose gateway to internet
+```sh
+sudo kubectl port-forward -n default svc/frontend-gateway-istio 8080:80 --address 0.0.0.0 &
+```
+
 If pods were running before the labels were applied, restart them to ensure they have the correct mTLS certificates.
 
 ```sh
@@ -66,13 +71,6 @@ curl -s localhost:15020/stats/prometheus | grep istio_requests_total
 ## Step 6: install prometheus
 
 install prometheus and enable metrics scraping
-```sh
-kubectl apply -f samples/addons/prometheus.yaml
-kubectl -n istio-system annotate svc ztunnel-metrics \
-  prometheus.io/scrape="true" \
-  prometheus.io/port="15020" \
-  prometheus.io/path="/metrics" --overwrite
-```
 
 ```sh
 kubectl apply -f samples/addons/prometheus.yaml
@@ -97,3 +95,7 @@ On local laptop create a tunnel to connect laptop to the ec2 instance
 ```sh
 ssh -i your-key.pem -L 9090:localhost:9090 ec2-user@<EC2-PUBLIC-IP>
 ```
+
+## Pitfalls
+
+Locust via NodePort: If Locust is hitting http://<Node-IP>:31444, the traffic goes: Locust -> NodePort -> Frontend Pod. It completely bypasses the Waypoint because NodePorts connect directly to the pod's network.
