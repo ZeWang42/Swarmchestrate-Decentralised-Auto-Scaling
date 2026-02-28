@@ -2,6 +2,20 @@
 
 Use locust to generate load to application's frontend gateway
 
+## Prerequisite
+
+install locust 
+```sh
+# Create the environment
+python3 -m venv venv
+
+# Activate it (you must do this every time you open a new terminal)
+source venv/bin/activate
+
+# Install locust inside the environment
+pip install locust
+
+```
 ## Step 1: configure frontend gateway entry
 
 ```sh
