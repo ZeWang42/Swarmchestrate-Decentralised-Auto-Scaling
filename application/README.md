@@ -6,7 +6,7 @@ This folder contains:
 
 /py : utilities to extract monitored data
 
-After successfully deployed istio on a k3s cluster, one should follow the steps below to deploy application and perform monitoring
+After successfully deployed istio on a k3s cluster, one should follow the steps below to deploy the application and perform monitoring
 
 ## Step 1: deploy application and frontend gateway
 
