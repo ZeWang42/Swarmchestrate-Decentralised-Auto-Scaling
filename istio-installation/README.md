@@ -1,5 +1,7 @@
 # Istio installation
 
+One can install istio by running through all 6 scripts one by one, their details are introduced below.
+
 ## Step 1: download Istio
 
 ```sh
