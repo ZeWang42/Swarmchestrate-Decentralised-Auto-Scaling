@@ -1,0 +1,17 @@
+# frontend-dr-istio-system.yaml
+apiVersion: networking.istio.io/v1beta1
+kind: DestinationRule
+metadata:
+  name: frontend-from-gateway
+  namespace: istio-system
+spec:
+  host: frontend.default.svc.cluster.local
+  trafficPolicy:
+    loadBalancer:
+      simple: ROUND_ROBIN
+    connectionPool:
+      http:
+        maxRequestsPerConnection: 1   # strongest anti-pinning
+        http2MaxRequests: 100          # cap H2 multiplexing
+        idleTimeout: 15s
+
