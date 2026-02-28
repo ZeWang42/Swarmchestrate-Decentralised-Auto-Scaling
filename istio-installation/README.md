@@ -102,8 +102,21 @@ ssh -i your-key.pem -L 9090:localhost:9090 ec2-user@<EC2-PUBLIC-IP>
 
 Kiali enables you to visualise traffic flow diagram among microservices.
 
+Install Kiali
+```sh
 kubectl apply -f ${ISTIO_HOME}/samples/addons/kiali.yaml
+```
+
+Expose for Remote Access:
+```sh
+istioctl dashboard kiali --address 0.0.0.0
+```
+
+On your Local Laptop, open a new terminal to bridge the EC2 port to your browser:
+```sh
+ssh -i your-key.pem -L 20001:localhost:20001 ec2-user@<YOUR-EC2-IP>
+```
 
 ## Pitfalls
 
-Locust via NodePort: If Locust is hitting http://<Node-IP>:31444, the traffic goes: Locust -> NodePort -> Frontend Pod. It completely bypasses the Waypoint because NodePorts connect directly to the pod's network.
+Locust via NodePort: If Locust is hitting http://<Node-IP>:31444, the traffic goes: Locust -> NodePort -> Frontend Pod. It completely bypasses the Waypoint because NodePorts connect directly to the pod's network. This prevents waypoint to monitor http requests.
