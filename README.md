@@ -45,10 +45,10 @@ Follow the instructions in /application folder
 ---
 
 ## 5. Generate loads
-TODO: this should be on a separate machine, should add a new folder for locust and how to use it, then just follow the instructions on there 
+
+Install and config locust to generate loads and stress the deployed application.
+
 Follow the instructions in /load-generation
-```sh
-```
 
 
 
