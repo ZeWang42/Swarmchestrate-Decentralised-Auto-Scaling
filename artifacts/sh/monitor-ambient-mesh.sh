@@ -22,7 +22,7 @@ round1() {
 
 while true; do
   echo "[$(date '+%T')] Mapping Mesh Traffic..."
-  echo "SERVICE              HTTP_RPM  HTTP_LAT   gRPC_RPM  gRPC_LAT   CPU(core) MEM(MiB) PODS"
+  echo "SERVICE              HTTP_RPM  HTTP_LAT   gRPC_RPM  gRPC_LAT   CPU(ms) MEM(MiB) PODS"
   echo "--------------------------------------------------------------------------------------"
 
   # Get list of services from deployments
@@ -50,7 +50,8 @@ while true; do
 
     # 4. System Logic: Pod Resources
     cpu_raw=$(kubectl top pod -n "$NAMESPACE" 2>/dev/null | grep "$svc" | awk '{gsub("m","",$2); sum+=$2} END {print sum+0}')
-    cpu=$(echo "scale=2; $cpu_raw/1000" | bc)
+    cpu=$cpu_raw
+    #cpu=$(echo "scale=2; $cpu_raw/1000" | bc)
     mem_raw=$(kubectl top pod -n "$NAMESPACE" 2>/dev/null | grep "$svc" | awk '{gsub("Mi","",$3); sum+=$3} END {print sum+0}')
     pods=$(kubectl get pod -n "$NAMESPACE" --no-headers 2>/dev/null | grep "$svc" | grep "Running" | wc -l)
 
