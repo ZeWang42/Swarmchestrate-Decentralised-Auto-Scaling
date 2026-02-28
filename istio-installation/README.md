@@ -1,6 +1,6 @@
 # Istio installation
 
-One can install istio by running through all 6 scripts one by one, their details are introduced below.
+The following steps will install Istio in ambient mode. For a quick setup, one can install istio by running through all 6 scripts one by one.
 
 ## Step 1: download Istio
 
