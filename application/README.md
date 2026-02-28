@@ -1,6 +1,9 @@
 This folder contains:
+
 /yaml : k3s manifests of online boutique application
+
 /sh : scripts to deploy application and perform monitoring
+
 /py : utilities to extract monitored data
 
 After successfully deployed istio on a k3s cluster, one should follow the steps below to deploy application and perform monitoring
