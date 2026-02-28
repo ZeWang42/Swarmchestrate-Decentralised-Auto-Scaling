@@ -1,1 +1,3 @@
-Using locust to generate load to application's frontend gateway
+# Load generation
+
+Use locust to generate load to application's frontend gateway
