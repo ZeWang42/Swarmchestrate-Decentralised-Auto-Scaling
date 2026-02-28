@@ -21,21 +21,27 @@ git clone git@github.com:ZeWang42/Swarmchestrate-Decentralised-Auto-Scaling.git
 
 ## 2. k3s cluster creation
 
+Set up a k3s cluster to host application.
+
 Follow the instructions in /k3s-installation
 
 ---
 
 ## 3. Install Istio Monitor
+
+Set up istio service mesh in amibent mode to collect metrics, note that sidecar mode is abandoned due to high resource overhead.
+
 Follow the instructions in /istio-installation
-Set prometheus server, istio amibent mode, run monitor script
 
 ---
 
 ## 4. Deploy application
-```sh
-cd ./Swarmchestrate-Decentralised-Auto-Scaling/artifacts/sh
-./restartOnline-boutique.sh
-```
+
+Deploy application and monitor its runtime metrics.
+
+Follow the instructions in /application folder
+
+
 ---
 
 ## 5. Generate loads
