@@ -1,8 +1,0 @@
-apiVersion: networking.istio.io/v1beta1
-kind: ProxyConfig
-metadata:
-  name: enable-envoy-stats
-  namespace: default
-spec:
-  proxyMetadata:
-    ISTIO_META_ENABLE_STATS_FOR_ALL_CLUSTERS: "true"
