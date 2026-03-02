@@ -8,9 +8,12 @@ One could also deploy k3s default HPA to test the performance of app.
 ## 1. VM cluster creation
 Create a cluster of VM. 
 Requirements:
+
 Memory > 2GB
-All TCP traffic
-All UDP traffuc
+
+Allow all TCP traffic
+
+Allow all UDP traffic
 
 Clone this repostory to the master VM
 Github key should be copied first
