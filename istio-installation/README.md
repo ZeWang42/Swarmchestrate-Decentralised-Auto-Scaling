@@ -20,19 +20,19 @@ export KUBECONFIG=~/.kube/config
 
 ---
 
-## Step 2: install Istio k3s specific version with ambient profile
-
-```sh
-istioctl install --set profile=ambient --set values.global.platform=k3s
-```
-
----
-
-## Step 3: install/upgrade kubernetes gateway API CRDs
+## Step 2: install/upgrade kubernetes gateway API CRDs
 
 ```sh
 kubectl get crd gateways.gateway.networking.k8s.io &> /dev/null || \
 kubectl apply --server-side -f https://github.com/kubernetes-sigs/gateway-api/releases/download/v1.4.0/experimental-install.yaml
+```
+
+---
+
+## Step 3: install Istio k3s specific version with ambient profile
+
+```sh
+istioctl install --set profile=ambient --set values.global.platform=k3s
 ```
 
 ---
@@ -56,7 +56,9 @@ Label the ns for waypoint use to ensure services know to route through the proxy
 kubectl label namespace default istio.io/use-waypoint=waypoint
 ```
 
-expose gateway to internet
+
+
+expose gateway to internet, this should be done after gateway is created
 ```sh
 sudo kubectl port-forward -n default svc/frontend-gateway-istio 8080:80 --address 0.0.0.0 &
 ```
