@@ -8,9 +8,12 @@ One could also deploy k3s default HPA to test the performance of app.
 ## 1. VM cluster creation
 Create a cluster of VM. 
 Requirements:
-Memory > 2GB
-All TCP traffic
-All UDP traffuc
+
+1) Memory > 2GB
+
+2) Allow all TCP traffic
+
+3) Allow all UDP traffic
 
 Clone this repostory to the master VM
 Github key should be copied first
@@ -45,11 +48,18 @@ Follow the instructions in /application folder
 ---
 
 ## 5. Generate loads
-TODO: this should be on a separate machine, should add a new folder for locust and how to use it, then just follow the instructions on there 
-Follow the instructions in /load-generation
-```sh
-```
 
+Install and config locust to generate loads and stress the deployed application.
+
+Follow the instructions in /load-generation
+
+## Contact
+
+Have a smooth setup process and have fun. 
+
+Feel free to enquire and report any issues to:
+
+Ze Wang - email: z.wang3@napier.ac.uk
 
 
 

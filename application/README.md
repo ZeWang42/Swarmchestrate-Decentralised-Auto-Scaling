@@ -41,3 +41,5 @@ Http requests only enter frontend gateway and the frontend microservice communic
 ```sh
 ./3-monitor-ambient-mesh.sh
 ```
+
+

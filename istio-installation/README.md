@@ -20,19 +20,19 @@ export KUBECONFIG=~/.kube/config
 
 ---
 
-## Step 2: install Istio k3s specific version with ambient profile
-
-```sh
-istioctl install --set profile=ambient --set values.global.platform=k3s
-```
-
----
-
-## Step 3: install/upgrade kubernetes gateway API CRDs
+## Step 2: install/upgrade kubernetes gateway API CRDs
 
 ```sh
 kubectl get crd gateways.gateway.networking.k8s.io &> /dev/null || \
 kubectl apply --server-side -f https://github.com/kubernetes-sigs/gateway-api/releases/download/v1.4.0/experimental-install.yaml
+```
+
+---
+
+## Step 3: install Istio k3s specific version with ambient profile
+
+```sh
+istioctl install --set profile=ambient --set values.global.platform=k3s
 ```
 
 ---
@@ -56,7 +56,9 @@ Label the ns for waypoint use to ensure services know to route through the proxy
 kubectl label namespace default istio.io/use-waypoint=waypoint
 ```
 
-expose gateway to internet
+
+
+expose gateway to internet, this should be done after gateway is created
 ```sh
 sudo kubectl port-forward -n default svc/frontend-gateway-istio 8080:80 --address 0.0.0.0 &
 ```
@@ -98,6 +100,25 @@ On local laptop create a tunnel to connect laptop to the ec2 instance
 ssh -i your-key.pem -L 9090:localhost:9090 ec2-user@<EC2-PUBLIC-IP>
 ```
 
+## (optional) Step 7: kiali
+
+Kiali enables you to visualise traffic flow diagram among microservices.
+
+Install Kiali
+```sh
+kubectl apply -f ${ISTIO_HOME}/samples/addons/kiali.yaml
+```
+
+Expose for Remote Access:
+```sh
+istioctl dashboard kiali --address 0.0.0.0
+```
+
+On your Local Laptop, open a new terminal to bridge the EC2 port to your browser:
+```sh
+ssh -i your-key.pem -L 20001:localhost:20001 ec2-user@<YOUR-EC2-IP>
+```
+
 ## Pitfalls
 
-Locust via NodePort: If Locust is hitting http://<Node-IP>:31444, the traffic goes: Locust -> NodePort -> Frontend Pod. It completely bypasses the Waypoint because NodePorts connect directly to the pod's network.
+Locust via NodePort: If Locust is hitting http://<Node-IP>:31444, the traffic goes: Locust -> NodePort -> Frontend Pod. It completely bypasses the Waypoint because NodePorts connect directly to the pod's network. This prevents waypoint to monitor http requests.
