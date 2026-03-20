@@ -1,4 +1,4 @@
-cd istio-1.29.0
+cd istio-*
 kubectl apply -f samples/addons/prometheus.yaml
 kubectl -n default annotate svc waypoint \
   prometheus.io/scrape="true" \
