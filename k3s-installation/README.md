@@ -19,6 +19,9 @@ Run installation script
 ``` 
 ---
 ## Step 3: install worker
+
+One should install worker on a seprate machine/ VM
+
 Edit private ip and token in worker-config.json
 ```sh
 vim worker-config.json
