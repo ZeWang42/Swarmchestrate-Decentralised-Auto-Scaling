@@ -42,12 +42,21 @@ This bundle contains:
 - `server/requirements.txt`  
 - `client/requirements.txt`  
 
+
+# Usage
+
 ## Server run
+Deploy server as a deployment in the kubernetes cluster. 
+This can be done by applying the server-manifest.yaml
+After the server pod is scheduled, one should exports its port so that the client can submit request to it.
+
 ```bash
-pip install -r server/requirements.txt
-uvicorn server:app --host 0.0.0.0 --port 8080
+kubectl port-forward --address 0.0.0.0 svc/autoscaler-server 8000:8000
 ```
+
 ## Client run
+Before run the client, one should modify "client/config/exp_config.py" to fill in the endpoints of autoscaler-server and the application's endpoint.
+
 ```bash
 pip install -r requirements.txt
 python load.py
