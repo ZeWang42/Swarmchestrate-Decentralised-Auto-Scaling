@@ -1,5 +1,6 @@
 fastapi
-uvicorn[standard]
-kubernetes
+uvicorn
 pydantic
+kubernetes
+requests
 pyyaml

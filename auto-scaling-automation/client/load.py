@@ -14,47 +14,92 @@ import requests
 
 from config.exp_config import (
     SERVER_BASE_URL,
-    BOOKINFO_HOST,
     NAMESPACE,
     WORKLOAD_NAME,
-    HPA_SETTINGS,
+    AUTOSCALER_SETTINGS,
     DURATION_SECONDS,
     MONITOR_INTERVAL,
     PROM_URL,
-    LOCUST_FILE,
     TMP_DIR,
     WAIT_BETWEEN_EXPERIMENTS_SECONDS,
 )
 
+try:
+    from config.exp_config import APP_NAME
+except ImportError:
+    APP_NAME = "bookinfo"
+
+try:
+    from config.exp_config import BOOKINFO_HOST
+except ImportError:
+    BOOKINFO_HOST = ""
+
+try:
+    from config.exp_config import ONLINE_BOUTIQUE_HOST
+except ImportError:
+    ONLINE_BOUTIQUE_HOST = ""
+
+try:
+    from config.exp_config import LOCUST_FILES
+except ImportError:
+    LOCUST_FILES = {}
+
+try:
+    from config.exp_config import LOCUST_FILE
+except ImportError:
+    LOCUST_FILE = ""
+
+
+APP_CONFIG = {
+    "bookinfo": {
+        "host": BOOKINFO_HOST,
+        "workload_dir": "load/book-info/workloads",
+        "locust_file": LOCUST_FILES.get("bookinfo") or LOCUST_FILE or "load/book-info/wiki_locustfile.py",
+        "name_prefix": "bookinfo",
+    },
+    "onlineboutique": {
+        "host": ONLINE_BOUTIQUE_HOST,
+        "workload_dir": "load/online-boutique/workloads",
+        "locust_file": LOCUST_FILES.get("onlineboutique") or LOCUST_FILE or "load/online-boutique/wiki_locustfile.py",
+        "name_prefix": "onlineboutique",
+    },
+}
+
+if APP_NAME not in APP_CONFIG:
+    raise ValueError(f"Unsupported APP_NAME={APP_NAME!r}. Use 'bookinfo' or 'onlineboutique'.")
+
+CURRENT_APP = APP_CONFIG[APP_NAME]
 
 TMP_PATH = Path(TMP_DIR)
 TMP_PATH.mkdir(parents=True, exist_ok=True)
 
-SUMMARY_CSV = TMP_PATH / "experiment_summary.csv"
-LOCUST_RESULTS_DIR = TMP_PATH / "locust"
+SUMMARY_CSV = TMP_PATH / f"{APP_NAME}_experiment_summary.csv"
+LOCUST_RESULTS_DIR = TMP_PATH / "locust" / APP_NAME
 LOCUST_RESULTS_DIR.mkdir(parents=True, exist_ok=True)
 
 
 @dataclass(frozen=True)
 class Experiment:
     workload_name: str
-    hpa_mode: str
-    cpu_target: int | None
-    min_replicas: int
-    max_replicas: int
-    
+    autoscaler_name: str
+    config: dict[str, Any]
+    deployment_names: list[str] | None = None
 
     @property
     def name(self) -> str:
-        if self.hpa_mode == "none":
-            return f"bookinfo_rps{self.workload_name}_hpa_none"
-        return f"bookinfo_rps{self.workload_name}_hpa_cpu{self.cpu_target}"
+        if self.autoscaler_name == "none":
+            suffix = "none"
+        elif self.autoscaler_name == "default_cpu":
+            suffix = f"cpu{self.config.get('average_cpu_utilization', 'na')}"
+        else:
+            suffix = self.autoscaler_name
+
+        scope = "all" if not self.deployment_names else "subset"
+        return f"{CURRENT_APP['name_prefix']}_{self.workload_name}_{suffix}_{scope}"
 
 
 def get_workload_csv(workload_name: str) -> str:
-    print(f"load/book-info/workloads/{workload_name}.csv")
-    return f"load/book-info/workloads/{workload_name}.csv"
-        #return f"load/book-info/workloads/constant-{workload_name}.csv"
+    return f"{CURRENT_APP['workload_dir']}/{workload_name}.csv"
 
 
 def post_json(url: str, payload: dict[str, Any], timeout: int = 60) -> dict[str, Any]:
@@ -75,7 +120,6 @@ def post_json(url: str, payload: dict[str, Any], timeout: int = 60) -> dict[str,
     return resp.json()
 
 
-
 def init_summary_csv() -> None:
     if SUMMARY_CSV.exists():
         return
@@ -83,11 +127,12 @@ def init_summary_csv() -> None:
     with SUMMARY_CSV.open("w", newline="", encoding="utf-8") as f:
         writer = csv.writer(f)
         writer.writerow([
+            "app",
             "experiment_name",
             "workload_name",
             "workload_csv",
-            "hpa_mode",
-            "cpu_target",
+            "autoscaler_name",
+            "deployment_scope",
             "setup_ok",
             "ready_for_load",
             "monitor_log_file",
@@ -105,7 +150,7 @@ def append_summary_row(
     exp: Experiment,
     setup_result: dict[str, Any] | None,
     cleanup_result: dict[str, Any] | None,
-    locust_files: dict[str, str] | None,
+    locust_files: dict[str, Any] | None,
     status: str,
     error_message: str = "",
 ) -> None:
@@ -126,11 +171,12 @@ def append_summary_row(
     with SUMMARY_CSV.open("a", newline="", encoding="utf-8") as f:
         writer = csv.writer(f)
         writer.writerow([
+            APP_NAME,
             exp.name,
             exp.workload_name,
             get_workload_csv(exp.workload_name),
-            exp.hpa_mode,
-            exp.cpu_target if exp.cpu_target is not None else "",
+            exp.autoscaler_name,
+            "all" if not exp.deployment_names else ",".join(exp.deployment_names),
             setup_ok,
             ready_for_load,
             monitor_log_file,
@@ -146,22 +192,23 @@ def append_summary_row(
 
 def setup_experiment(exp: Experiment) -> dict[str, Any]:
     payload = {
-        "app": "bookinfo",
+        "app": APP_NAME,
         "namespace": NAMESPACE,
         "workload_name": exp.workload_name,
         "duration_seconds": DURATION_SECONDS,
-        "hpa": {
-            "mode": exp.hpa_mode,
-            "target_cpu_utilization": exp.cpu_target,
-            "min_replicas": exp.min_replicas,
-            "max_replicas": exp.max_replicas,
+        "autoscaler": {
+            "autoscaler_name": exp.autoscaler_name,
+            "config": exp.config,
         },
         "monitor": {
             "interval": MONITOR_INTERVAL,
             "prom_url": PROM_URL,
-            "file_prefix": "mesh_metrics",
+            "file_prefix": f"{APP_NAME}_mesh_metrics",
         },
     }
+
+    if exp.deployment_names:
+        payload["autoscaler"]["deployment_names"] = exp.deployment_names
 
     print(f"[SETUP] {exp.name}")
     result = post_json(f"{SERVER_BASE_URL}/experiment/setup", payload)
@@ -171,11 +218,15 @@ def setup_experiment(exp: Experiment) -> dict[str, Any]:
 
 def cleanup_experiment(exp: Experiment) -> dict[str, Any]:
     payload = {
-        "app": "bookinfo",
+        "app": APP_NAME,
         "namespace": NAMESPACE,
-        "delete_hpa": exp.hpa_mode == "cpu",
+        "autoscaler_name": exp.autoscaler_name,
+        "delete_autoscaler": exp.autoscaler_name != "none",
         "stop_monitoring": True,
     }
+
+    if exp.deployment_names:
+        payload["deployment_names"] = exp.deployment_names
 
     print(f"[CLEANUP] {exp.name}")
     result = post_json(f"{SERVER_BASE_URL}/experiment/cleanup", payload)
@@ -183,32 +234,42 @@ def cleanup_experiment(exp: Experiment) -> dict[str, Any]:
     return result
 
 
-def run_locust(exp: Experiment) -> dict[str, str]:
-    prefix = LOCUST_RESULTS_DIR / exp.name
+def run_locust(exp: Experiment) -> dict[str, Any]:
+    from datetime import datetime
+
+    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+    prefix = LOCUST_RESULTS_DIR / f"{exp.name}_{timestamp}"
     csv_path = get_workload_csv(exp.workload_name)
+
+    host = CURRENT_APP["host"]
+    if not host:
+        raise RuntimeError(f"No host configured for app={APP_NAME}")
+
+    locust_file = CURRENT_APP["locust_file"]
 
     cmd = [
         "locust",
         "-f",
-        LOCUST_FILE,
+        locust_file,
         "--headless",
         "--host",
-        BOOKINFO_HOST,
+        host,
         "--csv",
         str(prefix),
         "--only-summary",
     ]
 
     env = os.environ.copy()
+    env["APP_NAME"] = APP_NAME
     env["CSV_PATH"] = csv_path
-    env["TIME_MINUTE"] = str(DURATION_SECONDS // 60)
-    env["SPAWN_RATE"] = "20"
-    env["SCALE_FACTOR"] = "1"
-
-
+    env["TIME_MINUTE"] = str(max(1, DURATION_SECONDS // 60))
+    env["SPAWN_RATE"] = os.getenv("SPAWN_RATE", "20")
+    env["SCALE_FACTOR"] = os.getenv("SCALE_FACTOR", "1")
 
     print("[LOCUST CMD]")
     print(" ".join(cmd))
+    print(f"[APP] {APP_NAME}")
+    print(f"[HOST] {host}")
     print(f"[WORKLOAD] {csv_path}")
 
     result = subprocess.run(cmd, check=False, env=env)
@@ -216,25 +277,26 @@ def run_locust(exp: Experiment) -> dict[str, str]:
 
     return {
         "exit_code": result.returncode,
-        "stats_csv": str(prefix) + "_stats.csv",
-        "failures_csv": str(prefix) + "_failures.csv",
-        "exceptions_csv": str(prefix) + "_exceptions.csv",
-        "stats_history_csv": str(prefix) + "_stats_history.csv",
+        "stats_csv": f"{prefix}_stats.csv",
+        "failures_csv": f"{prefix}_failures.csv",
+        "exceptions_csv": f"{prefix}_exceptions.csv",
+        "stats_history_csv": f"{prefix}_stats_history.csv",
     }
 
 
 def build_experiments() -> list[Experiment]:
     experiments: list[Experiment] = []
-    for workload_name, hpa in itertools.product(WORKLOAD_NAME, HPA_SETTINGS):
+
+    for workload_name, autoscaler in itertools.product(WORKLOAD_NAME, AUTOSCALER_SETTINGS):
         experiments.append(
             Experiment(
                 workload_name=workload_name,
-                hpa_mode=hpa["mode"],
-                cpu_target=hpa["target_cpu_utilization"],
-                min_replicas=hpa["min_replicas"],
-                max_replicas=hpa["max_replicas"],
+                autoscaler_name=autoscaler["autoscaler_name"],
+                config=autoscaler.get("config", {}),
+                deployment_names=autoscaler.get("deployment_names"),
             )
         )
+
     return experiments
 
 
@@ -245,12 +307,12 @@ def run_one_experiment(exp: Experiment) -> None:
 
     try:
         setup_result = setup_experiment(exp)
+
         if not setup_result.get("ready_for_load", False):
             raise RuntimeError("Server is not ready for load")
 
         locust_files = run_locust(exp)
         cleanup_result = cleanup_experiment(exp)
-
 
         status = "success" if locust_files["exit_code"] == 0 else "completed_with_failures"
 
@@ -277,6 +339,7 @@ def run_one_experiment(exp: Experiment) -> None:
             status="failed",
             error_message=str(exc),
         )
+
         print(f"[ERROR] {exp.name}: {exc}")
 
 
@@ -285,6 +348,7 @@ def main() -> None:
     experiments = build_experiments()
 
     print("[PLAN]")
+    print(f"[APP] {APP_NAME}")
     for exp in experiments:
         print(" -", exp.name)
 

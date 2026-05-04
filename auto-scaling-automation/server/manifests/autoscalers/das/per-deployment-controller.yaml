@@ -1,0 +1,55 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ autoscaler_deployment_name }}
+  namespace: {{ namespace }}
+  labels:
+    app: das-autoscaler
+    target-deployment: {{ target_deployment }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: das-autoscaler
+      target-deployment: {{ target_deployment }}
+  template:
+    metadata:
+      labels:
+        app: das-autoscaler
+        target-deployment: {{ target_deployment }}
+    spec:
+      serviceAccountName: {{ service_account_name }}
+      containers:
+        - name: das-autoscaler
+          image: {{ image }}
+          imagePullPolicy: Always
+          env:
+            - name: NAMESPACE
+              value: "{{ target_namespace }}"
+            - name: TARGET_DEPLOYMENT
+              value: "{{ target_deployment }}"
+            - name: PROM_URL
+              value: "{{ prom_url }}"
+            - name: INTERVAL
+              value: "{{ interval }}"
+            - name: COOLDOWN_SECONDS
+              value: "{{ cooldown_seconds }}"
+            - name: ALPHA_DOWN_THRESHOLD
+              value: "{{ alpha_down_threshold }}"
+            - name: TAU_MIN
+              value: "{{ tau_min }}"
+            - name: TAU_MAX
+              value: "{{ tau_max }}"
+            - name: BETA_UP_THRESHOLD
+              value: "{{ beta_up_threshold }}"
+            - name: MIN_REPLICAS
+              value: "{{ min_replicas }}"
+            - name: MAX_REPLICAS
+              value: "{{ max_replicas }}"
+          resources:
+            requests:
+              cpu: "50m"
+              memory: "128Mi"
+            limits:
+              cpu: "500m"
+              memory: "512Mi"
