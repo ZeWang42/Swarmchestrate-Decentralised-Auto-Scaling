@@ -281,11 +281,47 @@ def deploy_autoscaler_for_application(app_name: str, req: DeployAutoscalerReques
 
 _DELETE_MAP: dict[str, tuple[str, str, str]] = {
     "ServiceAccount": ("core", "namespaced", "service_account"),
+    "Service": ("core", "namespaced", "service"),
     "Role": ("rbac", "namespaced", "role"),
     "RoleBinding": ("rbac", "namespaced", "role_binding"),
     "Deployment": ("apps", "namespaced", "deployment"),
     "HorizontalPodAutoscaler": ("autoscaling", "namespaced", "horizontal_pod_autoscaler"),
 }
+
+
+
+def _autoscaler_service_object(autoscaler_name: str, deployment_name: str, namespace: str) -> dict[str, Any]:
+    safe_name = deployment_name.replace("_", "-").replace(".", "-")
+    return {
+        "apiVersion": "v1",
+        "kind": "Service",
+        "metadata": {
+            "name": f"{autoscaler_name}-autoscaler-{safe_name}",
+            "namespace": namespace,
+        },
+    }
+
+
+def _append_companion_service_objects(
+    objects: list[dict[str, Any]],
+    autoscaler_name: str,
+    deployment_names: list[str],
+    namespace: str,
+) -> list[dict[str, Any]]:
+    if autoscaler_name not in {"das", "customdas"}:
+        return objects
+
+    # DAS/CustomDAS controllers use the same per-deployment naming convention
+    # for companion Services as for controller Deployments. Some templates render
+    # these Services explicitly, while older DAS manifests may not; add them here
+    # so cleanup removes Services as well as Deployments in both cases.
+    return [
+        *objects,
+        *(
+            _autoscaler_service_object(autoscaler_name, deployment_name, namespace)
+            for deployment_name in deployment_names
+        ),
+    ]
 
 
 def _delete_rendered_object(obj: dict[str, Any], default_namespace: str) -> tuple[str, str]:
@@ -341,6 +377,7 @@ def delete_autoscaler_for_application(app_name: str, namespace: str, autoscaler_
             config={},
         )
         objects = _render_autoscaler_objects(req, resolved_deployments, app_name)
+        objects = _append_companion_service_objects(objects, autoscaler_name, resolved_deployments, namespace)
         seen: set[tuple[str, str, str]] = set()
         for obj in objects:
             kind = obj.get("kind")
