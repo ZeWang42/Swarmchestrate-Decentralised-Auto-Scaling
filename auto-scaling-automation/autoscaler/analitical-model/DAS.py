@@ -13,6 +13,7 @@ from kubernetes import config
 from monitoring import Monitor
 from execution import Executor
 from p2pAgent import P2PAgent
+from queue_das_logging import build_deployment_monitoring_log
 
 LOG_FILE = os.getenv("LOG_FILE", "/tmp/customdas.log")
 
@@ -52,6 +53,22 @@ def erlang_c(lambda_rps: float, mu: float, c: int) -> float:
         return last / (summation + last)
     except (OverflowError, ZeroDivisionError):
         return float("nan")
+
+def top_p95_bottlenecks(
+    deployment: str,
+    node_type: str,
+    downstream_p95: dict[str, float],
+) -> list[tuple[str, float | str]]:
+    if node_type == "leaf":
+        return [(deployment, "self")]
+
+    ranked = sorted(
+        downstream_p95.items(),
+        key=lambda item: item[1] or 0.0,
+        reverse=True,
+    )
+
+    return ranked[:3]
 
 
 def expected_queueing_delay(lambda_rps: float, mu: float, c: int) -> float:
@@ -167,21 +184,21 @@ def das_loop(
             http_rpm_as_dst = monitor.get_http_rpm_as_dst(deployment)
             grpc_rpm_as_dst = monitor.get_grpc_rpm_as_dst(deployment)
 
-            http_latency_avg_as_dst = monitor.get_http_latency_as_dst(deployment)
-            grpc_latency_avg_as_dst = monitor.get_grpc_latency_as_dst(deployment)
 
             http_latency_p50_as_dst = monitor.get_http_latency_p50_as_dst(deployment)
             grpc_latency_p50_as_dst = monitor.get_grpc_latency_p50_as_dst(deployment)
-
+            http_latency_avg_as_dst = monitor.get_http_latency_as_dst(deployment)
+            grpc_latency_avg_as_dst = monitor.get_grpc_latency_as_dst(deployment)
             http_latency_p95_as_dst = monitor.get_http_latency_p95_as_dst(deployment)
             grpc_latency_p95_as_dst = monitor.get_grpc_latency_p95_as_dst(deployment)
 
             http_rpm_as_src = monitor.get_http_rpm_as_src(deployment)
             grpc_rpm_as_src = monitor.get_grpc_rpm_as_src(deployment)
 
+            http_latency_p50_as_src = monitor.get_http_latency_p50_as_src(deployment)
+            grpc_latency_p50_as_src = monitor.get_grpc_latency_p50_as_src(deployment)
             http_latency_avg_as_src = monitor.get_http_latency_as_src(deployment)
             grpc_latency_avg_as_src = monitor.get_grpc_latency_as_src(deployment)
-
             http_latency_p95_as_src = monitor.get_http_latency_p95_as_src(deployment)
             grpc_latency_p95_as_src = monitor.get_grpc_latency_p95_as_src(deployment)
 
@@ -416,52 +433,113 @@ def das_loop(
                 "===================================================\n"
             )
 
+            # logging.info(
+            #     "\n"
+            #     "=== Deployment Monitoring ===\n"
+            #     f"Deployment: {deployment}\n"
+            #     "\n"
+            #     "[Resources]\n"
+            #     f"CPU (m): {cpu_m}\n"
+            #     f"Memory (MiB): {mem_mib}\n"
+            #     f"Running Pods: {pods_count}\n"
+            #     f"CPU Utilisation (%): {cpu_utilisation:.2f}\n"
+            #     f"Memory Utilisation (%): {mem_utilisation:.2f}\n"
+            #     "\n"
+            #     "[Aggregate Traffic as Destination]\n"
+            #     f"HTTP RPM as dst: {http_rpm_as_dst:.2f}\n"
+            #     f"gRPC RPM as dst: {grpc_rpm_as_dst:.2f}\n"
+            #     f"HTTP Latency Avg as dst (ms): {http_latency_avg_as_dst:.2f}\n"
+            #     f"gRPC Latency Avg as dst (ms): {grpc_latency_avg_as_dst:.2f}\n"
+            #     f"HTTP Latency P95 as dst (ms): {http_latency_p95_as_dst:.2f}\n"
+            #     f"gRPC Latency P95 as dst (ms): {grpc_latency_p95_as_dst:.2f}\n"
+            #     "\n"
+            #     "[Aggregate Traffic as Source]\n"
+            #     f"HTTP RPM as src: {http_rpm_as_src:.2f}\n"
+            #     f"gRPC RPM as src: {grpc_rpm_as_src:.2f}\n"
+            #     f"HTTP Latency Avg as src (ms): {http_latency_avg_as_src:.2f}\n"
+            #     f"gRPC Latency Avg as src (ms): {grpc_latency_avg_as_src:.2f}\n"
+            #     f"HTTP Latency P95 as src (ms): {http_latency_p95_as_src:.2f}\n"
+            #     f"gRPC Latency P95 as src (ms): {grpc_latency_p95_as_src:.2f}\n"
+            #     "\n"
+            #     "[Mesh Traffic as Destination: per source_workload]\n"
+            #     f"HTTP RPM Mesh as dst: {http_rpm_mesh_as_dst}\n"
+            #     f"gRPC RPM Mesh as dst: {grpc_rpm_mesh_as_dst}\n"
+            #     f"HTTP Latency Avg Mesh as dst (ms): {http_latency_mesh_avg_as_dst}\n"
+            #     f"gRPC Latency Avg Mesh as dst (ms): {grpc_latency_mesh_avg_as_dst}\n"
+            #     f"HTTP Latency P95 Mesh as dst (ms): {http_latency_p95_mesh_as_dst}\n"
+            #     f"gRPC Latency P95 Mesh as dst (ms): {grpc_latency_p95_mesh_as_dst}\n"
+            #     "\n"
+            #     "[Mesh Traffic as Source: per destination_workload]\n"
+            #     f"HTTP RPM Mesh as src: {http_rpm_mesh_as_src}\n"
+            #     f"gRPC RPM Mesh as src: {grpc_rpm_mesh_as_src}\n"
+            #     f"HTTP Latency Avg Mesh as src (ms): {http_latency_mesh_avg_as_src}\n"
+            #     f"gRPC Latency Avg Mesh as src (ms): {grpc_latency_mesh_avg_as_src}\n"
+            #     f"HTTP Latency P95 Mesh as src (ms): {http_latency_p95_mesh_as_src}\n"
+            #     f"gRPC Latency P95 Mesh as src (ms): {grpc_latency_p95_mesh_as_src}\n"
+            # )
+
             logging.info(
-                "\n"
-                "=== Deployment Monitoring ===\n"
-                f"Deployment: {deployment}\n"
-                "\n"
-                "[Resources]\n"
-                f"CPU (m): {cpu_m}\n"
-                f"Memory (MiB): {mem_mib}\n"
-                f"Running Pods: {pods_count}\n"
-                f"CPU Utilisation (%): {cpu_utilisation:.2f}\n"
-                f"Memory Utilisation (%): {mem_utilisation:.2f}\n"
-                "\n"
-                "[Aggregate Traffic as Destination]\n"
-                f"HTTP RPM as dst: {http_rpm_as_dst:.2f}\n"
-                f"gRPC RPM as dst: {grpc_rpm_as_dst:.2f}\n"
-                f"HTTP Latency Avg as dst (ms): {http_latency_avg_as_dst:.2f}\n"
-                f"gRPC Latency Avg as dst (ms): {grpc_latency_avg_as_dst:.2f}\n"
-                f"HTTP Latency P95 as dst (ms): {http_latency_p95_as_dst:.2f}\n"
-                f"gRPC Latency P95 as dst (ms): {grpc_latency_p95_as_dst:.2f}\n"
-                "\n"
-                "[Aggregate Traffic as Source]\n"
-                f"HTTP RPM as src: {http_rpm_as_src:.2f}\n"
-                f"gRPC RPM as src: {grpc_rpm_as_src:.2f}\n"
-                f"HTTP Latency Avg as src (ms): {http_latency_avg_as_src:.2f}\n"
-                f"gRPC Latency Avg as src (ms): {grpc_latency_avg_as_src:.2f}\n"
-                f"HTTP Latency P95 as src (ms): {http_latency_p95_as_src:.2f}\n"
-                f"gRPC Latency P95 as src (ms): {grpc_latency_p95_as_src:.2f}\n"
-                "\n"
-                "[Mesh Traffic as Destination: per source_workload]\n"
-                f"HTTP RPM Mesh as dst: {http_rpm_mesh_as_dst}\n"
-                f"gRPC RPM Mesh as dst: {grpc_rpm_mesh_as_dst}\n"
-                f"HTTP Latency Avg Mesh as dst (ms): {http_latency_mesh_avg_as_dst}\n"
-                f"gRPC Latency Avg Mesh as dst (ms): {grpc_latency_mesh_avg_as_dst}\n"
-                f"HTTP Latency P95 Mesh as dst (ms): {http_latency_p95_mesh_as_dst}\n"
-                f"gRPC Latency P95 Mesh as dst (ms): {grpc_latency_p95_mesh_as_dst}\n"
-                "\n"
-                "[Mesh Traffic as Source: per destination_workload]\n"
-                f"HTTP RPM Mesh as src: {http_rpm_mesh_as_src}\n"
-                f"gRPC RPM Mesh as src: {grpc_rpm_mesh_as_src}\n"
-                f"HTTP Latency Avg Mesh as src (ms): {http_latency_mesh_avg_as_src}\n"
-                f"gRPC Latency Avg Mesh as src (ms): {grpc_latency_mesh_avg_as_src}\n"
-                f"HTTP Latency P95 Mesh as src (ms): {http_latency_p95_mesh_as_src}\n"
-                f"gRPC Latency P95 Mesh as src (ms): {grpc_latency_p95_mesh_as_src}\n"
+                build_deployment_monitoring_log(
+                    deployment=deployment,
+                    cpu_m=cpu_m,
+                    mem_mib=mem_mib,
+                    pods_count=pods_count,
+                    cpu_utilisation=cpu_utilisation,
+                    mem_utilisation=mem_utilisation,
+
+                    http_rpm_as_dst=http_rpm_as_dst,
+                    grpc_rpm_as_dst=grpc_rpm_as_dst,
+                    http_latency_p50_as_dst=http_latency_p50_as_dst,
+                    grpc_latency_p50_as_dst=grpc_latency_p50_as_dst,
+                    http_latency_avg_as_dst=http_latency_avg_as_dst,
+                    grpc_latency_avg_as_dst=grpc_latency_avg_as_dst,
+                    http_latency_p95_as_dst=http_latency_p95_as_dst,
+                    grpc_latency_p95_as_dst=grpc_latency_p95_as_dst,
+
+                    http_rpm_as_src=http_rpm_as_src,
+                    grpc_rpm_as_src=grpc_rpm_as_src,
+                    http_latency_p50_as_src=http_latency_p50_as_src,
+                    grpc_latency_p50_as_src=grpc_latency_p50_as_src,
+                    http_latency_avg_as_src=http_latency_avg_as_src,
+                    grpc_latency_avg_as_src=grpc_latency_avg_as_src,
+                    http_latency_p95_as_src=http_latency_p95_as_src,
+                    grpc_latency_p95_as_src=grpc_latency_p95_as_src,
+
+                    http_rpm_mesh_as_dst=http_rpm_mesh_as_dst,
+                    grpc_rpm_mesh_as_dst=grpc_rpm_mesh_as_dst,
+                    http_latency_mesh_avg_as_dst=http_latency_mesh_avg_as_dst,
+                    grpc_latency_mesh_avg_as_dst=grpc_latency_mesh_avg_as_dst,
+                    http_latency_p95_mesh_as_dst=http_latency_p95_mesh_as_dst,
+                    grpc_latency_p95_mesh_as_dst=grpc_latency_p95_mesh_as_dst,
+
+                    http_rpm_mesh_as_src=http_rpm_mesh_as_src,
+                    grpc_rpm_mesh_as_src=grpc_rpm_mesh_as_src,
+                    http_latency_mesh_avg_as_src=http_latency_mesh_avg_as_src,
+                    grpc_latency_mesh_avg_as_src=grpc_latency_mesh_avg_as_src,
+                    http_latency_p95_mesh_as_src=http_latency_p95_mesh_as_src,
+                    grpc_latency_p95_mesh_as_src=grpc_latency_p95_mesh_as_src,
+
+                    upstreams=upstreams,
+                    downstreams=downstreams,
+                )
             )
 
 
+            bottlenecks = top_p95_bottlenecks(
+                deployment=deployment,
+                node_type=node_type,
+                downstream_p95=p95_mesh_src,
+            )
+            
+            lines.append("\n[[DEBUG]Testing Potential Bottlenecks]")
+            if node_type == "leaf":
+                lines.append(f"1. {deployment}: self")
+            elif bottlenecks:
+                for i, (service, p95) in enumerate(bottlenecks, start=1):
+                    lines.append(f"{i}. {service}: p95={float(p95):.2f} ms")
+            else:
+                lines.append("None detected")
+                
             #############
             # Step 4: Execution
             #############
