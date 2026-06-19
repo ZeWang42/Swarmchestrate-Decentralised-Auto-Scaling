@@ -25,7 +25,7 @@ class DeployAppResponse(BaseModel):
 class DeployAutoscalerRequest(BaseModel):
     namespace: str = Field(default=DEFAULT_NAMESPACE, description="Target namespace")
     deployment_names: list[str] | None = Field(default=None, description="Optional target deployments; defaults to all known deployments present for the app")
-    autoscaler_name: str = Field(description="Autoscaler folder name, e.g. default_cpu, das, or none")
+    autoscaler_name: str = Field(description="Autoscaler folder name, e.g. default_cpu, das, customdas, dadqn, pbscaler, or none")
     config: dict[str, Any] = Field(default_factory=dict, description="Autoscaler-specific parameters")
 
 
@@ -65,7 +65,7 @@ class MonitorStatusResponse(BaseModel):
 
 
 class AutoscalerExperimentConfig(BaseModel):
-    autoscaler_name: str = Field(description="default_cpu, das, or none")
+    autoscaler_name: str = Field(description="default_cpu, das, customdas, dadqn, pbscaler, or none")
     deployment_names: list[str] | None = Field(default=None, description="Optional deployments that should receive the autoscaler")
     config: dict[str, Any] = Field(default_factory=dict)
 

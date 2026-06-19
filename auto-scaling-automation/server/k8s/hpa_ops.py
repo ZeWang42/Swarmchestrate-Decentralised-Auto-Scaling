@@ -30,6 +30,24 @@ ALLOWED_APP_DEPLOYMENTS = {
 SHARED_PREFIX = "shared-"
 PER_DEPLOYMENT_PREFIX = "per-deployment-"
 FALLBACK_FILENAMES = {"manifest.yaml", "manifest.yml"}
+CONTROLLER_DEPLOYMENT_AUTOSCALERS = {"das", "customdas", "customdas-cpu", "customdas-cpu-queue", "dadqn"}
+SHARED_DEPLOYMENT_AUTOSCALERS = {"pbscaler": ["pbscaler-boutique"]}
+COMPANION_SERVICE_AUTOSCALERS = {"das", "customdas", "customdas-cpu", "customdas-cpu-queue"}
+DADQN_APP_NAME = "onlineboutique"
+DADQN_UNSUPPORTED_DEPLOYMENTS = {"redis-cart"}
+CUSTOMDAS_FAMILY_AUTOSCALERS = {"customdas", "customdas-cpu", "customdas-cpu-queue"}
+
+
+def _safe_k8s_name(name: str) -> str:
+    return name.replace("_", "-").replace(".", "-")
+
+
+def _controller_name_for(autoscaler_name: str, deployment_name: str) -> str:
+    safe_name = _safe_k8s_name(deployment_name)
+    if autoscaler_name == "dadqn":
+        # Match the DA-DQN upstream convention: dadqn-frontend, dadqn-cartservice, ...
+        return f"dadqn-{safe_name}"
+    return f"{autoscaler_name}-autoscaler-{safe_name}"
 
 
 
@@ -132,15 +150,82 @@ def discover_app_deployments(app_name: str, namespace: str, requested: list[str]
     return deployment_names
 
 
+def _validate_and_filter_dadqn_deployments(
+    app_name: str,
+    requested: list[str] | None,
+    deployment_names: list[str],
+) -> list[str]:
+    """DA-DQN upstream models/manifests target Online Boutique services only.
+
+    The upstream project ships one agent/model per Online Boutique microservice
+    and does not include a redis-cart agent. When deployment_names is omitted,
+    silently filter redis-cart out. When explicitly requested, fail fast so the
+    caller knows the agent/model is not available.
+    """
+    if app_name != DADQN_APP_NAME:
+        raise HTTPException(
+            status_code=400,
+            detail="DA-DQN autoscaler is supported only for app='onlineboutique'.",
+        )
+
+    unsupported = sorted(set(deployment_names) & DADQN_UNSUPPORTED_DEPLOYMENTS)
+    if unsupported and requested:
+        raise HTTPException(
+            status_code=400,
+            detail=f"DA-DQN has no bundled agent/model for deployments: {unsupported}",
+        )
+
+    return [d for d in deployment_names if d not in DADQN_UNSUPPORTED_DEPLOYMENTS]
+
+
 def _build_context(req: DeployAutoscalerRequest, deployment_name: str | None = None, app_name: str | None = None) -> dict[str, Any]:
     cfg = req.config or {}
+    default_image = "busybox:stable"
+    default_service_account = "das-autoscaler"
+    if req.autoscaler_name == "dadqn":
+        default_image = "proactivellmbasedproject/dadqn-autoscaler:v4-decentralized"
+        default_service_account = "dadqn-autoscaler"
+    elif req.autoscaler_name == "customdas-cpu":
+        default_image = "zewang42/customdas-autoscaler-cpu:latest"
+        default_service_account = "das-autoscaler"
+    elif req.autoscaler_name == "customdas-cpu-queue":
+        default_image = "zewang42/customdas-autoscaler-cpu-queue:latest"
+        default_service_account = "das-autoscaler"
+    elif req.autoscaler_name == "pbscaler":
+        default_image = "proactivellmbasedproject/pbscaler-boutique:latest"
+        default_service_account = "default"
+
+    prom_base_url = cfg.get(
+        "prometheus_url",
+        cfg.get("prom_url_base", str(PROM_URL).removesuffix("/api/v1/query")),
+    )
+
+    app_cfg = APPLICATIONS.get(app_name or "", {})
+    resolved_app_name = cfg.get("app_name", app_name or app_cfg.get("name", ""))
+    root_service = cfg.get(
+        "root_service",
+        cfg.get("p2p_hub_deployment", app_cfg.get("latency_deployment", "frontend")),
+    )
+
     context: dict[str, Any] = {
         "namespace": req.namespace,
         "target_namespace": req.namespace,
         "autoscaler_name": req.autoscaler_name,
-        "service_account_name": cfg.get("service_account_name", "das-autoscaler"),
-        "image": cfg.get("image", "busybox:stable"),
+        "app_name": resolved_app_name,
+        "root_service": root_service,
+        "service_account_name": cfg.get("service_account_name", default_service_account),
+        "image": cfg.get("image", default_image),
+        "image_pull_policy": cfg.get("image_pull_policy", "IfNotPresent" if req.autoscaler_name == "dadqn" else "Always"),
         "prom_url": cfg.get("prom_url", PROM_URL),
+        "prometheus_url": prom_base_url,
+        "prom_rate_window": cfg.get("prom_rate_window", "1m"),
+        "sample_interval_sec": cfg.get("sample_interval_sec", 30),
+        "decision_interval_sec": cfg.get("decision_interval_sec", 15),
+        "scale_down_cooldown_sec": cfg.get("scale_down_cooldown_sec", 30),
+        "obs_fallback_from_cpu": cfg.get("obs_fallback_from_cpu", 1),
+        "locust_url": cfg.get("locust_url", ""),
+        "model_dir": cfg.get("model_dir", "/mnt/sla_v1"),
+        "model_host_path": cfg.get("model_host_path", "/tmp/sla_v1"),
         "interval": cfg.get("interval", 15),
         "cooldown_seconds": cfg.get("cooldown_seconds", 30),
         "alpha_down_threshold": cfg.get("alpha_down_threshold", 30),
@@ -152,29 +237,36 @@ def _build_context(req: DeployAutoscalerRequest, deployment_name: str | None = N
         "average_cpu_utilization": cfg.get("average_cpu_utilization", cfg.get("cpu_target", 70)),
     }
     if deployment_name is not None:
-        safe_name = deployment_name.replace("_", "-").replace(".", "-")
+        safe_name = _safe_k8s_name(deployment_name)
+        controller_name = _controller_name_for(req.autoscaler_name, deployment_name)
         context.update({
             "deployment_name": deployment_name,
+            "safe_deployment_name": safe_name,
             "target_deployment": deployment_name,
-            "controller_name": f"{req.autoscaler_name}-autoscaler-{safe_name}",
-            "autoscaler_deployment_name": f"{req.autoscaler_name}-autoscaler-{safe_name}",
+            "my_service": deployment_name,
+            "controller_name": controller_name,
+            "autoscaler_deployment_name": controller_name,
         })
-        prefix = req.autoscaler_name
-        if req.autoscaler_name in {"das", "customdas"}:
-            context["autoscaler_deployment_name"] = f"{prefix}-autoscaler-{safe_name}"
-            context["controller_name"] = context["autoscaler_deployment_name"]
-            context["autoscaler_name"] = context["autoscaler_deployment_name"]
+        if req.autoscaler_name in CONTROLLER_DEPLOYMENT_AUTOSCALERS:
+            context["autoscaler_name"] = controller_name
 
         # CustomDAS templates need peer-to-peer variables for every per-deployment
         # controller. The client may provide p2p_hub_deployment, but older clients
         # do not provide peer_id, p2p_hub_host, or is_p2p_hub. Fill safe defaults
         # here so setup and cleanup can render the same templates.
-        if req.autoscaler_name == "customdas":
-            app_deployments = APPLICATIONS.get(app_name or "", {}).get("deployments", [])
-            default_hub_deployment = app_deployments[0] if app_deployments else deployment_name
-            hub_deployment = cfg.get("p2p_hub_deployment", default_hub_deployment)
-            hub_safe_name = str(hub_deployment).replace("_", "-").replace(".", "-")
-            hub_controller_name = f"customdas-autoscaler-{hub_safe_name}"
+        if req.autoscaler_name in CUSTOMDAS_FAMILY_AUTOSCALERS:
+            # Prefer the configured app root/latency deployment as the P2P hub.
+            # This keeps Bookinfo on productpage-v1 and Online Boutique on frontend,
+            # instead of accidentally choosing the first deployment in the app list.
+            hub_deployment = cfg.get("p2p_hub_deployment", root_service or deployment_name)
+            # The P2P hub Service must match the selected autoscaler variant.
+            # For example:
+            #   customdas          -> customdas-autoscaler-frontend
+            #   customdas-cpu      -> customdas-cpu-autoscaler-frontend
+            #   customdas-cpu-queue -> customdas-cpu-queue-autoscaler-frontend
+            # Previously this was hard-coded to customdas-autoscaler-<hub>,
+            # which broke DNS for customdas-cpu/customdas-cpu-queue workers.
+            hub_controller_name = _controller_name_for(req.autoscaler_name, str(hub_deployment))
             p2p_hub_port = cfg.get("p2p_hub_port", 5000)
 
             context.update({
@@ -219,6 +311,8 @@ def deploy_autoscaler_for_application(app_name: str, req: DeployAutoscalerReques
         return DeployAutoscalerResponse(ok=True, app=app_name, namespace=namespace, autoscaler_name=req.autoscaler_name, results=[])
 
     deployment_names = discover_app_deployments(app_name, namespace, req.deployment_names)
+    if req.autoscaler_name == "dadqn":
+        deployment_names = _validate_and_filter_dadqn_deployments(app_name, req.deployment_names, deployment_names)
     req.deployment_names = deployment_names
     results: list[dict[str, Any]] = []
 
@@ -232,12 +326,14 @@ def deploy_autoscaler_for_application(app_name: str, req: DeployAutoscalerReques
 #                f"das-autoscaler-{d.replace('_', '-').replace('.', '-')}"
 #                for d in deployment_names
 #            ]
-        if req.autoscaler_name in {"das", "customdas"}:
+        if req.autoscaler_name in CONTROLLER_DEPLOYMENT_AUTOSCALERS:
             controller_names = [
-                f"{req.autoscaler_name}-autoscaler-{d.replace('_', '-').replace('.', '-')}"
+                _controller_name_for(req.autoscaler_name, d)
                 for d in deployment_names
             ]
             wait_for_deployments(namespace, controller_names)
+        elif req.autoscaler_name in SHARED_DEPLOYMENT_AUTOSCALERS:
+            wait_for_deployments(namespace, SHARED_DEPLOYMENT_AUTOSCALERS[req.autoscaler_name])
 
         for deployment_name in deployment_names:
             result: dict[str, Any] = {
@@ -246,11 +342,12 @@ def deploy_autoscaler_for_application(app_name: str, req: DeployAutoscalerReques
                 "action": "applied",
             }
 #            if req.autoscaler_name == "das":
-#                safe_name = deployment_name.replace("_", "-").replace(".", "-")
+#                safe_name = _safe_k8s_name(deployment_name)
 #                result["controller_name"] = f"das-autoscaler-{safe_name}"
-            if req.autoscaler_name in {"das", "customdas"}:
-                safe_name = deployment_name.replace("_", "-").replace(".", "-")
-                result["controller_name"] = f"{req.autoscaler_name}-autoscaler-{safe_name}"
+            if req.autoscaler_name in CONTROLLER_DEPLOYMENT_AUTOSCALERS:
+                result["controller_name"] = _controller_name_for(req.autoscaler_name, deployment_name)
+            elif req.autoscaler_name in SHARED_DEPLOYMENT_AUTOSCALERS:
+                result["controller_name"] = SHARED_DEPLOYMENT_AUTOSCALERS[req.autoscaler_name][0]
             results.append(result)
         return DeployAutoscalerResponse(ok=True, app=app_name, namespace=namespace, autoscaler_name=req.autoscaler_name, results=results)        
     # try:
@@ -267,7 +364,7 @@ def deploy_autoscaler_for_application(app_name: str, req: DeployAutoscalerReques
     #             "action": "applied",
     #         }
     #         if req.autoscaler_name == "das":
-    #             safe_name = deployment_name.replace("_", "-").replace(".", "-")
+    #             safe_name = _safe_k8s_name(deployment_name)
     #             result["controller_name"] = f"das-autoscaler-{safe_name}"
     #         results.append(result)
     #    return DeployAutoscalerResponse(ok=True, app=app_name, namespace=namespace, autoscaler_name=req.autoscaler_name, results=results)
@@ -282,6 +379,7 @@ def deploy_autoscaler_for_application(app_name: str, req: DeployAutoscalerReques
 _DELETE_MAP: dict[str, tuple[str, str, str]] = {
     "ServiceAccount": ("core", "namespaced", "service_account"),
     "Service": ("core", "namespaced", "service"),
+    "ConfigMap": ("core", "namespaced", "config_map"),
     "Role": ("rbac", "namespaced", "role"),
     "RoleBinding": ("rbac", "namespaced", "role_binding"),
     "Deployment": ("apps", "namespaced", "deployment"),
@@ -291,7 +389,7 @@ _DELETE_MAP: dict[str, tuple[str, str, str]] = {
 
 
 def _autoscaler_service_object(autoscaler_name: str, deployment_name: str, namespace: str) -> dict[str, Any]:
-    safe_name = deployment_name.replace("_", "-").replace(".", "-")
+    safe_name = _safe_k8s_name(deployment_name)
     return {
         "apiVersion": "v1",
         "kind": "Service",
@@ -308,7 +406,7 @@ def _append_companion_service_objects(
     deployment_names: list[str],
     namespace: str,
 ) -> list[dict[str, Any]]:
-    if autoscaler_name not in {"das", "customdas"}:
+    if autoscaler_name not in COMPANION_SERVICE_AUTOSCALERS:
         return objects
 
     # DAS/CustomDAS controllers use the same per-deployment naming convention
@@ -370,6 +468,8 @@ def delete_autoscaler_for_application(app_name: str, namespace: str, autoscaler_
 
     try:
         resolved_deployments = discover_app_deployments(app_name, namespace, deployment_names)
+        if autoscaler_name == "dadqn":
+            resolved_deployments = _validate_and_filter_dadqn_deployments(app_name, deployment_names, resolved_deployments)
         req = DeployAutoscalerRequest(
             namespace=namespace,
             deployment_names=resolved_deployments,

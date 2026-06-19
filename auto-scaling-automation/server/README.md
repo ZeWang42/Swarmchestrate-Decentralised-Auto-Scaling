@@ -187,3 +187,90 @@ curl -X POST http://<server>:8080/deploy/onlineboutique/autoscaler \
 ```
 
 For experiment setup, use `"app": "onlineboutique"` or `"app": "bookinfo"`. If `deployment_names` is omitted, the server discovers the known deployments for the selected application.
+
+## DA-DQN autoscaler support
+
+This build also registers `dadqn` as an autoscaler type. Accepted aliases are:
+
+- `dadqn`
+- `da-dqn`
+- `da_dqn`
+
+DA-DQN is supported for `onlineboutique` only. When `deployment_names` is omitted, the server deploys one DA-DQN agent per supported Online Boutique microservice and skips `redis-cart`, because the upstream DA-DQN artifact ships agents/models for the 10 application services but not Redis.
+
+Example:
+
+```bash
+curl -X POST http://<server>:8080/deploy/onlineboutique/autoscaler \
+  -H 'content-type: application/json' \
+  -d '{
+    "namespace": "default",
+    "autoscaler_name": "da-dqn",
+    "config": {
+      "prometheus_url": "http://prom-kube-prometheus-stack-prometheus.monitoring.svc.cluster.local:9090",
+      "model_host_path": "/tmp/sla_v1",
+      "model_dir": "/mnt/sla_v1",
+      "sample_interval_sec": 30,
+      "decision_interval_sec": 15
+    }
+  }'
+```
+
+The server renders:
+
+- shared `ServiceAccount`, `Role`, and `RoleBinding`
+- shared `ConfigMap/dadqn-config`
+- one controller Deployment per target service, named `dadqn-<service>`
+
+The DA-DQN image defaults to:
+
+```text
+proactivellmbasedproject/dadqn-autoscaler:v4-decentralized
+```
+
+The model files must already exist on each worker at the configured hostPath, default:
+
+```text
+/tmp/sla_v1
+```
+
+
+## PBScaler autoscaler support
+
+This build includes a `pbscaler` autoscaler manifest for Online Boutique. Accepted names are:
+
+- `pbscaler`
+- `pb-scaler`
+- `pb_scaler`
+
+PBScaler expects a kubeconfig file mounted from a Secret named `pbscaler-kubeconfig`. Before deploying PBScaler, create that Secret in the target namespace. If your local kubeconfig points to `https://127.0.0.1:6443`, rewrite it to the in-cluster API endpoint first:
+
+```bash
+cat ~/.kube/config \
+  | sed 's#https://127.0.0.1:6443#https://kubernetes.default.svc:443#' \
+  > /tmp/pbscaler-kubeconfig
+
+kubectl create secret generic pbscaler-kubeconfig \
+  --from-file=config=/tmp/pbscaler-kubeconfig \
+  -n default
+```
+
+Deploy through the server:
+
+```bash
+curl -X POST http://<server>:8080/deploy/onlineboutique/autoscaler \
+  -H 'content-type: application/json' \
+  -d '{"namespace":"default","autoscaler_name":"pbscaler"}'
+```
+
+The rendered manifest creates:
+
+- `Deployment/pbscaler-boutique`
+- `Service/pbscaler-boutique`
+- a `prometheus-proxy` sidecar that forwards `localhost:9090` to `prometheus.istio-system.svc.cluster.local:9090`
+
+The PBScaler image defaults to:
+
+```text
+proactivellmbasedproject/pbscaler-boutique:latest
+```

@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: dadqn-config
+  namespace: {{ namespace }}
+data:
+  PROMETHEUS_URL: "{{ prometheus_url }}"
+  PROM_RATE_WINDOW: "{{ prom_rate_window }}"
+  K8S_NAMESPACE: "{{ target_namespace }}"
+  SAMPLE_INTERVAL_SEC: "{{ sample_interval_sec }}"
+  DECISION_INTERVAL_SEC: "{{ decision_interval_sec }}"
+  SCALE_DOWN_COOLDOWN_SEC: "{{ scale_down_cooldown_sec }}"
+  OBS_FALLBACK_FROM_CPU: "{{ obs_fallback_from_cpu }}"
+  LOCUST_URL: "{{ locust_url }}"

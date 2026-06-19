@@ -29,6 +29,8 @@ def _create_or_patch(obj: dict, namespace: str) -> None:
     try:
         if kind == "ServiceAccount":
             core_api.create_namespaced_service_account(namespace=obj_namespace, body=obj)
+        elif kind == "ConfigMap":
+            core_api.create_namespaced_config_map(namespace=obj_namespace, body=obj)
         elif kind == "Role":
             rbac_api.create_namespaced_role(namespace=obj_namespace, body=obj)
         elif kind == "RoleBinding":
@@ -46,6 +48,8 @@ def _create_or_patch(obj: dict, namespace: str) -> None:
 
         if kind == "ServiceAccount":
             core_api.patch_namespaced_service_account(name=name, namespace=obj_namespace, body=obj)
+        elif kind == "ConfigMap":
+            core_api.patch_namespaced_config_map(name=name, namespace=obj_namespace, body=obj)
         elif kind == "Role":
             rbac_api.patch_namespaced_role(name=name, namespace=obj_namespace, body=obj)
         elif kind == "RoleBinding":

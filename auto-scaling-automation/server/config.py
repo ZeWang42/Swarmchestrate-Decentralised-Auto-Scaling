@@ -49,6 +49,7 @@ APPLICATIONS = {
         "gateway_manifest": BOOKINFO_GATEWAY_MANIFEST,
         "deployments": BOOKINFO_DEPLOYMENTS,
         "services": BOOKINFO_SERVICES,
+        "latency_deployment": "productpage-v1",
     },
     ONLINEBOUTIQUE_APP_NAME: {
         "name": ONLINEBOUTIQUE_APP_NAME,
@@ -56,9 +57,16 @@ APPLICATIONS = {
         "gateway_manifest": ONLINEBOUTIQUE_GATEWAY_MANIFEST,
         "deployments": ONLINEBOUTIQUE_DEPLOYMENTS,
         "services": ONLINEBOUTIQUE_SERVICES,
+        "latency_deployment": "frontend",
     },
 }
 
+def latency_deployments() -> set[str]:
+    return {
+        app["latency_deployment"]
+        for app in APPLICATIONS.values()
+        if app.get("latency_deployment")
+    }
 SUPPORTED_APP_NAMES = set(APPLICATIONS.keys())
 ALL_KNOWN_DEPLOYMENTS = sorted({deployment for app in APPLICATIONS.values() for deployment in app["deployments"]})
 
@@ -69,4 +77,20 @@ AUTOSCALER_NAME_ALIASES = {
     "customdas": "customdas",
     "custom-das": "customdas",
     "custom_das": "customdas",
+    "customdascpu": "customdas-cpu",
+    "customdas_cpu": "customdas-cpu",
+    "customdas-cpu": "customdas-cpu",
+    "customdas cpu": "customdas-cpu",
+    "customdascpuqueue": "customdas-cpu-queue",
+    "customdas_cpu_queue": "customdas-cpu-queue",
+    "customdas-cpu-queue": "customdas-cpu-queue",
+    "customdas cpu queue": "customdas-cpu-queue",
+    "dadqn": "dadqn",
+    "da-dqn": "dadqn",
+    "da_dqn": "dadqn",
+    "da dqn": "dadqn",
+    "pbscaler": "pbscaler",
+    "pb-scaler": "pbscaler",
+    "pb_scaler": "pbscaler",
+    "pb scaler": "pbscaler",
 }

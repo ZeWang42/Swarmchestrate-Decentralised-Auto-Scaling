@@ -1,0 +1,86 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pbscaler-boutique
+  namespace: {{ namespace }}
+  labels:
+    app: pbscaler-boutique
+    autoscaler: pbscaler
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: pbscaler-boutique
+  template:
+    metadata:
+      labels:
+        app: pbscaler-boutique
+        autoscaler: pbscaler
+    spec:
+      containers:
+        - name: pbscaler-boutique
+          image: {{ image }}
+          imagePullPolicy: {{ image_pull_policy }}
+          command:
+            - sh
+            - -c
+            - |
+              sleep 10
+              python /app/pbscaler_run/run_pbscaler.py
+          env:
+            - name: KUBECONFIG
+              value: /kube/config
+          ports:
+            - containerPort: 8080
+              name: http
+          volumeMounts:
+            - name: kubeconfig
+              mountPath: /kube
+              readOnly: true
+          resources:
+            requests:
+              cpu: "250m"
+              memory: "256Mi"
+            limits:
+              cpu: "1"
+              memory: "1Gi"
+        - name: prometheus-proxy
+          image: alpine:3.20
+          imagePullPolicy: IfNotPresent
+          command:
+            - sh
+            - -c
+            - |
+              apk add --no-cache socat
+              socat TCP-LISTEN:9090,fork,reuseaddr TCP:prometheus.istio-system.svc.cluster.local:9090
+          ports:
+            - containerPort: 9090
+              name: prometheus
+          resources:
+            requests:
+              cpu: "50m"
+              memory: "64Mi"
+            limits:
+              cpu: "200m"
+              memory: "128Mi"
+      volumes:
+        - name: kubeconfig
+          secret:
+            secretName: pbscaler-kubeconfig
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: pbscaler-boutique
+  namespace: {{ namespace }}
+  labels:
+    app: pbscaler-boutique
+    autoscaler: pbscaler
+spec:
+  selector:
+    app: pbscaler-boutique
+  ports:
+    - name: http
+      port: 80
+      targetPort: 8080
+  type: ClusterIP

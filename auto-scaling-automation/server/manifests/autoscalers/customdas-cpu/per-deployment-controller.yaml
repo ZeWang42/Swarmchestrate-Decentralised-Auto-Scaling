@@ -4,23 +4,23 @@ metadata:
   name: {{ autoscaler_deployment_name }}
   namespace: {{ namespace }}
   labels:
-    app: customdas-autoscaler
+    app: customdas-cpu-autoscaler
     target-deployment: {{ target_deployment }}
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: customdas-autoscaler
+      app: customdas-cpu-autoscaler
       target-deployment: {{ target_deployment }}
   template:
     metadata:
       labels:
-        app: customdas-autoscaler
+        app: customdas-cpu-autoscaler
         target-deployment: {{ target_deployment }}
     spec:
       serviceAccountName: {{ service_account_name }}
       containers:
-        - name: customdas-autoscaler
+        - name: customdas-cpu-autoscaler
           image: {{ image }}
           imagePullPolicy: Always
           ports:
@@ -71,11 +71,11 @@ metadata:
   name: {{ autoscaler_deployment_name }}
   namespace: {{ namespace }}
   labels:
-    app: customdas-autoscaler
+    app: customdas-cpu-autoscaler
     target-deployment: {{ target_deployment }}
 spec:
   selector:
-    app: customdas-autoscaler
+    app: customdas-cpu-autoscaler
     target-deployment: {{ target_deployment }}
   ports:
     - name: p2p
