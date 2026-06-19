@@ -19,8 +19,9 @@ PRODUCT_IDS = [
 
 CURRENCIES = ["EUR", "USD", "JPY", "CAD"]
 
-CSV_PATH = os.getenv("CSV_PATH", "load/online-boutique/workloads/wiki_train.csv")
-TIME_MINUTE = int(os.getenv("TIME_MINUTE", "3"))
+#CSV_PATH = os.getenv("CSV_PATH", "load/online-boutique/workloads/constant-200.csv")
+CSV_PATH = os.getenv("CSV_PATH", "load/online-boutique/workloads/wiki_load.csv")
+TIME_MINUTE = int(os.getenv("TIME_MINUTE", "60"))
 SCALE_FACTOR = float(os.getenv("SCALE_FACTOR", "1"))
 SPAWN_RATE = int(os.getenv("SPAWN_RATE", "20"))
 LOAD_DIST = os.getenv("LOAD_DIST", "1")
@@ -113,7 +114,7 @@ class UserBehavior(TaskSet):
 
 class WebsiteUser(HttpUser):
     tasks = [UserBehavior]
-    wait_time = between(1, 1)
+    wait_time = between(1, 5)
 
 
 class StagesShapeFromCSV(LoadTestShape):

@@ -1,67 +1,149 @@
+#APP_NAME = "bookinfo"
 APP_NAME = "onlineboutique"
 
-SERVER_BASE_URL = "http://35.179.164.93:31504"
-ONLINE_BOUTIQUE_HOST = "http://35.179.164.93:30758"
-BOOKINFO_HOST = "http://35.179.164.93:31727"
+SERVER_IP = "35.179.133.64"
+SERVER_PORT = "31789"
+SERVER_BASE_URL = f"http://{SERVER_IP}:{SERVER_PORT}"
 
 NAMESPACE = "default"
 
-WORKLOAD_NAME = ["wiki_train"]
+APP_CONFIGS = {
+    "bookinfo": {
+        "app_port": "32350",
+        "host": f"http://{SERVER_IP}:32350",
+        "locust_file": "load/book-info/wiki_locustfile.py",
+        "root_service": "productpage-v1",
+        "deployment_names": [
+            "productpage-v1",
+            "details-v1",
+            "ratings-v1",
+            "reviews-v1",
+            "reviews-v2",
+            "reviews-v3",
+        ],
+    },
+    "onlineboutique": {
+        "app_port": "31848",
+        "host": f"http://{SERVER_IP}:31848",
+        "locust_file": "load/online-boutique/wiki_locustfile.py",
+        "root_service": "frontend",
+        "deployment_names": [
+            "frontend",
+            "cartservice",
+            "checkoutservice",
+            "currencyservice",
+            "emailservice",
+            "paymentservice",
+            "productcatalogservice",
+            "recommendationservice",
+            "shippingservice",
+            "adservice",
+        ],
+    },
+}
+
+APP = APP_CONFIGS[APP_NAME]
+APP_PORT = APP["app_port"]
+APP_HOST = APP["host"]
+
+ONLINE_BOUTIQUE_HOST = APP_CONFIGS["onlineboutique"]["host"]
+BOOKINFO_HOST = APP_CONFIGS["bookinfo"]["host"]
+
+WORKLOAD_NAME = ["wiki_load"]
+#WORKLOAD_NAME = ["constant-500"]
+
+#WORKLOAD_NAME = ["linear-up-down-300"]
+#WORKLOAD_NAME = ["linear-300"]
+#WORKLOAD_NAME = ["linear-100", "linear-200", "linear-300", "linear-400", "linear-500"]
+#WORKLOAD_NAME = ["low-high-100", "low-high-200", "low-high-300", "low-high-400", "low-high-500"]
+#WORKLOAD_NAME = ["linear-200"]
+#WORKLOAD_NAME = ["stepped-500-up"]
+#, "wiki_load"]
+
 
 LOCUST_FILES = {
-    "bookinfo": "load/book-info/wiki_locustfile.py",
-    "onlineboutique": "load/online-boutique/wiki_locustfile.py",
+    app_name: app_cfg["locust_file"]
+    for app_name, app_cfg in APP_CONFIGS.items()
 }
 
 AUTOSCALER_SETTINGS = [
-    {
-        "autoscaler_name": "customDAS",
+ {
+        "autoscaler_name": "pbscaler",
+        "deployment_names": APP["deployment_names"],
         "config": {
-            "image": "zewang42/customdas-autoscaler:latest",
-            "prom_url": "http://prometheus.istio-system.svc.cluster.local:9090/api/v1/query",
-            "interval": 30,
+            "image": "proactivellmbasedproject/pbscaler-boutique:latest",
+            "prom_url": "http://prometheus.istio-system.svc.cluster.local:9090",
+            "kubeconfig_secret": "pbscaler-kubeconfig",
 
-            "alpha_down_threshold": 30,
-            "tau_min": 60,
-            "tau_max": 80,
-            "beta_up_threshold": 95,
+            # PBScaler settings
+            "slo_ms": 500,
+            "duration_seconds": 1200,
+            "num_services": len(APP["deployment_names"]),
+
+            # Scaling bounds
             "min_replicas": 1,
             "max_replicas": 10,
 
-            # 🔥 CHANGE THIS (no productpage in boutique)
-            "p2p_hub_deployment": "frontend",
-            "p2p_hub_port": 5000,
+            # App metadata
+            "app_name": APP_NAME,
+            "root_service": APP["root_service"],
         },
     },
-    {
-        "autoscaler_name": "das",
-        "config": {
-            "image": "zewang42/das-autoscaler:latest",
-            "prom_url": "http://prometheus.istio-system.svc.cluster.local:9090/api/v1/query",
-            "interval": 30,
-            "cooldown_seconds": 30,
-            "alpha_down_threshold": 30,
-            "tau_min": 60,
-            "tau_max": 80,
-            "beta_up_threshold": 95,
-            "min_replicas": 1,
-            "max_replicas": 10,
-        },
-    },
-    {
-        "autoscaler_name": "default_cpu",
-        "config": {
-            "average_cpu_utilization": 80,
-            "min_replicas": 1,
-            "max_replicas": 10,
-        },
-    },
+#    {
+#        "autoscaler_name": "customdas-cpu-queue",
+#        "deployment_names": APP["deployment_names"],
+#        "config": {
+#            "image": "zewang42/customdas-autoscaler-cpu-queue:latest",
+#            "prom_url": "http://prometheus.istio-system.svc.cluster.local:9090/api/v1/query",
+#            "interval": 30,
+#
+#            # App-aware DAS settings passed through server templates into pod env vars.
+#            "app_name": APP_NAME,
+#            "root_service": APP["root_service"],
+#
+#            # P2P hub should be the root/frontend deployment of the selected app.
+#            "p2p_hub_deployment": APP["root_service"],
+#            "p2p_hub_port": 5000,
+#
+#            # Scaling parameters.
+#            "alpha_down_threshold": 30,
+#            "tau_min": 60,
+#            "tau_max": 80,
+#            "beta_up_threshold": 95,
+#            "min_replicas": 1,
+#            "max_replicas": 10,
+#        },
+#    },
+#    {
+#        "autoscaler_name": "das",
+#        "deployment_names": APP["deployment_names"],
+#        "config": {
+#            "image": "zewang42/das-autoscaler:latest",
+#            "prom_url": "http://prometheus.istio-system.svc.cluster.local:9090/api/v1/query",
+#            "interval": 30,
+#            "cooldown_seconds": 30,
+#            "alpha_down_threshold": 30,
+#            "tau_min": 60,
+#            "tau_max": 80,
+#            "beta_up_threshold": 95,
+#            "min_replicas": 1,
+#            "max_replicas": 10,
+#        },
+#    },
+#    {
+#        "autoscaler_name": "default_cpu",
+#        "deployment_names": APP["deployment_names"],
+#        "config": {
+#            "average_cpu_utilization": 80,
+#            "min_replicas": 1,
+#            "max_replicas": 10,
+#        },
+#    },
 ]
 
-DURATION_SECONDS = 60 * 3
+DURATION_SECONDS = 60 * 10
 MONITOR_INTERVAL = 5
 PROM_URL = "http://prometheus.istio-system.svc.cluster.local:9090/api/v1/query"
-
 
 TMP_DIR = "tmp"
 WAIT_BETWEEN_EXPERIMENTS_SECONDS = 20

@@ -102,7 +102,7 @@ def get_workload_csv(workload_name: str) -> str:
     return f"{CURRENT_APP['workload_dir']}/{workload_name}.csv"
 
 
-def post_json(url: str, payload: dict[str, Any], timeout: int = 60) -> dict[str, Any]:
+def post_json(url: str, payload: dict[str, Any], timeout: int = 120) -> dict[str, Any]:
     resp = requests.post(url, json=payload, timeout=timeout)
 
     print("\n--- REQUEST ---")
