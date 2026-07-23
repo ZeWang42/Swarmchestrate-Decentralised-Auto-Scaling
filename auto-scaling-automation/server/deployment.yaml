@@ -1,0 +1,28 @@
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: autoscaling-experiment-server
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: autoscaling-experiment-server
+  template:
+    metadata:
+      labels:
+        app: autoscaling-experiment-server
+    spec:
+      serviceAccountName: default
+      containers:
+        - name: server
+          image: zewang42/autoscaling-experiment-server:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
+          env:
+            - name: APP_NAMESPACE
+              value: "default"
+            - name: PROM_URL
+              value: "http://prometheus.istio-system.svc.cluster.local:9090/api/v1/query"

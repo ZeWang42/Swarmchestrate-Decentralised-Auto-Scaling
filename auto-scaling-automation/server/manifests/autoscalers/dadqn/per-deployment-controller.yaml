@@ -1,0 +1,62 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ autoscaler_deployment_name }}
+  namespace: {{ namespace }}
+  labels:
+    app: dadqn-autoscaler
+    svc: {{ target_deployment }}
+    target-deployment: {{ target_deployment }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: dadqn-autoscaler
+      svc: {{ target_deployment }}
+  template:
+    metadata:
+      labels:
+        app: dadqn-autoscaler
+        svc: {{ target_deployment }}
+        target-deployment: {{ target_deployment }}
+        istio.io/dataplane-mode: none
+    spec:
+      serviceAccountName: {{ service_account_name }}
+      containers:
+        - name: agent
+          image: {{ image }}
+          imagePullPolicy: {{ image_pull_policy }}
+          command: ["sh", "-c"]
+          args:
+            - >
+              python -c "import os,re; svc=os.environ['MY_SERVICE']; p='/app/dadqn_v3/config.py'; s=open(p).read(); s=re.sub(r'^SCALABLE_SERVICES = \[\s\S]*?\]', f'SCALABLE_SERVICES = [\"{svc}\"]', s, flags=re.M); open(p,'w').write(s); print('agent =',svc)"
+              && find /app -name '*.pyc' -delete 2>/dev/null;
+              exec python -m dadqn_v3.baselines.dadqn_serve
+          env:
+            - name: MODEL_DIR
+              value: "{{ model_dir }}"
+            - name: MY_SERVICE
+              value: "{{ target_deployment }}"
+          envFrom:
+            - configMapRef:
+                name: dadqn-config
+          volumeMounts:
+            - name: data
+              mountPath: /data
+            - name: sla-models
+              mountPath: "{{ model_dir }}"
+              readOnly: true
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "256Mi"
+            limits:
+              cpu: "500m"
+              memory: "1Gi"
+      volumes:
+        - name: data
+          emptyDir: {}
+        - name: sla-models
+          hostPath:
+            path: "{{ model_host_path }}"
+            type: Directory

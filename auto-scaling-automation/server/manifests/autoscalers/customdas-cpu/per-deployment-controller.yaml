@@ -1,0 +1,85 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ autoscaler_deployment_name }}
+  namespace: {{ namespace }}
+  labels:
+    app: customdas-cpu-autoscaler
+    target-deployment: {{ target_deployment }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: customdas-cpu-autoscaler
+      target-deployment: {{ target_deployment }}
+  template:
+    metadata:
+      labels:
+        app: customdas-cpu-autoscaler
+        target-deployment: {{ target_deployment }}
+    spec:
+      serviceAccountName: {{ service_account_name }}
+      containers:
+        - name: customdas-cpu-autoscaler
+          image: {{ image }}
+          imagePullPolicy: Always
+          ports:
+            - containerPort: {{ p2p_hub_port }}
+              name: p2p
+          env:
+            - name: NAMESPACE
+              value: "{{ target_namespace }}"
+            - name: TARGET_DEPLOYMENT
+              value: "{{ target_deployment }}"
+            - name: PROM_URL
+              value: "{{ prom_url }}"
+            - name: INTERVAL
+              value: "{{ interval }}"
+            - name: COOLDOWN_SECONDS
+              value: "{{ cooldown_seconds }}"
+
+            - name: APP_NAME
+              value: "{{ app_name }}"
+            - name: ROOT_SERVICE
+              value: "{{ root_service }}"
+
+            - name: PEER_ID
+              value: "{{ peer_id }}"
+            - name: P2P_HUB_HOST
+              value: "{{ p2p_hub_host }}"
+            - name: P2P_HUB_PORT
+              value: "{{ p2p_hub_port }}"
+            - name: IS_P2P_HUB
+              value: "{{ is_p2p_hub }}"
+
+            - name: MIN_REPLICAS
+              value: "{{ min_replicas }}"
+            - name: MAX_REPLICAS
+              value: "{{ max_replicas }}"
+          resources:
+            requests:
+              cpu: "50m"
+              memory: "128Mi"
+            limits:
+              cpu: "500m"
+              memory: "512Mi"
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ autoscaler_deployment_name }}
+  namespace: {{ namespace }}
+  labels:
+    app: customdas-cpu-autoscaler
+    target-deployment: {{ target_deployment }}
+spec:
+  selector:
+    app: customdas-cpu-autoscaler
+    target-deployment: {{ target_deployment }}
+  ports:
+    - name: p2p
+      protocol: TCP
+      port: {{ p2p_hub_port }}
+      targetPort: {{ p2p_hub_port }}
+  type: ClusterIP

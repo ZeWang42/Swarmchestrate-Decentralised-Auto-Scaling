@@ -1,73 +1,125 @@
-# Autoscaling Experiment Automation Tool
+# 🚀 Autoscaling Experiment Automation Tool
 
-This is an automation tool that enables hassle-free autoscaling experiments by eliminating the need for manual configuration. Additionally, it supports custom HPA integration.
+This project provides an automated framework to run **reproducible autoscaling experiments** on Kubernetes using a **client–server architecture**.
 
-The motivation behind this tool is that performing autoscaling experiments typically requires time-consuming manual effort to set up and configure the experimental testbed. This includes tasks such as deploying applications, setting up monitoring, injecting HPA configurations, and generating workloads.
+## 📌 Features
 
-The complexity and effort involved make it difficult to conduct fair and consistent comparative evaluations across different autoscaling strategies and scenarios (i.e., various combinations of applications, workloads, and HPAs). As a result, much of the existing work has been tested only in simulation environments or private setups, which lack reproducibility.
-
-To this end, we introduce this tool, which adopts a client–server model. The client sends configuration requests to the server. After the server prepares the environment, the client generates workloads to stress the application.
-
----
-
-# Features
-
-The server is a container deployed as a Kubernetes Deployment in the testbed cluster. It is responsible for all preparation and configuration.
-
-## Client
-1. Query existing setups (HPA, applications)
-2. Send requests (HPA, application)
-3. Generate workloads to stress the application
-4. Collect application-level QoS metrics
-
-## Server
-1. Prepare base environment:  
-    a. Install and deploy Istio (Ambient mode; sidecar mode has high resource consumption)  
-    b. Install gateway  
-    c. Deploy Prometheus  
-    d. Expose ports  
-2. Deploy HPA and application  
-3. Collect microservice- and HPA-level QoS performance metrics  
+- 📚 Bookinfo support  
+- 🛒 Online Boutique support  
+- ⚙️ Multiple autoscalers (CPU HPA, DAS, CustomDAS)  
+- 📊 Prometheus-based monitoring  
+- 🔥 Realistic workload generation via Locust  
 
 ---
 
-# Bookinfo Experiment Setup
+## 🧠 Motivation
 
-This bundle contains:
+Autoscaling experiments are typically hard to reproduce because they require:
 
-- `server/server.py`: FastAPI autoscaling experiment server  
-- `client/load.py`: client-side experiment orchestrator  
-- `client/config/exp_config.py`: experiment matrix and endpoints  
-- `client/load/book-info/wiki_locustfile.py`: Locust file using CSV-driven workload  
-- `server/requirements.txt`  
-- `client/requirements.txt`  
+- Deploying applications  
+- Configuring gateways and networking  
+- Installing monitoring (Prometheus)  
+- Injecting autoscaler configurations  
+- Generating workloads  
+- Collecting metrics  
 
+This tool automates the entire pipeline, enabling:
 
-# Usage
+- ✅ Fair comparison across autoscalers  
+- ✅ Consistent experiment setup  
+- ✅ Reproducibility  
 
-## Server run
-Deploy server as a deployment in the kubernetes cluster. 
-This can be done by applying the server-manifest.yaml
-After the server pod is scheduled, one should exports its port so that the client can submit request to it.
+---
 
-```bash
-kubectl port-forward --address 0.0.0.0 svc/autoscaler-server 8000:8000
-```
+## 🏗️ Architecture
 
-## Client run
-Before run the client, one should modify "client/config/exp_config.py" to fill in the endpoints of autoscaler-server and the application's endpoint.
+Client (Locust + Orchestrator)  
+        ↓  
+Autoscaler Server (FastAPI)  
+        ↓  
+Kubernetes Cluster  
 
-```bash
-pip install -r requirements.txt
-python load.py
-```
+---
 
-## Notes
+## ⚙️ Features
 
-Update SERVER_BASE_URL and BOOKINFO_HOST in client/config/exp_config.py.
-The client expects workload files:
-load/book-info/workloads/constant-100.csv
-load/book-info/workloads/constant-300.csv
-load/book-info/workloads/constant-500.csv
-load/book-info/workloads/wiki-workload.csv
-The Locust file reads the workload path from the CSV_PATH environment variable.
+### 🧑‍💻 Client
+- Define experiment matrix (apps × workloads × autoscalers)
+- Send setup/cleanup requests to server
+- Run Locust load tests (CSV-driven)
+- Collect performance metrics
+- Store experiment results automatically
+
+### 🖥️ Server (Kubernetes Deployment)
+
+Responsible for:
+
+- Environment setup (Istio, Gateway API, Prometheus)
+- Application lifecycle (Bookinfo & Online Boutique)
+- Autoscaler management (CPU HPA, DAS, CustomDAS)
+- Monitoring (Prometheus metrics)
+
+---
+
+## 📦 Supported Applications
+
+### 📚 Bookinfo
+- productpage
+- reviews
+- ratings
+- details
+
+### 🛒 Online Boutique
+- frontend
+- checkoutservice
+- cartservice
+- productcatalogservice
+
+---
+
+## 📁 Project Structure
+
+server/  
+client/  
+tmp/  
+
+---
+
+## 🚀 Quick Start
+
+### Deploy Server
+
+kubectl apply -f server/server-manifest.yaml
+
+### Expose Server (NodePort)
+
+kubectl patch svc autoscaler-server -p '{"spec":{"type":"NodePort"}}'
+
+### Run Client
+
+pip install -r client/requirements.txt  
+python load.py  
+
+---
+
+## 📊 Output
+
+tmp/experiment_summary.csv  
+tmp/locust/  
+
+---
+
+## ⚠️ Notes
+
+- CPU autoscaling requires resource requests  
+- Uses Kubernetes Gateway API  
+- Open NodePort in cloud firewall  
+
+---
+
+## 🧠 Summary
+
+- Reproducible experiments  
+- Automated setup  
+- Multi-app support  
+- Realistic workloads  

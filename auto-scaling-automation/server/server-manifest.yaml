@@ -10,8 +10,8 @@ metadata:
   name: autoscaler-server
 rules:
   - apiGroups: [""]
-    resources: ["pods", "services", "namespaces", "endpoints"]
-    verbs: ["get", "list", "watch", "create"]
+    resources: ["pods", "services", "namespaces", "endpoints", "serviceaccounts"]
+    verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
   - apiGroups: [""]
     resources: ["nodes"]
     verbs: ["get", "list", "watch"]
@@ -21,8 +21,14 @@ rules:
   - apiGroups: ["apps"]
     resources: ["deployments/scale"]
     verbs: ["get", "update", "patch"]
+  - apiGroups: ["rbac.authorization.k8s.io"]
+    resources: ["roles", "rolebindings", "clusterroles", "clusterrolebindings"]
+    verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
   - apiGroups: ["networking.istio.io"]
     resources: ["gateways", "virtualservices", "destinationrules"]
+    verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
+  - apiGroups: ["gateway.networking.k8s.io"]
+    resources: ["gateways", "httproutes"]
     verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
   - apiGroups: ["autoscaling"]
     resources: ["horizontalpodautoscalers"]
@@ -62,17 +68,13 @@ spec:
       serviceAccountName: autoscaler-server
       containers:
         - name: autoscaler-server
-          image: zewang42/autoscaler-server:latest
+          image: zewang42/autoscaling-experiment-server:latest
           imagePullPolicy: Always
           ports:
-            - containerPort: 8000
+            - containerPort: 8080
           env:
             - name: APP_NAMESPACE
               value: "default"
-            - name: BOOKINFO_MANIFEST
-              value: "/app/manifests/bookinfo.yaml"
-            - name: BOOKINFO_GATEWAY_MANIFEST
-              value: "/app/manifests/bookinfo-gateway.yaml"
             - name: PROM_URL
               value: "http://prometheus.istio-system.svc.cluster.local:9090/api/v1/query"
 ---
@@ -85,7 +87,7 @@ spec:
   selector:
     app: autoscaler-server
   ports:
-    - port: 8000
+    - protocol: TCP
+      port: 8080
       targetPort: 8080
-      protocol: TCP
-  type: ClusterIP
+  type: NodePort
