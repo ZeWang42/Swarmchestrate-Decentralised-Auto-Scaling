@@ -32,20 +32,20 @@ while true; do
 
     # 2. HTTP Logic: Broad filter catches the 80k+ Gateway requests (reporter=source)
     http_rpm=$(curl -sG "$PROM" \
-      --data-urlencode "query=sum(rate(istio_requests_total{request_protocol=\"http\", destination_workload=\"$svc\"}[2m])) * 60" \
+      --data-urlencode "query=sum(rate(istio_requests_total{request_protocol=\"http\", destination_workload=\"$svc\"}[30s])) * 60" \
       2>/dev/null | jq -r '.data.result[0].value[1]')
 
     http_lat=$(curl -sG "$PROM" \
-      --data-urlencode "query=sum(rate(istio_request_duration_milliseconds_sum{request_protocol=\"http\", destination_workload=\"$svc\"}[2m])) / sum(rate(istio_request_duration_milliseconds_count{request_protocol=\"http\", destination_workload=\"$svc\"}[2m]))" \
+      --data-urlencode "query=sum(rate(istio_request_duration_milliseconds_sum{request_protocol=\"http\", destination_workload=\"$svc\"}[30s])) / sum(rate(istio_request_duration_milliseconds_count{request_protocol=\"http\", destination_workload=\"$svc\"}[30s]))" \
       2>/dev/null | jq -r '.data.result[0].value[1]')
 
     # 3. gRPC Logic: Captures internal pod-to-pod backend traffic
     grpc_rpm=$(curl -sG "$PROM" \
-      --data-urlencode "query=sum(rate(istio_requests_total{request_protocol=\"grpc\", destination_workload=\"$svc\"}[2m])) * 60" \
+      --data-urlencode "query=sum(rate(istio_requests_total{request_protocol=\"grpc\", destination_workload=\"$svc\"}[30s])) * 60" \
       2>/dev/null | jq -r '.data.result[0].value[1]')
 
     grpc_lat=$(curl -sG "$PROM" \
-      --data-urlencode "query=sum(rate(istio_request_duration_milliseconds_sum{request_protocol=\"grpc\", destination_workload=\"$svc\"}[2m])) / sum(rate(istio_request_duration_milliseconds_count{request_protocol=\"grpc\", destination_workload=\"$svc\"}[2m]))" \
+      --data-urlencode "query=sum(rate(istio_request_duration_milliseconds_sum{request_protocol=\"grpc\", destination_workload=\"$svc\"}[30s])) / sum(rate(istio_request_duration_milliseconds_count{request_protocol=\"grpc\", destination_workload=\"$svc\"}[30s]))" \
       2>/dev/null | jq -r '.data.result[0].value[1]')
 
     # 4. System Logic: Pod Resources

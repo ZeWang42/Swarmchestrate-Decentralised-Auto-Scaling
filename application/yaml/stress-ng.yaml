@@ -1,0 +1,27 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: stress-ng-worker
+  labels:
+    app: stress-ng
+spec:
+  nodeSelector:
+    kubernetes.io/hostname: worker  # Ensures it hits the worker node
+  containers:
+  - name: stress-ng
+    image: alexeiled/stress-ng
+    args:
+    - "--cpu"
+    - "1"           # Stress 1 CPU core
+    - "--cpu-load"
+    - "100"          # Keep it at 80% load
+    - "--timeout"
+    - "600s"        # Run for 10 minutes
+    resources:
+      limits:
+        cpu: "300m"
+        memory: "256Mi"
+      requests:
+        cpu: "100m"
+        memory: "128Mi"
+
