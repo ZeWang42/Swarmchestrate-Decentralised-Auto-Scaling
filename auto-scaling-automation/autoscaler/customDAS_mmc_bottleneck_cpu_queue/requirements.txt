@@ -1,0 +1,4 @@
+kubernetes==29.0.0
+requests>=2.31.0
+pydantic>=2.0
+swchp2pcom==0.4.1

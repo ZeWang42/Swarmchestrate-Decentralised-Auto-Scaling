@@ -31,11 +31,13 @@ SHARED_PREFIX = "shared-"
 PER_DEPLOYMENT_PREFIX = "per-deployment-"
 FALLBACK_FILENAMES = {"manifest.yaml", "manifest.yml"}
 CONTROLLER_DEPLOYMENT_AUTOSCALERS = {"das", "customdas", "customdas-cpu", "customdas-cpu-queue", "dadqn"}
-SHARED_DEPLOYMENT_AUTOSCALERS = {"pbscaler": ["pbscaler-boutique"]}
+SHARED_DEPLOYMENT_AUTOSCALERS = {"pbscaler": ["pbscaler-boutique"], "hab": ["hab-autoscaler-onlineboutique"]}
 COMPANION_SERVICE_AUTOSCALERS = {"das", "customdas", "customdas-cpu", "customdas-cpu-queue"}
 DADQN_APP_NAME = "onlineboutique"
 DADQN_UNSUPPORTED_DEPLOYMENTS = {"redis-cart"}
 CUSTOMDAS_FAMILY_AUTOSCALERS = {"customdas", "customdas-cpu", "customdas-cpu-queue"}
+HAB_APP_NAME = "onlineboutique"
+HAB_UNSUPPORTED_DEPLOYMENTS = {"redis-cart"}
 
 
 def _safe_k8s_name(name: str) -> str:
@@ -178,6 +180,34 @@ def _validate_and_filter_dadqn_deployments(
     return [d for d in deployment_names if d not in DADQN_UNSUPPORTED_DEPLOYMENTS]
 
 
+
+
+def _validate_and_filter_hab_deployments(
+    app_name: str,
+    requested: list[str] | None,
+    deployment_names: list[str],
+) -> list[str]:
+    """HAB scheduler is a single Online Boutique application-level controller.
+
+    The runtime p-vector excludes redis-cart because it is stateful and not part
+    of the calibrated HAB Online Boutique service vector.
+    """
+    if app_name != HAB_APP_NAME:
+        raise HTTPException(
+            status_code=400,
+            detail="HAB autoscaler is supported only for app='onlineboutique'.",
+        )
+
+    unsupported = sorted(set(deployment_names) & HAB_UNSUPPORTED_DEPLOYMENTS)
+    if unsupported and requested:
+        raise HTTPException(
+            status_code=400,
+            detail=f"HAB does not manage deployments: {unsupported}",
+        )
+
+    return [d for d in deployment_names if d not in HAB_UNSUPPORTED_DEPLOYMENTS]
+
+
 def _build_context(req: DeployAutoscalerRequest, deployment_name: str | None = None, app_name: str | None = None) -> dict[str, Any]:
     cfg = req.config or {}
     default_image = "busybox:stable"
@@ -194,6 +224,9 @@ def _build_context(req: DeployAutoscalerRequest, deployment_name: str | None = N
     elif req.autoscaler_name == "pbscaler":
         default_image = "proactivellmbasedproject/pbscaler-boutique:latest"
         default_service_account = "default"
+    elif req.autoscaler_name == "hab":
+        default_image = "zewang42/hab-autoscaler"
+        default_service_account = "das-autoscaler"
 
     prom_base_url = cfg.get(
         "prometheus_url",
@@ -234,7 +267,24 @@ def _build_context(req: DeployAutoscalerRequest, deployment_name: str | None = N
         "beta_up_threshold": cfg.get("beta_up_threshold", 90),
         "min_replicas": cfg.get("min_replicas", 1),
         "max_replicas": cfg.get("max_replicas", 10),
+        "slo_ms": cfg.get("slo_ms", cfg.get("latency_slo_ms", cfg.get("slo_latency_ms", 400))),
+        "slo_leaf_ms": cfg.get("slo_leaf_ms", cfg.get("latency_slo_ms_leaf", cfg.get("latency_slo_leaf_ms", 10))),
+        "slo_latency_percentile": cfg.get("slo_latency_percentile", "p95"),
+        "queue_model_percentile": cfg.get("queue_model_percentile", cfg.get("slo_latency_percentile", "p95")),
         "average_cpu_utilization": cfg.get("average_cpu_utilization", cfg.get("cpu_target", 70)),
+        # HAB Algorithm 2 parameters for Online Boutique.
+        "hab_services": cfg.get("hab_services", cfg.get("services", ",".join([d for d in (app_cfg.get("deployments", []) or []) if d != "redis-cart"]))),
+        "p_vector_json": cfg.get("p_vector_json", cfg.get("P_VECTOR_JSON", '{ "currencyservice": 1.00, "frontend": 0.63, "cartservice": 0.61, "recommendationservice": 0.55, "productcatalogservice": 0.54, "adservice": 0.13, "shippingservice": 0.09, "checkoutservice": 0.09, "emailservice": 0.04, "paymentservice": 0.03 }')),
+        "lambda_base_rps": cfg.get("lambda_base_rps", cfg.get("LAMBDA_BASE_RPS", 139.11)),
+        "phi_base": cfg.get("phi_base", cfg.get("PHI_BASE", 3.37)),
+        "r_up_ms": cfg.get("r_up_ms", cfg.get("R_UP_MS", cfg.get("slo_ms", cfg.get("SLO_MS", 500)))),
+        "r_low_ms": cfg.get("r_low_ms", cfg.get("R_LOW_MS", 400)),
+        "hab_stabilization_seconds": cfg.get("hab_stabilization_seconds", cfg.get("HAB_STABILIZATION_SECONDS", 60)),
+        "hab_post_proportional_wait_seconds": cfg.get("hab_post_proportional_wait_seconds", cfg.get("HAB_POST_PROPORTIONAL_WAIT_SECONDS", 60)),
+        "hab_exploratory_enabled": str(cfg.get("hab_exploratory_enabled", cfg.get("HAB_EXPLORATORY_ENABLED", True))).lower(),
+        "hab_exploratory_max_steps": cfg.get("hab_exploratory_max_steps", cfg.get("HAB_EXPLORATORY_MAX_STEPS", 3)),
+        "hab_stable_lambda_rel_delta": cfg.get("hab_stable_lambda_rel_delta", cfg.get("HAB_STABLE_LAMBDA_REL_DELTA", 0.10)),
+        "hab_scale_down_enabled": str(cfg.get("hab_scale_down_enabled", cfg.get("HAB_SCALE_DOWN_ENABLED", True))).lower(),
     }
     if deployment_name is not None:
         safe_name = _safe_k8s_name(deployment_name)
@@ -313,6 +363,8 @@ def deploy_autoscaler_for_application(app_name: str, req: DeployAutoscalerReques
     deployment_names = discover_app_deployments(app_name, namespace, req.deployment_names)
     if req.autoscaler_name == "dadqn":
         deployment_names = _validate_and_filter_dadqn_deployments(app_name, req.deployment_names, deployment_names)
+    if req.autoscaler_name == "hab":
+        deployment_names = _validate_and_filter_hab_deployments(app_name, req.deployment_names, deployment_names)
     req.deployment_names = deployment_names
     results: list[dict[str, Any]] = []
 
@@ -470,6 +522,8 @@ def delete_autoscaler_for_application(app_name: str, namespace: str, autoscaler_
         resolved_deployments = discover_app_deployments(app_name, namespace, deployment_names)
         if autoscaler_name == "dadqn":
             resolved_deployments = _validate_and_filter_dadqn_deployments(app_name, deployment_names, resolved_deployments)
+        if autoscaler_name == "hab":
+            resolved_deployments = _validate_and_filter_hab_deployments(app_name, deployment_names, resolved_deployments)
         req = DeployAutoscalerRequest(
             namespace=namespace,
             deployment_names=resolved_deployments,

@@ -274,3 +274,28 @@ The PBScaler image defaults to:
 ```text
 proactivellmbasedproject/pbscaler-boutique:latest
 ```
+
+
+### CustomDAS CPU Queue latency SLO configuration
+
+The CustomDAS CPU Queue autoscaler supports configurable SLO and percentile settings in `AUTOSCALER_SETTINGS`:
+
+```python
+"config": {
+    "slo_ms": 400,                    # root/non-leaf local latency SLO in ms
+    "slo_leaf_ms": 10,                # optional leaf-node local latency SLO in ms
+    "slo_latency_percentile": "p90",  # "p90" or "p95" for SLO/mesh bottleneck detection
+    "queue_model_percentile": "p90",  # optional; defaults to slo_latency_percentile
+}
+```
+
+These are rendered as `LATENCY_SLO_MS`, `LATENCY_SLO_MS_LEAF_MS`, `SLO_LATENCY_PERCENTILE`, and `QUEUE_MODEL_PERCENTILE` environment variables in each autoscaler Deployment.
+
+
+### HAB autoscaler
+
+The server now supports the Online Boutique HAB scheduler with `autoscaler_name: "hab"`.
+The default image is `zewang42/hab-autoscaler`. Key config values are `lambda_base_rps`,
+`phi_base`, `r_up_ms`, `r_low_ms`, `hab_post_proportional_wait_seconds`, and
+`hab_stabilization_seconds`. The default calibrated Online Boutique values are
+`lambda_base_rps=139.11` and `phi_base=3.37`.

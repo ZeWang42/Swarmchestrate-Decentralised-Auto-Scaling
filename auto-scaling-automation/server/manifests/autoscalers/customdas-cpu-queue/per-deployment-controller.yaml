@@ -56,6 +56,17 @@ spec:
               value: "{{ min_replicas }}"
             - name: MAX_REPLICAS
               value: "{{ max_replicas }}"
+
+            - name: LATENCY_SLO_MS
+              value: "{{ slo_ms }}"
+            - name: SLO_MS
+              value: "{{ slo_ms }}"
+            - name: LATENCY_SLO_MS_LEAF_MS
+              value: "{{ slo_leaf_ms }}"
+            - name: SLO_LATENCY_PERCENTILE
+              value: "{{ slo_latency_percentile }}"
+            - name: QUEUE_MODEL_PERCENTILE
+              value: "{{ queue_model_percentile }}"
           resources:
             requests:
               cpu: "50m"

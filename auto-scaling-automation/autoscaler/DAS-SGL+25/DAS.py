@@ -19,6 +19,16 @@ logging.basicConfig(
 )
 
 
+def is_pod_ready(pod) -> bool:
+    if pod.status.phase != "Running":
+        return False
+
+    for condition in pod.status.conditions or []:
+        if condition.type == "Ready":
+            return condition.status == "True"
+
+    return False
+    
 def prob_scale_down(rho: float, alpha: float, tau_min: float, c: float, s: float) -> float:
     """
     DOWN-region probability:
@@ -122,8 +132,12 @@ def main() -> None:
                 pod_name = pod.metadata.name
                 phase = pod.status.phase or "Unknown"
 
-                if phase != "Running":
-                    logging.warning("Skipping pod '%s' in phase '%s'", pod_name, phase)
+                if not is_pod_ready(pod):
+                    logging.warning(
+                        "Skipping pod '%s' phase='%s' ready=False",
+                        pod_name,
+                        phase,
+                    )
                     continue
 
                 active_pods += 1

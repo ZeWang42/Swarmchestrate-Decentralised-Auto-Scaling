@@ -93,4 +93,9 @@ AUTOSCALER_NAME_ALIASES = {
     "pb-scaler": "pbscaler",
     "pb_scaler": "pbscaler",
     "pb scaler": "pbscaler",
+
+    "hab": "hab",
+    "holistic": "hab",
+    "hab-autoscaler": "hab",
+    "hab_autoscaler": "hab",
 }

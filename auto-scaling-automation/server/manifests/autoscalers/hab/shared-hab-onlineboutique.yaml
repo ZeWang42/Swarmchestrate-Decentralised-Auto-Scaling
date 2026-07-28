@@ -1,0 +1,106 @@
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: {{ service_account_name }}
+  namespace: {{ namespace }}
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: hab-autoscaler-role
+  namespace: {{ namespace }}
+rules:
+  - apiGroups: ["apps"]
+    resources: ["deployments", "deployments/scale"]
+    verbs: ["get", "list", "watch", "patch", "update"]
+  - apiGroups: [""]
+    resources: ["pods"]
+    verbs: ["get", "list", "watch"]
+  - apiGroups: ["metrics.k8s.io"]
+    resources: ["pods"]
+    verbs: ["get", "list"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: hab-autoscaler-rolebinding
+  namespace: {{ namespace }}
+subjects:
+  - kind: ServiceAccount
+    name: {{ service_account_name }}
+    namespace: {{ namespace }}
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: hab-autoscaler-role
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hab-autoscaler-onlineboutique
+  namespace: {{ namespace }}
+  labels:
+    app: hab-autoscaler-onlineboutique
+    autoscaler: hab
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: hab-autoscaler-onlineboutique
+  template:
+    metadata:
+      labels:
+        app: hab-autoscaler-onlineboutique
+        autoscaler: hab
+    spec:
+      serviceAccountName: {{ service_account_name }}
+      containers:
+        - name: hab-autoscaler
+          image: {{ image }}
+          imagePullPolicy: {{ image_pull_policy }}
+          env:
+            - name: NAMESPACE
+              value: "{{ target_namespace }}"
+            - name: PROM_URL
+              value: "{{ prom_url }}"
+            - name: ROOT_SERVICE
+              value: "{{ root_service }}"
+            - name: HAB_SERVICES
+              value: "{{ hab_services }}"
+            - name: P_VECTOR_JSON
+              value: '{{ p_vector_json }}'
+            - name: LAMBDA_BASE_RPS
+              value: "{{ lambda_base_rps }}"
+            - name: PHI_BASE
+              value: "{{ phi_base }}"
+            - name: R_UP_MS
+              value: "{{ r_up_ms }}"
+            - name: R_LOW_MS
+              value: "{{ r_low_ms }}"
+            - name: MIN_REPLICAS
+              value: "{{ min_replicas }}"
+            - name: MAX_REPLICAS
+              value: "{{ max_replicas }}"
+            - name: INTERVAL
+              value: "{{ interval }}"
+            - name: COOLDOWN_SECONDS
+              value: "{{ cooldown_seconds }}"
+            - name: HAB_STABILIZATION_SECONDS
+              value: "{{ hab_stabilization_seconds }}"
+            - name: HAB_POST_PROPORTIONAL_WAIT_SECONDS
+              value: "{{ hab_post_proportional_wait_seconds }}"
+            - name: HAB_EXPLORATORY_ENABLED
+              value: "{{ hab_exploratory_enabled }}"
+            - name: HAB_EXPLORATORY_MAX_STEPS
+              value: "{{ hab_exploratory_max_steps }}"
+            - name: HAB_STABLE_LAMBDA_REL_DELTA
+              value: "{{ hab_stable_lambda_rel_delta }}"
+            - name: HAB_SCALE_DOWN_ENABLED
+              value: "{{ hab_scale_down_enabled }}"
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+            limits:
+              cpu: "500m"
+              memory: "512Mi"

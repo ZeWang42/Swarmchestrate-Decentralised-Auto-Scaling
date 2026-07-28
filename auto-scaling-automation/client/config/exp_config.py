@@ -1,15 +1,15 @@
 #APP_NAME = "bookinfo"
 APP_NAME = "onlineboutique"
 
-SERVER_IP = "35.179.133.64"
-SERVER_PORT = "31789"
+SERVER_IP = "193.225.251.227"
+SERVER_PORT = "30861"
 SERVER_BASE_URL = f"http://{SERVER_IP}:{SERVER_PORT}"
 
 NAMESPACE = "default"
 
 APP_CONFIGS = {
     "bookinfo": {
-        "app_port": "32350",
+        "app_port": "31787",
         "host": f"http://{SERVER_IP}:32350",
         "locust_file": "load/book-info/wiki_locustfile.py",
         "root_service": "productpage-v1",
@@ -23,8 +23,8 @@ APP_CONFIGS = {
         ],
     },
     "onlineboutique": {
-        "app_port": "31848",
-        "host": f"http://{SERVER_IP}:31848",
+        "app_port": "30977",
+        "host": f"http://{SERVER_IP}:30977",
         "locust_file": "load/online-boutique/wiki_locustfile.py",
         "root_service": "frontend",
         "deployment_names": [
@@ -49,11 +49,11 @@ APP_HOST = APP["host"]
 ONLINE_BOUTIQUE_HOST = APP_CONFIGS["onlineboutique"]["host"]
 BOOKINFO_HOST = APP_CONFIGS["bookinfo"]["host"]
 
-WORKLOAD_NAME = ["wiki_load"]
-#WORKLOAD_NAME = ["constant-500"]
+#WORKLOAD_NAME = ["wiki_load"]
+WORKLOAD_NAME = ["constant-100"]
 
 #WORKLOAD_NAME = ["linear-up-down-300"]
-#WORKLOAD_NAME = ["linear-300"]
+#WORKLOAD_NAME = ["linear-200"]
 #WORKLOAD_NAME = ["linear-100", "linear-200", "linear-300", "linear-400", "linear-500"]
 #WORKLOAD_NAME = ["low-high-100", "low-high-200", "low-high-300", "low-high-400", "low-high-500"]
 #WORKLOAD_NAME = ["linear-200"]
@@ -67,35 +67,102 @@ LOCUST_FILES = {
 }
 
 AUTOSCALER_SETTINGS = [
- {
-        "autoscaler_name": "pbscaler",
-        "deployment_names": APP["deployment_names"],
-        "config": {
-            "image": "proactivellmbasedproject/pbscaler-boutique:latest",
-            "prom_url": "http://prometheus.istio-system.svc.cluster.local:9090",
-            "kubeconfig_secret": "pbscaler-kubeconfig",
-
-            # PBScaler settings
-            "slo_ms": 500,
-            "duration_seconds": 1200,
-            "num_services": len(APP["deployment_names"]),
-
-            # Scaling bounds
-            "min_replicas": 1,
-            "max_replicas": 10,
-
-            # App metadata
-            "app_name": APP_NAME,
-            "root_service": APP["root_service"],
-        },
-    },
-#    {
-#        "autoscaler_name": "customdas-cpu-queue",
+# {
+#        "autoscaler_name": "pbscaler",
 #        "deployment_names": APP["deployment_names"],
 #        "config": {
-#            "image": "zewang42/customdas-autoscaler-cpu-queue:latest",
+#            "image": "proactivellmbasedproject/pbscaler-boutique:latest",
+#            "prom_url": "http://prometheus.istio-system.svc.cluster.local:9090",
+#            "kubeconfig_secret": "pbscaler-kubeconfig",
+#
+#            # PBScaler settings
+#            "slo_ms": 500,
+#            "duration_seconds": 1200,
+#            "num_services": len(APP["deployment_names"]),
+#
+#            # Scaling bounds
+#            "min_replicas": 1,
+#            "max_replicas": 10,
+#
+#            # App metadata
+#            "app_name": APP_NAME,
+#            "root_service": APP["root_service"],
+#        },
+#    },
+#
+#{
+#    "autoscaler_name": "hab",
+#    "deployment_names": APP["deployment_names"],
+#    "config": {
+#        "image": "zewang42/hab-autoscaler",
+#        "prom_url": "http://prometheus.istio-system.svc.cluster.local:9090/api/v1/query",
+#        "interval": 15,
+#
+#        "app_name": APP_NAME,
+#        "root_service": APP["root_service"],
+#
+#        # HAB calibrated inputs for Online Boutique
+#        "lambda_base_rps": 139.11,
+#        "phi_base": 3.37,
+#
+#        # HAB Algorithm 2 latency band
+#        "r_up_ms": 500,
+#        "r_low_ms": 300,
+#
+#        # Wait after proportional scaling before exploratory scaling
+#        "hab_post_proportional_wait_seconds": 60,
+#        "hab_stabilization_seconds": 60,
+#
+#        # Scaling bounds
+#        "min_replicas": 1,
+#        "max_replicas": 10,
+#
+#        # Algorithm 2 exploratory settings
+#        "hab_exploratory_enabled": True,
+#        "hab_exploratory_max_steps": 3,
+#        "hab_stable_lambda_rel_delta": 0.10,
+#        "hab_scale_down_enabled": True,
+#    },
+#},
+
+{
+    "autoscaler_name": "customdas",
+    "deployment_names": APP["deployment_names"],
+    "config": {
+        "image": "zewang42/customdas-autoscaler-cpu-queue:latest",
+        "prom_url": "http://prometheus.istio-system.svc.cluster.local:9090/api/v1/query",
+        "interval": 15,
+
+        "app_name": APP_NAME,
+        "root_service": APP["root_service"],
+
+        "p2p_hub_deployment": APP["root_service"],
+        "p2p_hub_port": 5000,
+
+        # SLO configuration
+        "slo_ms": 500,
+        "slo_leaf_ms": 20,
+
+        # Percentile settings
+        "slo_latency_percentile": "p95",
+        "queue_model_percentile": "p90",
+
+        # Scaling parameters
+        "alpha_down_threshold": 30,
+        "tau_min": 60,
+        "tau_max": 80,
+        "beta_up_threshold": 95,
+        "min_replicas": 1,
+        "max_replicas": 10,
+    },
+},
+#    {
+#        "autoscaler_name": "customdas",
+#        "deployment_names": APP["deployment_names"],
+#        "config": {
+#            "image": "zewang42/customdas-autoscaler:latest",
 #            "prom_url": "http://prometheus.istio-system.svc.cluster.local:9090/api/v1/query",
-#            "interval": 30,
+#            "interval": 15,
 #
 #            # App-aware DAS settings passed through server templates into pod env vars.
 #            "app_name": APP_NAME,
@@ -141,7 +208,7 @@ AUTOSCALER_SETTINGS = [
 #    },
 ]
 
-DURATION_SECONDS = 60 * 10
+DURATION_SECONDS = 60 * 3
 MONITOR_INTERVAL = 5
 PROM_URL = "http://prometheus.istio-system.svc.cluster.local:9090/api/v1/query"
 
