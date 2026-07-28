@@ -4,7 +4,9 @@ import csv
 import itertools
 import json
 import os
+import shutil
 import subprocess
+import sys
 import time
 from dataclasses import dataclass
 from pathlib import Path
@@ -247,8 +249,11 @@ def run_locust(exp: Experiment) -> dict[str, Any]:
 
     locust_file = CURRENT_APP["locust_file"]
 
-    cmd = [
-        "locust",
+    locust_cmd = ["locust"]
+    if shutil.which("locust") is None:
+        locust_cmd = [sys.executable, "-m", "locust"]
+
+    cmd = locust_cmd + [
         "-f",
         locust_file,
         "--headless",
@@ -310,6 +315,9 @@ def run_one_experiment(exp: Experiment) -> None:
 
         if not setup_result.get("ready_for_load", False):
             raise RuntimeError("Server is not ready for load")
+
+        print("[WAIT] pausing 30s before starting load")
+        time.sleep(30)
 
         locust_files = run_locust(exp)
         cleanup_result = cleanup_experiment(exp)

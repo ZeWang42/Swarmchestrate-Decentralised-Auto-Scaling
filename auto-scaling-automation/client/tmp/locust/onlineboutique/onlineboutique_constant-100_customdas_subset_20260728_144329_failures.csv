@@ -1,0 +1,15 @@
+Method,Name,Error,Occurrences,First Seen,Last Seen
+GET,/product/OLJCESPC7Z,"ConnectionRefusedError(10061, '[WinError 10061] No connection could be made because the target machine actively refused it.')",234,2026-07-28T13:43:37Z,2026-07-28T13:46:30Z
+GET,/product/9SIQT8TOJO,"ConnectionRefusedError(10061, '[WinError 10061] No connection could be made because the target machine actively refused it.')",247,2026-07-28T13:43:35Z,2026-07-28T13:46:29Z
+GET,/product/6E92ZMYYFZ,"ConnectionRefusedError(10061, '[WinError 10061] No connection could be made because the target machine actively refused it.')",224,2026-07-28T13:43:35Z,2026-07-28T13:46:30Z
+GET,/product/0PUK6V6EV0,"ConnectionRefusedError(10061, '[WinError 10061] No connection could be made because the target machine actively refused it.')",243,2026-07-28T13:43:36Z,2026-07-28T13:46:31Z
+POST,/cart,"ConnectionRefusedError(10061, '[WinError 10061] No connection could be made because the target machine actively refused it.')",494,2026-07-28T13:43:37Z,2026-07-28T13:46:31Z
+GET,/product/1YMWWN1N4O,"ConnectionRefusedError(10061, '[WinError 10061] No connection could be made because the target machine actively refused it.')",276,2026-07-28T13:43:35Z,2026-07-28T13:46:30Z
+GET,/,"ConnectionRefusedError(10061, '[WinError 10061] No connection could be made because the target machine actively refused it.')",264,2026-07-28T13:43:33Z,2026-07-28T13:46:31Z
+GET,/product/LS4PSXUNUM,"ConnectionRefusedError(10061, '[WinError 10061] No connection could be made because the target machine actively refused it.')",248,2026-07-28T13:43:35Z,2026-07-28T13:46:31Z
+POST,/setCurrency,"ConnectionRefusedError(10061, '[WinError 10061] No connection could be made because the target machine actively refused it.')",180,2026-07-28T13:43:36Z,2026-07-28T13:46:30Z
+POST,/cart/checkout,"ConnectionRefusedError(10061, '[WinError 10061] No connection could be made because the target machine actively refused it.')",157,2026-07-28T13:43:39Z,2026-07-28T13:46:29Z
+GET,/cart,"ConnectionRefusedError(10061, '[WinError 10061] No connection could be made because the target machine actively refused it.')",542,2026-07-28T13:43:35Z,2026-07-28T13:46:30Z
+GET,/product/L9ECAV7KIM,"ConnectionRefusedError(10061, '[WinError 10061] No connection could be made because the target machine actively refused it.')",245,2026-07-28T13:43:35Z,2026-07-28T13:46:30Z
+GET,/product/2ZYFJ3GM2N,"ConnectionRefusedError(10061, '[WinError 10061] No connection could be made because the target machine actively refused it.')",229,2026-07-28T13:43:35Z,2026-07-28T13:46:30Z
+GET,/product/66VCHSJNUP,"ConnectionRefusedError(10061, '[WinError 10061] No connection could be made because the target machine actively refused it.')",266,2026-07-28T13:43:35Z,2026-07-28T13:46:31Z

@@ -10,7 +10,6 @@ NAMESPACE = "default"
 APP_CONFIGS = {
     "bookinfo": {
         "app_port": "31787",
-        "host": f"http://{SERVER_IP}:32350",
         "locust_file": "load/book-info/wiki_locustfile.py",
         "root_service": "productpage-v1",
         "deployment_names": [
@@ -23,8 +22,7 @@ APP_CONFIGS = {
         ],
     },
     "onlineboutique": {
-        "app_port": "30977",
-        "host": f"http://{SERVER_IP}:30977",
+        "app_port": "31787",
         "locust_file": "load/online-boutique/wiki_locustfile.py",
         "root_service": "frontend",
         "deployment_names": [
@@ -42,6 +40,9 @@ APP_CONFIGS = {
     },
 }
 
+for app_cfg in APP_CONFIGS.values():
+    app_cfg["host"] = f"http://{SERVER_IP}:{app_cfg['app_port']}"
+
 APP = APP_CONFIGS[APP_NAME]
 APP_PORT = APP["app_port"]
 APP_HOST = APP["host"]
@@ -49,8 +50,8 @@ APP_HOST = APP["host"]
 ONLINE_BOUTIQUE_HOST = APP_CONFIGS["onlineboutique"]["host"]
 BOOKINFO_HOST = APP_CONFIGS["bookinfo"]["host"]
 
-#WORKLOAD_NAME = ["wiki_load"]
-WORKLOAD_NAME = ["constant-100"]
+WORKLOAD_NAME = ["wiki_load"]
+#WORKLOAD_NAME = ["constant-300"]
 
 #WORKLOAD_NAME = ["linear-up-down-300"]
 #WORKLOAD_NAME = ["linear-200"]
@@ -208,7 +209,7 @@ AUTOSCALER_SETTINGS = [
 #    },
 ]
 
-DURATION_SECONDS = 60 * 3
+DURATION_SECONDS = 60 * 10
 MONITOR_INTERVAL = 5
 PROM_URL = "http://prometheus.istio-system.svc.cluster.local:9090/api/v1/query"
 

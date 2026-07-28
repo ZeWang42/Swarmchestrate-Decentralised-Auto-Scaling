@@ -1,0 +1,31 @@
+Method,Name,Error,Occurrences,First Seen,Last Seen
+POST,/cart,"ConnectionResetError(10054, 'An existing connection was forcibly closed by the remote host', None, 10054, None)",24,2026-07-28T21:51:50Z,2026-07-28T21:53:19Z
+GET,/product/1YMWWN1N4O,"ConnectionResetError(10054, 'An existing connection was forcibly closed by the remote host', None, 10054, None)",18,2026-07-28T21:50:52Z,2026-07-28T21:53:16Z
+GET,/cart,"ConnectTimeoutError(<HTTPConnection(host='193.225.251.227', port=31787) at 0x25553b51ae0>, 'Connection to 193.225.251.227 timed out. (connect timeout=None)')",1,2026-07-28T21:53:10Z,2026-07-28T21:53:10Z
+GET,/product/6E92ZMYYFZ,"ConnectionResetError(10054, 'An existing connection was forcibly closed by the remote host', None, 10054, None)",12,2026-07-28T21:51:55Z,2026-07-28T21:53:14Z
+GET,/product/L9ECAV7KIM,"ConnectionResetError(10054, 'An existing connection was forcibly closed by the remote host', None, 10054, None)",10,2026-07-28T21:50:50Z,2026-07-28T21:53:10Z
+GET,/product/2ZYFJ3GM2N,"ConnectionResetError(10054, 'An existing connection was forcibly closed by the remote host', None, 10054, None)",9,2026-07-28T21:51:53Z,2026-07-28T21:53:12Z
+GET,/,"ConnectTimeoutError(<HTTPConnection(host='193.225.251.227', port=31787) at 0x255553ffac0>, 'Connection to 193.225.251.227 timed out. (connect timeout=None)')",1,2026-07-28T21:52:39Z,2026-07-28T21:52:39Z
+GET,/product/L9ECAV7KIM,"ConnectTimeoutError(<HTTPConnection(host='193.225.251.227', port=31787) at 0x255560d98c0>, 'Connection to 193.225.251.227 timed out. (connect timeout=None)')",1,2026-07-28T21:53:11Z,2026-07-28T21:53:11Z
+POST,/cart/checkout,"ConnectionResetError(10054, 'An existing connection was forcibly closed by the remote host', None, 10054, None)",4,2026-07-28T21:52:05Z,2026-07-28T21:52:54Z
+GET,/product/2ZYFJ3GM2N,"ConnectTimeoutError(<HTTPConnection(host='193.225.251.227', port=31787) at 0x255585b7bd0>, 'Connection to 193.225.251.227 timed out. (connect timeout=None)')",1,2026-07-28T21:53:11Z,2026-07-28T21:53:11Z
+GET,/cart,"ConnectionResetError(10054, 'An existing connection was forcibly closed by the remote host', None, 10054, None)",23,2026-07-28T21:50:50Z,2026-07-28T21:53:31Z
+GET,/product/9SIQT8TOJO,"ConnectionResetError(10054, 'An existing connection was forcibly closed by the remote host', None, 10054, None)",12,2026-07-28T21:50:57Z,2026-07-28T21:52:57Z
+GET,/product/66VCHSJNUP,"ConnectionResetError(10054, 'An existing connection was forcibly closed by the remote host', None, 10054, None)",13,2026-07-28T21:50:51Z,2026-07-28T21:53:33Z
+GET,/product/LS4PSXUNUM,"ConnectionResetError(10054, 'An existing connection was forcibly closed by the remote host', None, 10054, None)",19,2026-07-28T21:50:50Z,2026-07-28T21:53:26Z
+POST,/,"ConnectionResetError(10054, 'An existing connection was forcibly closed by the remote host', None, 10054, None)",4,2026-07-28T21:52:41Z,2026-07-28T21:53:23Z
+GET,/product/0PUK6V6EV0,"ConnectTimeoutError(<HTTPConnection(host='193.225.251.227', port=31787) at 0x25553aece20>, 'Connection to 193.225.251.227 timed out. (connect timeout=None)')",1,2026-07-28T21:53:17Z,2026-07-28T21:53:17Z
+GET,/product/9SIQT8TOJO,"ConnectTimeoutError(<HTTPConnection(host='193.225.251.227', port=31787) at 0x255523a0490>, 'Connection to 193.225.251.227 timed out. (connect timeout=None)')",1,2026-07-28T21:53:10Z,2026-07-28T21:53:10Z
+GET,/product/1YMWWN1N4O,"ConnectTimeoutError(<HTTPConnection(host='193.225.251.227', port=31787) at 0x255523a0c00>, 'Connection to 193.225.251.227 timed out. (connect timeout=None)')",1,2026-07-28T21:53:06Z,2026-07-28T21:53:06Z
+GET,/product/0PUK6V6EV0,"ConnectionResetError(10054, 'An existing connection was forcibly closed by the remote host', None, 10054, None)",13,2026-07-28T21:50:52Z,2026-07-28T21:53:27Z
+GET,/product/2ZYFJ3GM2N,"ConnectTimeoutError(<HTTPConnection(host='193.225.251.227', port=31787) at 0x255560dbce0>, 'Connection to 193.225.251.227 timed out. (connect timeout=None)')",1,2026-07-28T21:53:03Z,2026-07-28T21:53:03Z
+GET,/product/6E92ZMYYFZ,"ConnectTimeoutError(<HTTPConnection(host='193.225.251.227', port=31787) at 0x2555872f8a0>, 'Connection to 193.225.251.227 timed out. (connect timeout=None)')",1,2026-07-28T21:52:43Z,2026-07-28T21:52:43Z
+GET,/cart,"ConnectTimeoutError(<HTTPConnection(host='193.225.251.227', port=31787) at 0x25555d6ce20>, 'Connection to 193.225.251.227 timed out. (connect timeout=None)')",1,2026-07-28T21:53:05Z,2026-07-28T21:53:05Z
+GET,/product/2ZYFJ3GM2N,"ConnectTimeoutError(<HTTPConnection(host='193.225.251.227', port=31787) at 0x255322f45a0>, 'Connection to 193.225.251.227 timed out. (connect timeout=None)')",1,2026-07-28T21:53:05Z,2026-07-28T21:53:05Z
+GET,/product/OLJCESPC7Z,"ConnectTimeoutError(<HTTPConnection(host='193.225.251.227', port=31787) at 0x255587acc00>, 'Connection to 193.225.251.227 timed out. (connect timeout=None)')",1,2026-07-28T21:53:17Z,2026-07-28T21:53:17Z
+GET,/,"ConnectionResetError(10054, 'An existing connection was forcibly closed by the remote host', None, 10054, None)",13,2026-07-28T21:51:54Z,2026-07-28T21:53:09Z
+POST,/setCurrency,"ConnectionResetError(10054, 'An existing connection was forcibly closed by the remote host', None, 10054, None)",5,2026-07-28T21:50:53Z,2026-07-28T21:52:55Z
+GET,/product/OLJCESPC7Z,"ConnectionResetError(10054, 'An existing connection was forcibly closed by the remote host', None, 10054, None)",13,2026-07-28T21:50:52Z,2026-07-28T21:53:18Z
+POST,/cart,"ConnectTimeoutError(<HTTPConnection(host='193.225.251.227', port=31787) at 0x255523a3680>, 'Connection to 193.225.251.227 timed out. (connect timeout=None)')",1,2026-07-28T21:53:02Z,2026-07-28T21:53:02Z
+GET,/product/66VCHSJNUP,"ConnectTimeoutError(<HTTPConnection(host='193.225.251.227', port=31787) at 0x255553ffdf0>, 'Connection to 193.225.251.227 timed out. (connect timeout=None)')",1,2026-07-28T21:53:18Z,2026-07-28T21:53:18Z
+POST,/cart,"ConnectTimeoutError(<HTTPConnection(host='193.225.251.227', port=31787) at 0x255587ae030>, 'Connection to 193.225.251.227 timed out. (connect timeout=None)')",1,2026-07-28T21:53:04Z,2026-07-28T21:53:04Z
