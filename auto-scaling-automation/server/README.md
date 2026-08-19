@@ -291,6 +291,29 @@ The CustomDAS CPU Queue autoscaler supports configurable SLO and percentile sett
 
 These are rendered as `LATENCY_SLO_MS`, `LATENCY_SLO_MS_LEAF_MS`, `SLO_LATENCY_PERCENTILE`, and `QUEUE_MODEL_PERCENTILE` environment variables in each autoscaler Deployment.
 
+Queue-model tuning values can also be supplied in the same `config` object. They
+are rendered into every CustomDAS controller as environment variables consumed
+by `autoscaler/queue_das`: `latency_slo_mode`, `queue_model`,
+`service_time_update_interval_seconds`, `service_time_ewma_alpha`,
+`min_processing_time_ms`, `ggc_initial_k`, `ggc_k_update_interval_seconds`,
+`ggc_k_ewma_alpha`, `ggc_k_min`, `ggc_k_max`,
+`frontend_healthy_latency_ms`, `scale_down_min_windows`,
+`scale_up_cooldown_seconds`, and `scale_down_cooldown_seconds`.
+
+For example:
+
+```json
+{
+  "config": {
+    "queue_model": "ggc",
+    "latency_slo_mode": "adaptive",
+    "service_time_ewma_alpha": 0.8,
+    "ggc_initial_k": 1.0,
+    "scale_down_min_windows": 2
+  }
+}
+```
+
 
 ### HAB autoscaler
 
@@ -299,3 +322,39 @@ The default image is `zewang42/hab-autoscaler`. Key config values are `lambda_ba
 `phi_base`, `r_up_ms`, `r_low_ms`, `hab_post_proportional_wait_seconds`, and
 `hab_stabilization_seconds`. The default calibrated Online Boutique values are
 `lambda_base_rps=139.11` and `phi_base=3.37`.
+
+## Autoscaler resource monitoring
+
+When an experiment is started, the monitor now receives the selected
+`autoscaler_name` and records the CPU, memory, and running pod count of its
+controller Deployment(s) in the same CSV file as the application metrics.
+Autoscaler rows use `Scope=autoscaler`.
+
+Controller discovery supports the manifest conventions used by this project,
+including per-deployment DAS-family controllers, DA-DQN controllers, and shared
+controllers such as `pbscaler-boutique` and `hab-autoscaler-onlineboutique`.
+The standalone monitor endpoint can also receive an optional
+`autoscaler_name` field.
+
+## Configurable monitored latency percentile
+
+The experiment monitor accepts `latency_percentile` with either `p90` or `p95`.
+The default remains `p95` for backward compatibility.
+
+Example experiment payload:
+
+```json
+{
+  "monitor": {
+    "interval": 5,
+    "prom_url": "http://prometheus.istio-system.svc.cluster.local:9090/api/v1/query",
+    "file_prefix": "mesh_metrics",
+    "latency_percentile": "p90"
+  }
+}
+```
+
+When `p90` is selected, the monitor executes a `histogram_quantile(0.90, ...)`
+query and writes latency rows with `Scope=http_p90_latency`. It does not also
+query or record P95 latency. The standalone monitor endpoint accepts the same
+field.

@@ -271,6 +271,48 @@ def _build_context(req: DeployAutoscalerRequest, deployment_name: str | None = N
         "slo_leaf_ms": cfg.get("slo_leaf_ms", cfg.get("latency_slo_ms_leaf", cfg.get("latency_slo_leaf_ms", 10))),
         "slo_latency_percentile": cfg.get("slo_latency_percentile", "p95"),
         "queue_model_percentile": cfg.get("queue_model_percentile", cfg.get("slo_latency_percentile", "p95")),
+        "log_file": cfg.get("log_file", cfg.get("LOG_FILE", "/tmp/customdas.log")),
+        "enable_coloured_logs": str(
+            cfg.get("enable_coloured_logs", cfg.get("ENABLE_COLOURED_LOGS", 1))
+        ).lower(),
+        "latency_slo_mode": cfg.get("latency_slo_mode", cfg.get("LATENCY_SLO_MODE", "adaptive")),
+        "queue_model": cfg.get("queue_model", cfg.get("QUEUE_MODEL", "mmc")),
+        "service_time_update_interval_seconds": cfg.get(
+            "service_time_update_interval_seconds",
+            cfg.get("SERVICE_TIME_UPDATE_INTERVAL_SECONDS", 29),
+        ),
+        "service_time_ewma_alpha": cfg.get(
+            "service_time_ewma_alpha",
+            cfg.get("SERVICE_TIME_EWMA_ALPHA", 0.8),
+        ),
+        "min_processing_time_ms": cfg.get(
+            "min_processing_time_ms",
+            cfg.get("MIN_PROCESSING_TIME_MS", 1),
+        ),
+        "ggc_initial_k": cfg.get("ggc_initial_k", cfg.get("GGC_INITIAL_K", 1.0)),
+        "ggc_k_update_interval_seconds": cfg.get(
+            "ggc_k_update_interval_seconds",
+            cfg.get("GGC_K_UPDATE_INTERVAL_SECONDS", 180),
+        ),
+        "ggc_k_ewma_alpha": cfg.get("ggc_k_ewma_alpha", cfg.get("GGC_K_EWMA_ALPHA", 0.8)),
+        "ggc_k_min": cfg.get("ggc_k_min", cfg.get("GGC_K_MIN", 0.5)),
+        "ggc_k_max": cfg.get("ggc_k_max", cfg.get("GGC_K_MAX", 10.0)),
+        "frontend_healthy_latency_ms": cfg.get(
+            "frontend_healthy_latency_ms",
+            cfg.get("FRONTEND_HEALTHY_LATENCY_MS", 500),
+        ),
+        "scale_down_min_windows": cfg.get(
+            "scale_down_min_windows",
+            cfg.get("SCALE_DOWN_MIN_WINDOWS", 2),
+        ),
+        "scale_up_cooldown_seconds": cfg.get(
+            "scale_up_cooldown_seconds",
+            cfg.get("SCALE_UP_COOLDOWN_SECONDS", cfg.get("cooldown_seconds", 30)),
+        ),
+        "scale_down_cooldown_seconds": cfg.get(
+            "scale_down_cooldown_seconds",
+            cfg.get("SCALE_DOWN_COOLDOWN_SECONDS", 180),
+        ),
         "average_cpu_utilization": cfg.get("average_cpu_utilization", cfg.get("cpu_target", 70)),
         # HAB Algorithm 2 parameters for Online Boutique.
         "hab_services": cfg.get("hab_services", cfg.get("services", ",".join([d for d in (app_cfg.get("deployments", []) or []) if d != "redis-cart"]))),

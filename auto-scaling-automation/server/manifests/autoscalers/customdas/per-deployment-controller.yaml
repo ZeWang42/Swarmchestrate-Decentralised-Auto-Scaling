@@ -37,6 +37,10 @@ spec:
               value: "{{ interval }}"
             - name: COOLDOWN_SECONDS
               value: "{{ cooldown_seconds }}"
+            - name: SCALE_UP_COOLDOWN_SECONDS
+              value: "{{ scale_up_cooldown_seconds }}"
+            - name: SCALE_DOWN_COOLDOWN_SECONDS
+              value: "{{ scale_down_cooldown_seconds }}"
 
             - name: APP_NAME
               value: "{{ app_name }}"
@@ -67,6 +71,34 @@ spec:
               value: "{{ slo_latency_percentile }}"
             - name: QUEUE_MODEL_PERCENTILE
               value: "{{ queue_model_percentile }}"
+            - name: LOG_FILE
+              value: "{{ log_file }}"
+            - name: ENABLE_COLOURED_LOGS
+              value: "{{ enable_coloured_logs }}"
+            - name: LATENCY_SLO_MODE
+              value: "{{ latency_slo_mode }}"
+            - name: QUEUE_MODEL
+              value: "{{ queue_model }}"
+            - name: SERVICE_TIME_UPDATE_INTERVAL_SECONDS
+              value: "{{ service_time_update_interval_seconds }}"
+            - name: SERVICE_TIME_EWMA_ALPHA
+              value: "{{ service_time_ewma_alpha }}"
+            - name: MIN_PROCESSING_TIME_MS
+              value: "{{ min_processing_time_ms }}"
+            - name: GGC_INITIAL_K
+              value: "{{ ggc_initial_k }}"
+            - name: GGC_K_UPDATE_INTERVAL_SECONDS
+              value: "{{ ggc_k_update_interval_seconds }}"
+            - name: GGC_K_EWMA_ALPHA
+              value: "{{ ggc_k_ewma_alpha }}"
+            - name: GGC_K_MIN
+              value: "{{ ggc_k_min }}"
+            - name: GGC_K_MAX
+              value: "{{ ggc_k_max }}"
+            - name: FRONTEND_HEALTHY_LATENCY_MS
+              value: "{{ frontend_healthy_latency_ms }}"
+            - name: SCALE_DOWN_MIN_WINDOWS
+              value: "{{ scale_down_min_windows }}"
           resources:
             requests:
               cpu: "50m"

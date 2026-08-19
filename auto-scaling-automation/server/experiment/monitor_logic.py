@@ -12,7 +12,15 @@ from fastapi import HTTPException
 
 from config import DEFAULT_NAMESPACE, MONITOR_LOG_DIR, latency_deployments
 from experiment.models import StartMonitorRequest, MonitorStatusResponse
-from k8s.metrics_ops import get_deployments, get_nodes, query_prometheus, service_pod_metrics, node_usage, node_utilization_percent
+from k8s.metrics_ops import (
+    get_autoscaler_deployments,
+    get_deployments,
+    get_nodes,
+    node_usage,
+    node_utilization_percent,
+    query_prometheus,
+    service_pod_metrics,
+)
 from utils.parsing import round1
 from utils.formatting import safe_prefix
 
@@ -23,6 +31,8 @@ _monitor_state: dict[str, Any] = {
     "namespace": None,
     "interval": None,
     "prom_url": None,
+    "autoscaler_name": None,
+    "latency_percentile": None,
     "log_file": None,
     "started_at": None,
 }
@@ -43,6 +53,8 @@ def start_monitor_logic(req: StartMonitorRequest | None = None) -> MonitorStatus
         "namespace": request.namespace,
         "interval": request.interval,
         "prom_url": request.prom_url,
+        "autoscaler_name": request.autoscaler_name,
+        "latency_percentile": request.latency_percentile,
         "log_file": str(log_file),
         "started_at": datetime.now().isoformat(),
     })
@@ -53,6 +65,8 @@ def start_monitor_logic(req: StartMonitorRequest | None = None) -> MonitorStatus
             "namespace": request.namespace,
             "interval": request.interval,
             "prom_url": request.prom_url,
+            "autoscaler_name": request.autoscaler_name,
+            "latency_percentile": request.latency_percentile,
             "log_file": log_file,
         },
         daemon=True,
@@ -71,6 +85,8 @@ def stop_monitor_logic() -> MonitorStatusResponse:
         namespace=_monitor_state["namespace"],
         interval=_monitor_state["interval"],
         prom_url=_monitor_state["prom_url"],
+        autoscaler_name=_monitor_state["autoscaler_name"],
+        latency_percentile=_monitor_state["latency_percentile"],
         log_file=_monitor_state["log_file"],
         started_at=_monitor_state["started_at"],
     )
@@ -78,7 +94,7 @@ def stop_monitor_logic() -> MonitorStatusResponse:
 def monitor_status_logic() -> MonitorStatusResponse:
     return MonitorStatusResponse(ok=True, **_monitor_state)
 
-#def _monitor_loop(namespace: str, interval: int, prom_url: str, log_file: Path) -> None:
+#def _monitor_loop(namespace: str, interval: int, prom_url: str, autoscaler_name: str | None, log_file: Path) -> None:
 #    try:
 #        with log_file.open("w", newline="", encoding="utf-8") as f:
 #            writer = csv.writer(f)
@@ -144,7 +160,14 @@ def monitor_status_logic() -> MonitorStatusResponse:
 #    finally:
 #        _monitor_state["running"] = False
 
-def _monitor_loop(namespace: str, interval: int, prom_url: str, log_file: Path) -> None:
+def _monitor_loop(
+    namespace: str,
+    interval: int,
+    prom_url: str,
+    autoscaler_name: str | None,
+    latency_percentile: str,
+    log_file: Path,
+) -> None:
     try:
         with log_file.open("w", newline="", encoding="utf-8") as f:
             writer = csv.writer(f)
@@ -180,23 +203,27 @@ def _monitor_loop(namespace: str, interval: int, prom_url: str, log_file: Path) 
                         ])
 
                         if deployment in latency_deployments():
-                            http_p95 = query_prometheus(
+                            quantile = {
+                                "p90": 0.90,
+                                "p95": 0.95,
+                            }[latency_percentile]
+                            http_latency = query_prometheus(
                                 prom_url,
-                                f'histogram_quantile(0.95, '
+                                f'histogram_quantile({quantile}, '
                                 f'sum(rate(istio_request_duration_milliseconds_bucket{{request_protocol="http", destination_workload="{deployment}"}}[1m])) '
                                 f'by (le))'
                             )
 
                             writer.writerow([
                                 ts,
-                                "http_p95_latency",
+                                f"http_{latency_percentile}_latency",
                                 deployment,
                                 "",
                                 "",
                                 "",
                                 "",
                                 "",
-                                round1(http_p95),
+                                round1(http_latency),
                             ])
 
                     f.flush()
@@ -206,6 +233,37 @@ def _monitor_loop(namespace: str, interval: int, prom_url: str, log_file: Path) 
                         ts,
                         "deployment_error",
                         namespace,
+                        str(exc),
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                    ])
+                    f.flush()
+
+                try:
+                    # Autoscaler controllers are monitored separately from the
+                    # application so their operational overhead can be analysed.
+                    for controller in get_autoscaler_deployments(namespace, autoscaler_name):
+                        cpu_m, mem_mib, pods = service_pod_metrics(namespace, controller)
+                        writer.writerow([
+                            ts,
+                            "autoscaler",
+                            controller,
+                            cpu_m,
+                            mem_mib,
+                            pods,
+                            "",
+                            "",
+                            "",
+                        ])
+                    f.flush()
+                except Exception as exc:
+                    writer.writerow([
+                        ts,
+                        "autoscaler_error",
+                        autoscaler_name or "none",
                         str(exc),
                         "",
                         "",

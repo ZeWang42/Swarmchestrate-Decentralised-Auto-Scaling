@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import Any
+from typing import Any, Literal
 from pydantic import BaseModel, Field, model_validator
 
 from config import DEFAULT_NAMESPACE, PROM_URL
@@ -52,6 +52,14 @@ class StartMonitorRequest(BaseModel):
     interval: int = Field(default=5, ge=1, description="Sampling interval in seconds")
     prom_url: str = Field(default=PROM_URL, description="Prometheus instant query API URL")
     file_prefix: str = Field(default="mesh_metrics", description="Prefix for output CSV file name")
+    autoscaler_name: str | None = Field(
+        default=None,
+        description="Optional deployed autoscaler name whose controller pods should also be monitored",
+    )
+    latency_percentile: Literal["p90", "p95"] = Field(
+        default="p95",
+        description="Application latency percentile collected by the monitor",
+    )
 
 
 class MonitorStatusResponse(BaseModel):
@@ -60,6 +68,8 @@ class MonitorStatusResponse(BaseModel):
     namespace: str | None = None
     interval: int | None = None
     prom_url: str | None = None
+    autoscaler_name: str | None = None
+    latency_percentile: str | None = None
     log_file: str | None = None
     started_at: str | None = None
 
@@ -82,6 +92,10 @@ class MonitorExperimentConfig(BaseModel):
     interval: int = Field(default=5, ge=1)
     prom_url: str = Field(default=PROM_URL)
     file_prefix: str = Field(default="mesh_metrics")
+    latency_percentile: Literal["p90", "p95"] = Field(
+        default="p95",
+        description="Application latency percentile collected by the monitor",
+    )
 
 
 class ExperimentSetupRequest(BaseModel):

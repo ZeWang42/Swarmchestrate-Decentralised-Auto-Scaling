@@ -86,6 +86,8 @@ def setup_experiment_logic(req: ExperimentSetupRequest) -> ExperimentSetupRespon
             interval=req.monitor.interval,
             prom_url=req.monitor.prom_url,
             file_prefix=f"{req.monitor.file_prefix}_{app_name}_{req.workload_name or 'workload'}_{autoscaler_name}",
+            autoscaler_name=autoscaler_name,
+            latency_percentile=req.monitor.latency_percentile,
         )
     )
 

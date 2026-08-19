@@ -4,7 +4,7 @@ from __future__ import annotations
 import requests
 from kubernetes import client
 
-from config import ALL_KNOWN_DEPLOYMENTS
+from config import ALL_KNOWN_DEPLOYMENTS, AUTOSCALER_NAME_ALIASES
 from utils.parsing import parse_cpu_to_millicores, parse_memory_to_mib
 
 def get_deployments(namespace: str) -> list[str]:
@@ -12,6 +12,58 @@ def get_deployments(namespace: str) -> list[str]:
     resp = apps_api.list_namespaced_deployment(namespace=namespace)
     names = [item.metadata.name for item in resp.items if item.metadata and item.metadata.name]
     return [name for name in names if name in ALL_KNOWN_DEPLOYMENTS]
+
+
+def get_autoscaler_deployments(namespace: str, autoscaler_name: str | None) -> list[str]:
+    """Return Deployment names belonging to the selected autoscaler.
+
+    Autoscaler manifests in this project use either an ``autoscaler`` label
+    (for example PBScaler) or a predictable controller Deployment name / app
+    label (for example DAS and DA-DQN).  This function intentionally discovers
+    the live Deployments instead of assuming every target controller exists.
+    """
+    if not autoscaler_name:
+        return []
+
+    normalized = autoscaler_name.strip().lower().replace("-", "_")
+    normalized = AUTOSCALER_NAME_ALIASES.get(normalized, normalized)
+    if normalized in {"none", "default_cpu"}:
+        return []
+
+    apps_api = client.AppsV1Api()
+    resp = apps_api.list_namespaced_deployment(namespace=namespace)
+    matched: list[str] = []
+
+    shared_names = {
+        "pbscaler": {"pbscaler-boutique"},
+        "hab": {"hab-autoscaler-onlineboutique"},
+    }
+    expected_shared = shared_names.get(normalized, set())
+
+    for item in resp.items:
+        if not item.metadata or not item.metadata.name:
+            continue
+        name = item.metadata.name
+        labels = item.metadata.labels or {}
+        app_label = labels.get("app", "")
+        autoscaler_label = labels.get("autoscaler", "")
+
+        is_match = (
+            autoscaler_label == normalized
+            or name in expected_shared
+            or name.startswith(f"{normalized}-autoscaler-")
+            or app_label == f"{normalized}-autoscaler"
+        )
+
+        # DA-DQN follows ``dadqn-<target>`` rather than the common
+        # ``<name>-autoscaler-<target>`` naming convention.
+        if normalized == "dadqn" and name.startswith("dadqn-"):
+            is_match = True
+
+        if is_match:
+            matched.append(name)
+
+    return sorted(set(matched))
 
 def get_nodes() -> list[str]:
     core_api = client.CoreV1Api()
