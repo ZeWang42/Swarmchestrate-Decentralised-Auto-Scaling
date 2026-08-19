@@ -44,30 +44,6 @@ BASELINE_PROCESSING_TIME_MS_BY_APP: dict[str, dict[str, float | None]] = {
     },
 }
 
-BASELINE_SLO_TIME_MS_BY_APP: dict[str, dict[str, float | None]] = {
-    "onlineboutique": {
-        "frontend": 500,
-        "cartservice": 20,
-        "checkoutservice": 250,
-        "productcatalogservice": 20,
-        "recommendationservice": 50,
-        "currencyservice": 20,
-        "adservice": 20,
-        "emailservice": 20,
-        "paymentservice": 20,
-        "shippingservice": 20,
-        "redis-cart": 20,
-    },
-    "bookinfo": {
-        "productpage-v1": 500,
-        "details-v1": 20,
-        "ratings-v1": 20,
-        "reviews-v1": 20,
-        "reviews-v2": 20,
-        "reviews-v3": 20,
-    },
-}
-
 BASELINE_PROCESSING_TIME_MS: dict[str, float | None] = {
     service: value
     for app_table in BASELINE_PROCESSING_TIME_MS_BY_APP.values()
@@ -187,9 +163,6 @@ def get_baseline_processing_time_s(deployment: str) -> tuple[float | None, str]:
 
 
 def normalize_latency_percentile(raw: str | None, default: str = "p95") -> tuple[str, float]:
-    """
-    convert raw string to normalized percentile label and value
-    """
     value = (raw or default).strip().lower().replace(" ", "")
     aliases = {
         "p90": ("P90", 0.90),
@@ -200,7 +173,6 @@ def normalize_latency_percentile(raw: str | None, default: str = "p95") -> tuple
         "95": ("P95", 0.95),
         "0.95": ("P95", 0.95),
     }
-
     if value not in aliases:
         logging.warning(
             "Unsupported SLO_LATENCY_PERCENTILE=%r; falling back to %s",
@@ -211,42 +183,12 @@ def normalize_latency_percentile(raw: str | None, default: str = "p95") -> tuple
     return aliases[value]
 
 
-def select_latency_by_percentile_ms(
-    selected_label: str,
-    p25_ms: float,
-    p50_ms: float,
-    p90_ms: float,
-    p95_ms: float,
-) -> float:
-    if selected_label == "P25":
-        return p25_ms
-    if selected_label == "P50":
-        return p50_ms
-    if selected_label == "P90":
-        return p90_ms
-    return p95_ms
-
-
-#def get_configured_latency_slo_ms() -> float:
-#    default_slo = os.getenv("SLO_MS", os.getenv("SLO_LATENCY_MS", "500"))
-#    return float(os.getenv("LATENCY_SLO_MS", default_slo))
-
-
-def get_configured_latency_slo_ms(APP_NAME: str, deployment: str) -> float:
-    latency_slo_ms = BASELINE_SLO_TIME_MS_BY_APP.get(APP_NAME, {}).get(deployment)
-    print(f"latency_slo_ms for {APP_NAME} and {deployment}: {latency_slo_ms}")
-    if latency_slo_ms is None:
-        latency_slo_ms = BASELINE_SLO_TIME_MS_BY_APP.get(APP_NAME, {}).get("default")
-    return float(latency_slo_ms) if latency_slo_ms is not None else 500.0
+def get_configured_latency_slo_ms() -> float:
+    default_slo = os.getenv("SLO_MS", os.getenv("SLO_LATENCY_MS", "500"))
+    return float(os.getenv("LATENCY_SLO_MS", default_slo))
 
 
 def erlang_c(lambda_rps: float, mu: float, c: int) -> float:
-    """
-    Compute the Erlang C formula for an M/M/c queue.
-    inputs: rps (lambda), service rate (mu), number of servers (c)
-    formula: P(wait) = ( (lambda/mu)^c / (c! * (1 - rho)) ) / ( sum_{n=0}^{c-1} (lambda/mu)^n / n! + (lambda/mu)^c / (c! * (1 - rho)) )
-    output: probability that an arriving request has to wait in the queue
-    """
     if not valid_number(lambda_rps) or not valid_number(mu):
         return float("nan")
     if c <= 0 or mu <= 0:
@@ -264,12 +206,6 @@ def erlang_c(lambda_rps: float, mu: float, c: int) -> float:
 
 
 def expected_queueing_delay(lambda_rps: float, mu: float, c: int) -> float:
-    """
-    Compute the expected queueing delay (Wq) for an M/M/c queue.
-    inputs: rps (lambda), service rate (mu), number of servers (c)
-    formula: Wq = P(wait) / (c * mu - lambda)
-    output: expected waiting time in seconds for an arriving request
-    """
     if c <= 0 or mu <= 0 or lambda_rps < 0:
         return float("nan")
     if lambda_rps >= c * mu:
@@ -279,12 +215,6 @@ def expected_queueing_delay(lambda_rps: float, mu: float, c: int) -> float:
 
 
 def waiting_percentile_mmc(lambda_rps: float, mu: float, c: int, percentile: float) -> float:
-    """
-    Compute the waiting time percentile for an M/M/c queue using the Erlang C formula.
-    inputs: rps (lambda), service rate (mu), number of servers (c), desired percentile (0 < percentile < 1)
-    formula: Wq(p) = -ln(P(wait)/p) / (c * mu - lambda)
-    output: waiting time in seconds for the given percentile
-    """
     if c <= 0 or mu <= 0 or lambda_rps < 0:
         return float("nan")
     if not 0 < percentile < 1:
@@ -307,18 +237,10 @@ def recommend_replicas_slo_mmc(
     current_replicas: int,
     queue_percentile: float = 0.95,
 ) -> int:
-    """
-    Recommend the number of replicas needed to meet the SLO based on M/M/c queueing model.
-    procedure: For each number of replicas from min_replicas to max_replicas, 
-                compute the waiting time percentile and check if it meets the SLO.
-    """
-    # Validate inputs
     if not all(valid_number(x) for x in [lambda_rps, mu, wq_allowed_s]):
         return current_replicas
     if lambda_rps <= 0 or mu <= 0 or wq_allowed_s < 0:
         return current_replicas
-
-    # iterate over the range of replicas to find the minimum number that meets the SLO
     for c in range(min_replicas, max_replicas + 1):
         wq_model_s = waiting_percentile_mmc(lambda_rps, mu, c, queue_percentile)
         if math.isfinite(wq_model_s) and wq_model_s <= wq_allowed_s:
@@ -342,8 +264,6 @@ def recommend_replicas_slo_ggc(
         return current_replicas
     for c in range(min_replicas, max_replicas + 1):
         wq_tail_mmc_s = waiting_percentile_mmc(lambda_rps, mu, c, queue_percentile)
-
-        # ggc adds a factor to the waiting time to account for variability in the system
         wq_tail_ggc_s = k_variability * wq_tail_mmc_s
         if math.isfinite(wq_tail_ggc_s) and wq_tail_ggc_s <= wq_allowed_s:
             return c
@@ -371,10 +291,6 @@ def update_healthy_self_tail_history(
     local_slo_ms: float,
     max_samples: int = 40,
 ) -> bool:
-    """
-    Update the history of healthy self tail latencies if the current self tail is valid and below the local SLO.
-    Ze-TODO: this should be modified so that when frontend latency is healthy, tail latency can be appended
-    """
     if not valid_number(self_tail_ms) or self_tail_ms <= 0:
         return False
     if not valid_number(local_slo_ms) or local_slo_ms <= 0:
@@ -387,32 +303,8 @@ def update_healthy_self_tail_history(
     return True
 
 
-def healthy_percentile_target_ms(history_ms: list[float]) -> float | None:
-    """
-    take the history list and get the 25-percentile latency
-    Ze-TODO: should not be limited to p90
-    """
+def healthy_p90_target_ms(history_ms: list[float]) -> float | None:
     return percentile(history_ms, 0.25)
-
-
-def update_healthy_latency_history(
-    history_ms: list[float],
-    observed_latency_ms: float,
-    target_latency_ms: float,
-    max_samples: int = 40,
-) -> bool:
-    if not valid_number(observed_latency_ms) or observed_latency_ms <= 0:
-        return False
-    if not valid_number(target_latency_ms) or target_latency_ms <= 0:
-        return False
-    # Healthy frontend latency is defined as strictly below the target threshold.
-    # If the target is 500 ms, then 500 ms is considered unhealthy.
-    if observed_latency_ms >= target_latency_ms:
-        return False
-    history_ms.append(float(observed_latency_ms))
-    if len(history_ms) > max_samples:
-        del history_ms[: len(history_ms) - max_samples]
-    return True
 
 
 def wait_for_next_loop(timeout_s: float) -> None:
@@ -431,36 +323,15 @@ def das_loop(
     min_replicas: int,
     max_replicas: int,
 ) -> None:
-    """
-    das_loop is a per-deployment loop that scales one at a time
-    """
     last_scale_up_time = 0.0
     last_scale_down_time = 0.0
     last_processing_time_update = 0.0
     learned_processing_time_s = None
-    healthy_self_percentile_history_ms: list[float] = []
-    healthy_frontend_latency_history_ms: list[float] = []
+    healthy_self_p90_history_ms: list[float] = []
     scale_down_ok_windows = 0
-    latency_slo_mode = os.getenv("LATENCY_SLO_MODE", "adaptive").strip().lower()
-    if latency_slo_mode not in {"adaptive", "fixed"}:
-        logging.warning(
-            "Unsupported LATENCY_SLO_MODE=%r for %s; falling back to 'adaptive'",
-            latency_slo_mode,
-            deployment,
-        )
-        latency_slo_mode = "adaptive"
-    logging.info("LATENCY_SLO_MODE for %s: %s", deployment, latency_slo_mode)
-    queue_model = os.getenv("QUEUE_MODEL", "mmc").strip().lower()
-    if queue_model not in {"mmc", "ggc"}:
-        logging.warning(
-            "Unsupported QUEUE_MODEL=%r for %s; falling back to 'mmc'",
-            queue_model,
-            deployment,
-        )
-        queue_model = "mmc"
-    logging.info("QUEUE_MODEL for %s: %s", deployment, queue_model)
+
     service_time_update_interval = float(os.getenv("SERVICE_TIME_UPDATE_INTERVAL_SECONDS", "29"))
-    service_time_ewma_alpha = float(os.getenv("SERVICE_TIME_EWMA_ALPHA", "0.8"))
+    service_time_alpha = float(os.getenv("SERVICE_TIME_EWMA_ALPHA", "0.8"))
     min_processing_time_s = float(os.getenv("MIN_PROCESSING_TIME_MS", "1")) / 1000.0
     k_variability = float(os.getenv("GGC_INITIAL_K", "1.0"))
     variability_update_interval = float(os.getenv("GGC_K_UPDATE_INTERVAL_SECONDS", "180"))
@@ -468,7 +339,6 @@ def das_loop(
     variability_k_min = float(os.getenv("GGC_K_MIN", "0.5"))
     variability_k_max = float(os.getenv("GGC_K_MAX", "10.0"))
     last_variability_update = 0.0
-    frontend_healthy_latency_ms = float(os.getenv("FRONTEND_HEALTHY_LATENCY_MS", "500"))
     fixed_processing_time_s, configured_service_time_source = get_baseline_processing_time_s(deployment)
 
     if fixed_processing_time_s is not None:
@@ -489,12 +359,8 @@ def das_loop(
         scale_up_cooldown,
         scale_down_cooldown,
     )
-    #Ze-TODO: why not load from env?
-    # queue_tail_label, queue_tail_quantile = ("P90", 0.90)
-    queue_tail_label, queue_tail_quantile = normalize_latency_percentile(
-        os.getenv("QUEUE_MODEL_PERCENTILE"),
-        "p95",
-    )
+
+    queue_tail_label, queue_tail_quantile = ("P90", 0.90)
 
     while True:
         try:
@@ -533,23 +399,6 @@ def das_loop(
             grpc_latency_p90_as_dst = monitor.get_grpc_latency_p90_as_dst(deployment)
             http_latency_p95_as_dst = monitor.get_http_latency_p95_as_dst(deployment)
             grpc_latency_p95_as_dst = monitor.get_grpc_latency_p95_as_dst(deployment)
-# http_rpm_mesh_as_dst = monitor.get_http_rpm_mesh_as_dst(deployment)
-# grpc_rpm_mesh_as_dst = monitor.get_grpc_rpm_mesh_as_dst(deployment)
-# http_latency_mesh_avg_as_dst = monitor.get_http_latency_mesh_as_dst(deployment)
-# grpc_latency_mesh_avg_as_dst = monitor.get_grpc_latency_mesh_as_dst(deployment)
-# http_latency_p95_mesh_as_dst = monitor.get_http_latency_p95_mesh_as_dst(deployment)
-# grpc_latency_p95_mesh_as_dst = monitor.get_grpc_latency_p95_mesh_as_dst(deployment)
-# http_latency_p90_mesh_as_dst = monitor.get_http_latency_p90_mesh_as_dst(deployment)
-# grpc_latency_p90_mesh_as_dst = monitor.get_grpc_latency_p90_mesh_as_dst(deployment)
-
-# http_rpm_mesh_as_src = monitor.get_http_rpm_mesh_as_src(deployment)
-# grpc_rpm_mesh_as_src = monitor.get_grpc_rpm_mesh_as_src(deployment)
-# http_latency_mesh_avg_as_src = monitor.get_http_latency_mesh_as_src(deployment)
-# grpc_latency_mesh_avg_as_src = monitor.get_grpc_latency_mesh_as_src(deployment)
-# http_latency_p95_mesh_as_src = monitor.get_http_latency_p95_mesh_as_src(deployment)
-# grpc_latency_p95_mesh_as_src = monitor.get_grpc_latency_p95_mesh_as_src(deployment)
-# http_latency_p90_mesh_as_src = monitor.get_http_latency_p90_mesh_as_src(deployment)
-# grpc_latency_p90_mesh_as_src = monitor.get_grpc_latency_p90_mesh_as_src(deployment)
 
             required_metrics = {
                 "http_rpm_as_dst": http_rpm_as_dst,
@@ -575,119 +424,19 @@ def das_loop(
             R_p90_ms = http_latency_p90_as_dst + grpc_latency_p90_as_dst
             R_p95_ms = http_latency_p95_as_dst + grpc_latency_p95_as_dst
 
-            # Ze-TODO: why slo_tail_label and queue_tail_label are different? Should they be the same?
-            # shouldn't it be queue_tail_label?
             slo_tail_label, slo_tail_quantile = normalize_latency_percentile(
                 os.getenv("SLO_LATENCY_PERCENTILE"),
                 "p95",
             )
-            # response time latency
-            R_slo_ms = select_latency_by_percentile_ms(
-                slo_tail_label,
-                R_p25_ms,
-                R_p50_ms,
-                R_p90_ms,
-                R_p95_ms,
-            )
-            logging.info(
-                "[%s] observed_percentile=%s selected_latency_ms=%.2f configured_latency_slo_ms=%.2f",
-                deployment,
-                slo_tail_label,
-                R_slo_ms,
-                get_configured_latency_slo_ms(os.getenv("APP_NAME", "onlineboutique").strip().lower(), deployment),
-            )
-            # here, we know the latency set by user Ze-TODO: note that user only sets frontend latency, 
-            # intermediate and leaf should be different/learnt adaptly using: 1) if frontend is not violated, the values are recorded
-            # Ze-TODO: must be changed
-            APP_NAME = os.getenv("APP_NAME", "onlineboutique").strip().lower()
-            configured_latency_slo_ms = get_configured_latency_slo_ms(APP_NAME, deployment)
-            latency_slo_ms = configured_latency_slo_ms
-            effective_latency_target_ms = configured_latency_slo_ms
-            endpoint_frontend_latency_ms = None
-
-            # The root/frontend service defines the SLO target itself, so it always uses
-            # the fixed configured threshold rather than learning from its own history.
-            is_root_service = deployment in ROOT_SERVICES
-            effective_latency_slo_mode = "fixed" if is_root_service else latency_slo_mode
-            if is_root_service and latency_slo_mode == "adaptive":
-                logging.info(
-                    "[%s] root_service_detected forcing_latency_slo_mode=fixed",
-                    deployment,
-                )
-
-            if effective_latency_slo_mode == "adaptive":
-                logging.info("Adaptive latency SLO mode enabled for %s", deployment)
-                logging.info("Fetching frontend latency metrics for %s", deployment)
-                frontend_latency_getters = {
-                    "P25": (monitor.get_http_latency_p25_as_dst, monitor.get_http_latency_p25_as_src),
-                    "P50": (monitor.get_http_latency_p50_as_dst, monitor.get_http_latency_p50_as_src),
-                    "P90": (monitor.get_http_latency_p90_as_dst, monitor.get_http_latency_p90_as_src),
-                    "P95": (monitor.get_http_latency_p95_as_dst, monitor.get_http_latency_p95_as_src),
-                }
-                dst_getter, src_getter = frontend_latency_getters.get(
-                    slo_tail_label,
-                    (monitor.get_http_latency_p95_as_dst, monitor.get_http_latency_p95_as_src),
-                )
-                endpoint_frontend_latency_ms = dst_getter(ROOT_SERVICE)
-                logging.info(
-                    "[%s] frontend_sample_raw=%s percentile=%s source=dst",
-                    deployment,
-                    "N/A" if endpoint_frontend_latency_ms is None else f"{endpoint_frontend_latency_ms:.2f} ms",
-                    slo_tail_label,
-                )
-                if endpoint_frontend_latency_ms is None or not valid_number(endpoint_frontend_latency_ms):
-                    endpoint_frontend_latency_ms = src_getter(ROOT_SERVICE)
-                    logging.info(
-                        "[%s] frontend_sample_raw=%s percentile=%s source=src",
-                        deployment,
-                        "N/A" if endpoint_frontend_latency_ms is None else f"{endpoint_frontend_latency_ms:.2f} ms",
-                        slo_tail_label,
-                    )
-                learned_latency_limit_ms = healthy_percentile_target_ms(healthy_self_percentile_history_ms)
-                if learned_latency_limit_ms is not None and valid_number(learned_latency_limit_ms):
-                    logging.info("[%s] learned_history_exists target_p25=%.2f ms", deployment, learned_latency_limit_ms)
-                    effective_latency_target_ms = learned_latency_limit_ms
-                else:
-                    logging.info("[%s] learned_history_empty using_configured_target=%.2f ms", deployment, configured_latency_slo_ms)
-                    effective_latency_target_ms = configured_latency_slo_ms
-                if valid_number(endpoint_frontend_latency_ms):
-                    # Only learn from frontend latency samples that are strictly below the
-                    # healthy threshold. The target is 500 ms, so 500 ms itself is treated as unhealthy.
-                    healthy = update_healthy_latency_history(
-                        healthy_self_percentile_history_ms,
-                        R_slo_ms,
-                        configured_latency_slo_ms,
-                    )
-                    logging.info(
-                        "[%s] sample=%.2f ms healthy_threshold_ms=%.2f ms healthy_sample_accepted=%s history_size=%d",
-                        deployment,
-                        R_slo_ms,
-                        configured_latency_slo_ms,
-                        healthy,
-                        len(healthy_self_percentile_history_ms),
-                    )
-                    if healthy:
-                        learned_latency_limit_ms = healthy_percentile_target_ms(healthy_self_percentile_history_ms)
-                        if learned_latency_limit_ms is not None:
-                            effective_latency_target_ms = learned_latency_limit_ms
-                            logging.info(
-                                "[%s] updated_effective_target_from_history=%.2f ms",
-                                deployment,
-                                effective_latency_target_ms,
-                            )
-                latency_slo_ms = effective_latency_target_ms
-                logging.info("[%s] final_latency_slo=%.2f ms", deployment, latency_slo_ms)
-            # Now, monitoring is completed
+            R_slo_ms = R_p95_ms if slo_tail_label == "P95" else R_p90_ms
+            latency_slo_ms = get_configured_latency_slo_ms()
 
             R_avg_s = R_avg_ms / 1000.0
             R_p25_s = R_p25_ms / 1000.0
             R_p90_s = R_p90_ms / 1000.0
             R_slo_s = R_slo_ms / 1000.0
 
-
-
             if learned_processing_time_s is None:
-                # initialization
                 if fixed_processing_time_s is None:
                     learned_processing_time_s = max(min_processing_time_s, R_p25_s)
                     service_time_source = "startup_p25"
@@ -703,7 +452,6 @@ def das_loop(
                     service_time_source,
                 )
             else:
-                # updating
                 elapsed_since_s_update = now - last_processing_time_update
                 if (
                     elapsed_since_s_update >= service_time_update_interval
@@ -712,8 +460,8 @@ def das_loop(
                 ):
                     old_s = learned_processing_time_s
                     learned_processing_time_s = (
-                        service_time_ewma_alpha * learned_processing_time_s
-                        + (1.0 - service_time_ewma_alpha) * R_p25_s
+                        service_time_alpha * learned_processing_time_s
+                        + (1.0 - service_time_alpha) * R_p25_s
                     )
                     last_processing_time_update = now
                     service_time_source = "smoothed_p25_all_load"
@@ -723,7 +471,7 @@ def das_loop(
                         old_s * 1000,
                         learned_processing_time_s * 1000,
                         R_p25_s * 1000,
-                        service_time_ewma_alpha,
+                        service_time_alpha,
                         service_time_source,
                     )
                 else:
@@ -732,13 +480,12 @@ def das_loop(
                     )
 
             S_s = learned_processing_time_s
-            # processing time is completed, Ze-TODO: how is this done?
             mu = 1.0 / S_s if S_s > 0 else 0.0
             rho = lambda_rps / (pods_count * mu) if mu > 0 and pods_count > 0 else float("inf")
 
             if R_slo_ms <= latency_slo_ms:
                 learned = update_healthy_self_tail_history(
-                    history_ms=healthy_self_percentile_history_ms,
+                    history_ms=healthy_self_p90_history_ms,
                     self_tail_ms=R_slo_ms,
                     local_slo_ms=latency_slo_ms,
                 )
@@ -748,21 +495,17 @@ def das_loop(
                         deployment,
                         slo_tail_label,
                         R_slo_ms,
-                        healthy_percentile_target_ms(healthy_self_percentile_history_ms) or float("nan"),
-                        len(healthy_self_percentile_history_ms),
+                        healthy_p90_target_ms(healthy_self_p90_history_ms) or float("nan"),
+                        len(healthy_self_p90_history_ms),
                     )
 
-            own_healthy_percentile_target_ms = healthy_percentile_target_ms(healthy_self_percentile_history_ms)
-
-            #Ze-TODO: what does this do?
-            # Guard for scaling down, to test and ensure scale down will not break local latency
+            own_healthy_p90_target_ms = healthy_p90_target_ms(healthy_self_p90_history_ms)
             local_scale_down_target_ms = (
-                min(latency_slo_ms, own_healthy_percentile_target_ms)
-                if own_healthy_percentile_target_ms is not None and valid_number(own_healthy_percentile_target_ms)
+                min(latency_slo_ms, own_healthy_p90_target_ms)
+                if own_healthy_p90_target_ms is not None and valid_number(own_healthy_p90_target_ms)
                 else latency_slo_ms
             )
 
-            # This is for ggc model, we may don't need it
             if (
                 now - last_variability_update >= variability_update_interval
                 and mu > 0
@@ -810,7 +553,7 @@ def das_loop(
                 current_replicas=pods_count,
                 queue_percentile=queue_tail_quantile,
             )
-            desired_replicas = slo_recommended if queue_model == "ggc" else slo_recommended_mmc
+            desired_replicas = max(slo_recommended_mmc, slo_recommended)
             desired_replicas = max(min_replicas, min(max_replicas, desired_replicas))
 
             p_wait_current = erlang_c(lambda_rps, mu, pods_count)
@@ -821,7 +564,6 @@ def das_loop(
                 "\n"
                 "==================== DAS STATE ====================\n"
                 f"[Service] {deployment}\n"
-                f"  Queue model (selected)  : {queue_model.upper()}\n"
                 f"  λ (arrival rate)        : {lambda_rps:.2f} req/s\n"
                 f"  Replicas (c)            : {pods_count}\n"
                 f"  Capacity (c·μ)          : {(pods_count * mu):.2f} req/s\n"
@@ -885,14 +627,13 @@ def das_loop(
             )
 
             if desired_replicas > pods_count:
-                # Ze-TODO: check this, now we eliminate scale up cooldown
-                #if now - last_scale_up_time < scale_up_cooldown:
-                #    logging.info(
-                #        "[COOLDOWN HOLD] Scale-Up request throttled. Elapsed: %.1fs | Required: %.1fs",
-                #        now - last_scale_up_time,
-                #        scale_up_cooldown,
-                #    )
-                #else:
+                if now - last_scale_up_time < scale_up_cooldown:
+                    logging.info(
+                        "[COOLDOWN HOLD] Scale-Up request throttled. Elapsed: %.1fs | Required: %.1fs",
+                        now - last_scale_up_time,
+                        scale_up_cooldown,
+                    )
+                else:
                     result = executor.scale_by(
                         deployment,
                         delta=desired_replicas - pods_count,
@@ -925,7 +666,6 @@ def das_loop(
                     scale_down_ok_windows += 1
                 else:
                     scale_down_ok_windows = 0
-                #Ze-TODO scale_down window can be modified maybe dynamically
                 required_windows = int(os.getenv("SCALE_DOWN_MIN_WINDOWS", "2"))
                 logging.info(
                     "[SCALE DOWN CHECK] candidate=%d predicted_%s=%.2fms local_target=%.2fms ok_windows=%d required_windows=%d",
