@@ -59,7 +59,7 @@ BASELINE_SLO_TIME_MS_BY_APP: dict[str, dict[str, float | None]] = {
         "redis-cart": 20,
     },
     "bookinfo": {
-        "productpage-v1": 500,
+        "productpage-v1": 200,
         "details-v1": 20,
         "ratings-v1": 20,
         "reviews-v1": 20,
@@ -227,16 +227,26 @@ def select_latency_by_percentile_ms(
     return p95_ms
 
 
-#def get_configured_latency_slo_ms() -> float:
-#    default_slo = os.getenv("SLO_MS", os.getenv("SLO_LATENCY_MS", "500"))
-#    return float(os.getenv("LATENCY_SLO_MS", default_slo))
+def get_configured_latency_slo_ms(app_name: str, deployment: str) -> float:
+    env_names = (
+        "LATENCY_SLO_MS",
+        "SLO_MS",
+        "SLO_LATENCY_MS",
+        "FRONTEND_HEALTHY_LATENCY_MS",
+    )
+    for env_name in env_names:
+        raw_value = os.getenv(env_name)
+        if raw_value is not None and raw_value.strip():
+            try:
+                value = float(raw_value)
+                if value > 0:
+                    return value
+            except ValueError:
+                logging.warning("Ignoring invalid %s=%r for %s/%s", env_name, raw_value, app_name, deployment)
 
-
-def get_configured_latency_slo_ms(APP_NAME: str, deployment: str) -> float:
-    latency_slo_ms = BASELINE_SLO_TIME_MS_BY_APP.get(APP_NAME, {}).get(deployment)
-    print(f"latency_slo_ms for {APP_NAME} and {deployment}: {latency_slo_ms}")
+    latency_slo_ms = BASELINE_SLO_TIME_MS_BY_APP.get(app_name, {}).get(deployment)
     if latency_slo_ms is None:
-        latency_slo_ms = BASELINE_SLO_TIME_MS_BY_APP.get(APP_NAME, {}).get("default")
+        latency_slo_ms = BASELINE_SLO_TIME_MS_BY_APP.get(app_name, {}).get("default")
     return float(latency_slo_ms) if latency_slo_ms is not None else 500.0
 
 
@@ -390,9 +400,9 @@ def update_healthy_self_tail_history(
 def healthy_percentile_target_ms(history_ms: list[float]) -> float | None:
     """
     take the history list and get the 25-percentile latency
-    Ze-TODO: should not be limited to p90
+    Ze-DONE: should not be limited to p90
     """
-    return percentile(history_ms, 0.25)
+    return percentile(history_ms, 0.50)  # 50th percentile (median) of healthy self tail latencies
 
 
 def update_healthy_latency_history(
@@ -407,8 +417,8 @@ def update_healthy_latency_history(
         return False
     # Healthy frontend latency is defined as strictly below the target threshold.
     # If the target is 500 ms, then 500 ms is considered unhealthy.
-    if observed_latency_ms >= target_latency_ms:
-        return False
+    #if observed_latency_ms >= target_latency_ms:
+    #    return False
     history_ms.append(float(observed_latency_ms))
     if len(history_ms) > max_samples:
         del history_ms[: len(history_ms) - max_samples]
@@ -442,6 +452,9 @@ def das_loop(
     healthy_frontend_latency_history_ms: list[float] = []
     scale_down_ok_windows = 0
     latency_slo_mode = os.getenv("LATENCY_SLO_MODE", "adaptive").strip().lower()
+    #slo_based_latency_scaling_enabled = os.getenv("SLO_BASED_SCALING_ENABLED", "1").strip().lower() not in {"0", "false", "no", "off"}
+    slo_based_latency_scaling_enabled = os.getenv("GGC_K_MIN", "1").strip().lower() not in {"0", "false", "no", "off"}
+        
     if latency_slo_mode not in {"adaptive", "fixed"}:
         logging.warning(
             "Unsupported LATENCY_SLO_MODE=%r for %s; falling back to 'adaptive'",
@@ -650,19 +663,36 @@ def das_loop(
                 else:
                     logging.info("[%s] learned_history_empty using_configured_target=%.2f ms", deployment, configured_latency_slo_ms)
                     effective_latency_target_ms = configured_latency_slo_ms
-                if valid_number(endpoint_frontend_latency_ms):
-                    # Only learn from frontend latency samples that are strictly below the
-                    # healthy threshold. The target is 500 ms, so 500 ms itself is treated as unhealthy.
-                    healthy = update_healthy_latency_history(
-                        healthy_self_percentile_history_ms,
-                        R_slo_ms,
-                        configured_latency_slo_ms,
-                    )
+                frontend_healthy_threshold_ms = configured_latency_slo_ms
+                if valid_number(endpoint_frontend_latency_ms) and frontend_healthy_threshold_ms > 0 and endpoint_frontend_latency_ms < frontend_healthy_threshold_ms:
+                    # Only learn from frontend latency samples that are strictly below the configured
+                    # frontend SLO. This avoids hard-coding a 500 ms assumption and keeps the adaptation
+                    # aligned with the user-selected front-end threshold.
+                    if slo_based_latency_scaling_enabled:
+                        scaled_latency_ms = R_slo_ms * (frontend_healthy_threshold_ms / endpoint_frontend_latency_ms)
+                        logging.info(
+                            "[%s] scaled_latency_ms=%.2f original_latency_ms=%.2f frontend_threshold_ms=%.2f",
+                            deployment,
+                            scaled_latency_ms,
+                            R_slo_ms,
+                            frontend_healthy_threshold_ms,
+                        )
+                        healthy = update_healthy_latency_history(
+                            healthy_self_percentile_history_ms,
+                            scaled_latency_ms,
+                            frontend_healthy_threshold_ms,
+                        )
+                    else:
+                        healthy = update_healthy_latency_history(
+                            healthy_self_percentile_history_ms,
+                            R_slo_ms,
+                            frontend_healthy_threshold_ms,
+                        )
                     logging.info(
                         "[%s] sample=%.2f ms healthy_threshold_ms=%.2f ms healthy_sample_accepted=%s history_size=%d",
                         deployment,
                         R_slo_ms,
-                        configured_latency_slo_ms,
+                        frontend_healthy_threshold_ms,
                         healthy,
                         len(healthy_self_percentile_history_ms),
                     )
@@ -754,13 +784,17 @@ def das_loop(
 
             own_healthy_percentile_target_ms = healthy_percentile_target_ms(healthy_self_percentile_history_ms)
 
-            #Ze-TODO: what does this do?
-            # Guard for scaling down, to test and ensure scale down will not break local latency
-            local_scale_down_target_ms = (
-                min(latency_slo_ms, own_healthy_percentile_target_ms)
-                if own_healthy_percentile_target_ms is not None and valid_number(own_healthy_percentile_target_ms)
-                else latency_slo_ms
-            )
+            # Guard for scaling down, to ensure we do not scale below a locally-safe tail latency.
+            # In adaptive mode, the learned target is based on healthy history and should not be capped
+            # by the local self-tail threshold; that local threshold is only used as a safety guard for
+            # scale-down decisions, not as the adaptive target itself.
+            local_scale_down_target_ms = latency_slo_ms
+            if (
+                own_healthy_percentile_target_ms is not None
+                and valid_number(own_healthy_percentile_target_ms)
+                and own_healthy_percentile_target_ms < local_scale_down_target_ms
+            ):
+                local_scale_down_target_ms = own_healthy_percentile_target_ms
 
             # This is for ggc model, we may don't need it
             if (
@@ -971,7 +1005,7 @@ def main() -> None:
 
     interval = float(os.getenv("INTERVAL", "15"))
     scale_up_cooldown = float(os.getenv("SCALE_UP_COOLDOWN_SECONDS", "30"))
-    scale_down_cooldown = float(os.getenv("SCALE_DOWN_COOLDOWN_SECONDS", "180"))
+    scale_down_cooldown = float(os.getenv("SCALE_DOWN_COOLDOWN_SECONDS", "120"))
     namespace = os.getenv("NAMESPACE", "default")
     deployment = os.getenv("TARGET_DEPLOYMENT", "productpage-v1")
     prom_url = os.getenv("PROM_URL", "http://prometheus.istio-system.svc.cluster.local:9090/api/v1/query")
