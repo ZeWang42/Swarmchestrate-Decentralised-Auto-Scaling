@@ -5,10 +5,9 @@ WORKDIR /app
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-COPY DAS.py .
-COPY queue_das_logging.py .
+COPY queue-das.py .
 COPY execution ./execution
 COPY monitoring ./monitoring
 COPY utils ./utils
 
-CMD ["python", "DAS.py"]
+CMD ["python", "queue-das.py"]
