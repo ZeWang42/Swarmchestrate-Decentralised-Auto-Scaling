@@ -1,0 +1,7 @@
+Method,DisplayName,Run,File,P95_ms
+queue,Queue-based,1,queue-1_stats.csv,430.0
+queue,Queue-based,2,queue-2_stats.csv,410.0
+hpa80,HPA (80%),1,hpa80-1_stats.csv,530.0
+hpa80,HPA (80%),2,hpa80-2_stats.csv,330.0
+das,DAS,1,das-1_stats.csv,590.0
+das,DAS,2,das-2_stats.csv,550.0

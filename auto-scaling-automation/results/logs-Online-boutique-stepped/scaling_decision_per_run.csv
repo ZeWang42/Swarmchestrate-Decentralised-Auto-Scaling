@@ -1,0 +1,7 @@
+Autoscaler,DisplayName,Run,File,ScaleUpEvents,ScaleDownEvents,DecisionEvents,TotalScalingMagnitude
+queue,QUEUE,1,queue-1.csv,27,26,53,47.28571428571429
+queue,QUEUE,2,queue-2.csv,27,23,50,58.78571428571429
+hpa80,HPA80,1,hpa80-1.csv,23,8,31,30.0
+hpa80,HPA80,2,hpa80-2.csv,22,10,32,32.22222222222222
+das,DAS,1,das-1.csv,23,12,35,46.85714285714286
+das,DAS,2,das-2.csv,25,11,36,41.0

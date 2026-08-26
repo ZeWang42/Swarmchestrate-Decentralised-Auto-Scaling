@@ -1,0 +1,7 @@
+Method,DisplayName,Run,File,SLOViolationRate_percent
+queue,QUEUE,1,queue-1_stats.csv,4.3636363636363695
+queue,QUEUE,2,queue-2_stats.csv,4.129032258064525
+hpa80,HPA80,1,hpa80-1_stats.csv,5.681818181818188
+hpa80,HPA80,2,hpa80-2_stats.csv,3.5428571428571476
+das,DAS,1,das-1_stats.csv,6.800000000000006
+das,DAS,2,das-2_stats.csv,6.086956521739129

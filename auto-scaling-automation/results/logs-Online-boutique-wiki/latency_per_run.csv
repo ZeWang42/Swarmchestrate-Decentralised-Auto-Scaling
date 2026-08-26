@@ -1,0 +1,7 @@
+Method,DisplayName,Run,File,P95Latency_ms,AverageLatency_ms,RequestCount,FailureCount,SLOViolation
+queue,Queue-based,1,queue-1_stats.csv,430.0,197.5032977152092,419783,111,0
+queue,Queue-based,2,queue-2_stats.csv,410.0,193.93939739560065,419824,165,0
+hpa80,HPA (80%),1,hpa80-1_stats.csv,530.0,207.16216085795463,417692,36,1
+hpa80,HPA (80%),2,hpa80-2_stats.csv,330.0,180.79948638074612,422332,18,0
+das,DAS,1,das-1_stats.csv,590.0,216.76885036107672,416753,44,1
+das,DAS,2,das-2_stats.csv,550.0,211.42879098988448,418321,27,1

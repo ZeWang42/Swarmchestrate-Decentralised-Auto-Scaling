@@ -484,6 +484,14 @@ def format_optional_ms(value: float | None) -> str:
     return "N/A" if value is None or not valid_number(value) else f"{value:.2f}ms"
 
 
+def format_modeled_delay_s(value_s: float) -> str:
+    if math.isnan(value_s):
+        return "N/A"
+    if math.isinf(value_s):
+        return "inf"
+    return f"{value_s * 1000.0:.2f}ms"
+
+
 # ---------------------------------------------------------------------------
 # DAS control loop
 # ---------------------------------------------------------------------------
@@ -523,7 +531,7 @@ def das_loop(
         os.getenv("SLO_LATENCY_PERCENTILE"),
         "p95",
     )
-    _, queue_percentile = normalize_latency_percentile(
+    queue_latency_label, queue_percentile = normalize_latency_percentile(
         os.getenv("QUEUE_MODEL_PERCENTILE"),
         "p95",
     )
@@ -784,12 +792,26 @@ def das_loop(
                 min(max_replicas, desired_replicas),
             )
 
+            capacity_rps = current_replicas * service_rate_rps
+
+            modeled_queue_delay_s = waiting_percentile_mmc(
+                arrival_rate_rps,
+                service_rate_rps,
+                current_replicas,
+                queue_percentile,
+            )
+            if queue_model == "ggc" and math.isfinite(modeled_queue_delay_s):
+                modeled_queue_delay_s *= variability_factor
+
             logging.info(
-                "[STATE] service=%s lambda=%.2f req/s replicas=%d desired=%d "
-                "cpu=%.1f%% local_latency_%s=%.2fms local_slo=%.2fms "
-                "frontend_latency_%s=%s frontend_slo=%.2fms processing_time=%.2fms",
+                "[STATE] service=%s lambda=%.2f req/s capacity=%.2f req/s "
+                "replicas=%d desired=%d cpu=%.1f%% "
+                "local_latency_%s=%.2fms local_slo=%.2fms "
+                "frontend_latency_%s=%s frontend_slo=%.2fms "
+                "processing_time=%.2fms modeled_delay_%s=%s",
                 deployment,
                 arrival_rate_rps,
+                capacity_rps,
                 current_replicas,
                 desired_replicas,
                 cpu_utilisation_pct,
@@ -800,6 +822,8 @@ def das_loop(
                 format_optional_ms(observed_frontend_latency_ms),
                 frontend_slo_ms,
                 processing_time_s * 1000.0,
+                queue_latency_label.lower(),
+                format_modeled_delay_s(modeled_queue_delay_s),
             )
 
             # -----------------------------------------------------------------
