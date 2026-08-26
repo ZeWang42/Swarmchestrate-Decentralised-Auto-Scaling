@@ -240,7 +240,12 @@ def _build_context(req: DeployAutoscalerRequest, deployment_name: str | None = N
         cfg.get("p2p_hub_deployment", app_cfg.get("latency_deployment", "frontend")),
     )
 
-    context: dict[str, Any] = {
+    # Start with the complete client-provided autoscaler config so templates
+    # can consume new parameters without requiring a server code change.
+    # Known/resolved server fields below intentionally override conflicting
+    # config keys (for example namespace and deployment_name).
+    context: dict[str, Any] = dict(cfg)
+    context.update({
         "namespace": req.namespace,
         "target_namespace": req.namespace,
         "autoscaler_name": req.autoscaler_name,
@@ -327,7 +332,7 @@ def _build_context(req: DeployAutoscalerRequest, deployment_name: str | None = N
         "hab_exploratory_max_steps": cfg.get("hab_exploratory_max_steps", cfg.get("HAB_EXPLORATORY_MAX_STEPS", 3)),
         "hab_stable_lambda_rel_delta": cfg.get("hab_stable_lambda_rel_delta", cfg.get("HAB_STABLE_LAMBDA_REL_DELTA", 0.10)),
         "hab_scale_down_enabled": str(cfg.get("hab_scale_down_enabled", cfg.get("HAB_SCALE_DOWN_ENABLED", True))).lower(),
-    }
+    })
     if deployment_name is not None:
         safe_name = _safe_k8s_name(deployment_name)
         controller_name = _controller_name_for(req.autoscaler_name, deployment_name)
