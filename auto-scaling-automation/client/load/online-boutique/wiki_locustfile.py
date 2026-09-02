@@ -22,7 +22,7 @@ CURRENCIES = ["EUR", "USD", "JPY", "CAD"]
 #CSV_PATH = os.getenv("CSV_PATH", "load/online-boutique/workloads/constant-200.csv")
 CSV_PATH = os.getenv("CSV_PATH", "load/online-boutique/workloads/wiki_load.csv")
 TIME_MINUTE = int(os.getenv("TIME_MINUTE", "60"))
-SCALE_FACTOR = float(os.getenv("SCALE_FACTOR", "1"))
+SCALE_FACTOR = float(os.getenv("SCALE_FACTOR", "0.6"))
 SPAWN_RATE = int(os.getenv("SPAWN_RATE", "20"))
 LOAD_DIST = os.getenv("LOAD_DIST", "1")
 

@@ -8,7 +8,7 @@ from locust import HttpUser, LoadTestShape, TaskSet, between
 BOOK_IDS = ["0"]
 CSV_PATH = os.getenv("CSV_PATH", "load/book-info/workloads/constant-300.csv")
 TIME_MINUTE = int(os.getenv("TIME_MINUTE", "3"))
-SCALE_FACTOR = float(os.getenv("SCALE_FACTOR", "1"))
+SCALE_FACTOR = float(os.getenv("SCALE_FACTOR", "0.3"))
 SPAWN_RATE = int(os.getenv("SPAWN_RATE", "20"))
 TIME_LIMIT = TIME_MINUTE * 60
 WINDOW_NUM = TIME_MINUTE
@@ -50,7 +50,7 @@ class UserBehavior(TaskSet):
 
 class WebsiteUser(HttpUser):
     tasks = [UserBehavior]
-    wait_time = between(1, 1)
+    wait_time = between(1, 5)
 
 
 class StagesShapeFromCSV(LoadTestShape):

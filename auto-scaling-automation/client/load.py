@@ -24,6 +24,7 @@ from config.exp_config import (
     PROM_URL,
     TMP_DIR,
     WAIT_BETWEEN_EXPERIMENTS_SECONDS,
+    LATENCY_PERCENTILE,
 )
 
 try:
@@ -206,6 +207,7 @@ def setup_experiment(exp: Experiment) -> dict[str, Any]:
             "interval": MONITOR_INTERVAL,
             "prom_url": PROM_URL,
             "file_prefix": f"{APP_NAME}_mesh_metrics",
+            "latency_percentile": LATENCY_PERCENTILE,
         },
     }
 
@@ -317,7 +319,7 @@ def run_one_experiment(exp: Experiment) -> None:
             raise RuntimeError("Server is not ready for load")
 
         print("[WAIT] pausing 30s before starting load")
-        time.sleep(30)
+        time.sleep(60)
 
         locust_files = run_locust(exp)
         cleanup_result = cleanup_experiment(exp)
