@@ -510,88 +510,140 @@ AUTOSCALER_SETTINGS = [
 #        },
 
 
-
-      {
-          "autoscaler_name": "customdas-cpu-queue",
-          "deployment_names": APP["deployment_names"],
-          "config": {
-              "image": "zewang42/customdas-autoscaler-cpu-queue:latest",
-              "prom_url": "http://prometheus.istio-system.svc.cluster.local:9090/api/v1/query",
-              "queue_model": "mmc",
-              "latency_slo_mode": "adaptive",
-              "slo_ms": 500,
-              "slo_leaf_ms": 20,
-              "slo_latency_percentile": "p95",
-              "queue_model_percentile": "p95",
-              "min_replicas": 1,
-              "max_replicas": 20,
-              "ggc_k_min": 0.7,
-              "interval": 15,
-              "cooldown_seconds": 300,
-          },
-      },
-      
-      {
-          "autoscaler_name": "customdas-cpu-queue",
-          "deployment_names": APP["deployment_names"],
-          "config": {
-              "image": "zewang42/customdas-autoscaler-cpu-queue:latest",
-              "prom_url": "http://prometheus.istio-system.svc.cluster.local:9090/api/v1/query",
-              "queue_model": "mmc",
-              "latency_slo_mode": "adaptive",
-              "slo_ms": 500,
-              "slo_leaf_ms": 20,
-              "slo_latency_percentile": "p95",
-              "queue_model_percentile": "p95",
-              "min_replicas": 1,
-              "max_replicas": 20,
-              "ggc_k_min": 0.7,
-              "interval": 15,
-              "cooldown_seconds": 300,
-          },
-      },
-      
-      {
-          "autoscaler_name": "customdas-cpu-queue",
-          "deployment_names": APP["deployment_names"],
-          "config": {
-              "image": "zewang42/customdas-autoscaler-cpu-queue:latest",
-              "prom_url": "http://prometheus.istio-system.svc.cluster.local:9090/api/v1/query",
-              "queue_model": "mmc",
-              "latency_slo_mode": "adaptive",
-              "slo_ms": 500,
-              "slo_leaf_ms": 20,
-              "slo_latency_percentile": "p95",
-              "queue_model_percentile": "p95",
-              "min_replicas": 1,
-              "max_replicas": 20,
-              "ggc_k_min": 0.7,
-              "interval": 15,
-              "cooldown_seconds": 300,
-          },
-      },
-      
-      {
-          "autoscaler_name": "customdas-cpu-queue",
-          "deployment_names": APP["deployment_names"],
-          "config": {
-              "image": "zewang42/customdas-autoscaler-cpu-queue:latest",
-              "prom_url": "http://prometheus.istio-system.svc.cluster.local:9090/api/v1/query",
-              "queue_model": "mmc",
-              "latency_slo_mode": "adaptive",
-              "slo_ms": 500,
-              "slo_leaf_ms": 20,
-              "slo_latency_percentile": "p95",
-              "queue_model_percentile": "p95",
-              "min_replicas": 1,
-              "max_replicas": 20,
-              "ggc_k_min": 0.7,
-              "interval": 15,
-              "cooldown_seconds": 300,
-          },
-      },
-
-
+#
+#      {
+#          "autoscaler_name": "customdas-cpu-queue",
+#          "deployment_names": APP["deployment_names"],
+#          "config": {
+#              "image": "zewang42/customdas-autoscaler-cpu-queue:latest",
+#              "prom_url": "http://prometheus.istio-system.svc.cluster.local:9090/api/v1/query",
+#              "queue_model": "mmc",
+#              "latency_slo_mode": "adaptive",
+#              "slo_ms": 500,
+#              "slo_leaf_ms": 20,
+#              "slo_latency_percentile": "p95",
+#              "queue_model_percentile": "p95",
+#              "min_replicas": 1,
+#              "max_replicas": 20,
+#              "ggc_k_min": 0.7,
+#              "interval": 15,
+#              "cooldown_seconds": 300,
+#          },
+#      },
+#      
+#      {
+#          "autoscaler_name": "customdas-cpu-queue",
+#          "deployment_names": APP["deployment_names"],
+#          "config": {
+#              "image": "zewang42/customdas-autoscaler-cpu-queue:latest",
+#              "prom_url": "http://prometheus.istio-system.svc.cluster.local:9090/api/v1/query",
+#              "queue_model": "mmc",
+#              "latency_slo_mode": "adaptive",
+#              "slo_ms": 500,
+#              "slo_leaf_ms": 20,
+#              "slo_latency_percentile": "p95",
+#              "queue_model_percentile": "p95",
+#              "min_replicas": 1,
+#              "max_replicas": 20,
+#              "ggc_k_min": 0.7,
+#              "interval": 15,
+#              "cooldown_seconds": 300,
+#          },
+#      },
+#      
+#      {
+#          "autoscaler_name": "customdas-cpu-queue",
+#          "deployment_names": APP["deployment_names"],
+#          "config": {
+#              "image": "zewang42/customdas-autoscaler-cpu-queue:latest",
+#              "prom_url": "http://prometheus.istio-system.svc.cluster.local:9090/api/v1/query",
+#              "queue_model": "mmc",
+#              "latency_slo_mode": "adaptive",
+#              "slo_ms": 500,
+#              "slo_leaf_ms": 20,
+#              "slo_latency_percentile": "p95",
+#              "queue_model_percentile": "p95",
+#              "min_replicas": 1,
+#              "max_replicas": 20,
+#              "ggc_k_min": 0.7,
+#              "interval": 15,
+#              "cooldown_seconds": 300,
+#          },
+#      },
+#      
+#      {
+#          "autoscaler_name": "customdas-cpu-queue",
+#          "deployment_names": APP["deployment_names"],
+#          "config": {
+#              "image": "zewang42/customdas-autoscaler-cpu-queue:latest",
+#              "prom_url": "http://prometheus.istio-system.svc.cluster.local:9090/api/v1/query",
+#              "queue_model": "mmc",
+#              "latency_slo_mode": "adaptive",
+#              "slo_ms": 500,
+#              "slo_leaf_ms": 20,
+#              "slo_latency_percentile": "p95",
+#              "queue_model_percentile": "p95",
+#              "min_replicas": 1,
+#              "max_replicas": 20,
+#              "ggc_k_min": 0.7,
+#              "interval": 15,
+#              "cooldown_seconds": 300,
+#          },
+#      },
+#
+#
+#      {
+#          "autoscaler_name": "customdas-cpu-queue",
+#          "deployment_names": APP["deployment_names"],
+#          "config": {
+#              "image": "zewang42/customdas-autoscaler-cpu-queue:latest",
+#              "prom_url": "http://prometheus.istio-system.svc.cluster.local:9090/api/v1/query",
+#              "queue_model": "mmc",
+#              "latency_slo_mode": "adaptive",
+#              "slo_ms": 500,
+#              "slo_leaf_ms": 20,
+#              "slo_latency_percentile": "p95",
+#              "queue_model_percentile": "p95",
+#              "min_replicas": 1,
+#              "max_replicas": 20,
+#              "ggc_k_min": 0.7,
+#              "interval": 15,
+#              "cooldown_seconds": 120,
+#          },
+#      },
+#
+#
+#
+#
+#
+#
+#
+#      {
+#          "autoscaler_name": "customdas-cpu-queue",
+#          "deployment_names": APP["deployment_names"],
+#          "config": {
+#              "image": "zewang42/customdas-autoscaler-cpu-queue:latest",
+#              "prom_url": "http://prometheus.istio-system.svc.cluster.local:9090/api/v1/query",
+#              "queue_model": "mmc",
+#              "latency_slo_mode": "adaptive",
+#              "slo_ms": 500,
+#              "slo_leaf_ms": 20,
+#              "slo_latency_percentile": "p95",
+#              "queue_model_percentile": "p95",
+#              "min_replicas": 1,
+#              "max_replicas": 20,
+#              "ggc_k_min": 0.7,
+#              "interval": 15,
+#              "cooldown_seconds": 120,
+#          },
+#      },
+#
+#
+#
+#
+#
+#
+#
       {
           "autoscaler_name": "customdas-cpu-queue",
           "deployment_names": APP["deployment_names"],
@@ -611,79 +663,27 @@ AUTOSCALER_SETTINGS = [
               "cooldown_seconds": 120,
           },
       },
-
-
-
-
-
-
-
-      {
-          "autoscaler_name": "customdas-cpu-queue",
-          "deployment_names": APP["deployment_names"],
-          "config": {
-              "image": "zewang42/customdas-autoscaler-cpu-queue:latest",
-              "prom_url": "http://prometheus.istio-system.svc.cluster.local:9090/api/v1/query",
-              "queue_model": "mmc",
-              "latency_slo_mode": "adaptive",
-              "slo_ms": 500,
-              "slo_leaf_ms": 20,
-              "slo_latency_percentile": "p95",
-              "queue_model_percentile": "p95",
-              "min_replicas": 1,
-              "max_replicas": 20,
-              "ggc_k_min": 0.7,
-              "interval": 15,
-              "cooldown_seconds": 120,
-          },
-      },
-
-
-
-
-
-
-
-      {
-          "autoscaler_name": "customdas-cpu-queue",
-          "deployment_names": APP["deployment_names"],
-          "config": {
-              "image": "zewang42/customdas-autoscaler-cpu-queue:latest",
-              "prom_url": "http://prometheus.istio-system.svc.cluster.local:9090/api/v1/query",
-              "queue_model": "mmc",
-              "latency_slo_mode": "adaptive",
-              "slo_ms": 500,
-              "slo_leaf_ms": 20,
-              "slo_latency_percentile": "p95",
-              "queue_model_percentile": "p95",
-              "min_replicas": 1,
-              "max_replicas": 20,
-              "ggc_k_min": 0.7,
-              "interval": 15,
-              "cooldown_seconds": 120,
-          },
-      },
-
-
-      {
-          "autoscaler_name": "customdas-cpu-queue",
-          "deployment_names": APP["deployment_names"],
-          "config": {
-              "image": "zewang42/customdas-autoscaler-cpu-queue:latest",
-              "prom_url": "http://prometheus.istio-system.svc.cluster.local:9090/api/v1/query",
-              "queue_model": "mmc",
-              "latency_slo_mode": "adaptive",
-              "slo_ms": 500,
-              "slo_leaf_ms": 20,
-              "slo_latency_percentile": "p95",
-              "queue_model_percentile": "p95",
-              "min_replicas": 1,
-              "max_replicas": 20,
-              "ggc_k_min": 0.7,
-              "interval": 15,
-              "cooldown_seconds": 300,
-          },
-      },
+#
+#
+#      {
+#          "autoscaler_name": "customdas-cpu-queue",
+#          "deployment_names": APP["deployment_names"],
+#          "config": {
+#              "image": "zewang42/customdas-autoscaler-cpu-queue:latest",
+#              "prom_url": "http://prometheus.istio-system.svc.cluster.local:9090/api/v1/query",
+#              "queue_model": "mmc",
+#              "latency_slo_mode": "adaptive",
+#              "slo_ms": 500,
+#              "slo_leaf_ms": 20,
+#              "slo_latency_percentile": "p95",
+#              "queue_model_percentile": "p95",
+#              "min_replicas": 1,
+#              "max_replicas": 20,
+#              "ggc_k_min": 0.7,
+#              "interval": 15,
+#              "cooldown_seconds": 300,
+#          },
+#      },
 
 
 
@@ -1113,7 +1113,7 @@ AUTOSCALER_SETTINGS = [
 ]
 
 
-DURATION_SECONDS = 60 * 72
+DURATION_SECONDS = 60 * 2
 MONITOR_INTERVAL = 5
 LATENCY_PERCENTILE = "p95"
 PROM_URL = "http://prometheus.istio-system.svc.cluster.local:9090/api/v1/query"
