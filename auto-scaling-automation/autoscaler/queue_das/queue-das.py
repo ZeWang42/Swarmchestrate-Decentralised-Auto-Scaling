@@ -491,6 +491,19 @@ def format_modeled_delay_s(value_s: float) -> str:
         return "inf"
     return f"{value_s * 1000.0:.2f}ms"
 
+def load_is_not_increasing(lambda_history: list[float], cooldown_s: float) -> bool:
+    num_samples_to_check = max(2, math.ceil(cooldown_s / 15))
+    if len(lambda_history) < num_samples_to_check:
+        return False
+
+    # Check if the arrival rate has been non-increasing for the last cooldown_s seconds.
+    # Assuming the loop runs every 15 seconds, we check the last cooldown_s / 15 samples.
+    recent_history = lambda_history[-num_samples_to_check:]
+
+    return all(
+        recent_history[i] >= recent_history[i + 1]
+        for i in range(len(recent_history) - 1)
+    )
 
 # ---------------------------------------------------------------------------
 # DAS control loop
@@ -512,7 +525,9 @@ def das_loop(
 
     processing_time_s: float | None = None
     adaptive_local_slo_history_ms: list[float] = []
+    lambda_history: list[float] = []
     scale_down_safe_windows = 0
+    lambda_history: list[float] = []
 
     local_slo_mode = os.getenv("LATENCY_SLO_MODE", "adaptive").strip().lower()
     if local_slo_mode not in {"adaptive", "fixed"}:
@@ -521,6 +536,9 @@ def das_loop(
             local_slo_mode,
         )
         local_slo_mode = "adaptive"
+                    lambda_history.append(arrival_rate_rps)
+                    if len(lambda_history) > 40:
+                        del lambda_history[: len(lambda_history) - 40]
 
     queue_model = os.getenv("QUEUE_MODEL", "mmc").strip().lower()
     if queue_model not in {"mmc", "ggc"}:
@@ -552,7 +570,7 @@ def das_loop(
     variability_max = float(os.getenv("GGC_K_MAX", "10.0"))
 
     required_scale_down_windows = int(os.getenv("SCALE_DOWN_MIN_WINDOWS", "2"))
-
+    required_scale_down_windows = math.ceil(scale_down_cooldown_s /15)
     is_frontend_service = deployment == ROOT_SERVICE
     frontend_slo_ms = get_configured_local_slo_ms(
         APP_NAME,
@@ -650,6 +668,10 @@ def das_loop(
 
             arrival_rate_rps = (http_rpm + grpc_rpm) / 60.0
 
+            lambda_history.append(arrival_rate_rps)
+            if len(lambda_history) > 40:
+                del lambda_history[: len(lambda_history) - 40]
+
             # Fetch frontend latency for both adaptive learning and compact logging.
             if is_frontend_service:
                 observed_frontend_latency_ms = observed_local_latency_ms
@@ -670,12 +692,22 @@ def das_loop(
                     local_slo_ms = learned_slo_ms
 
                 # Learn only while frontend latency is comfortably below its SLO.
+                # Ze-TODO: we should try two sets of parameters:
+                #   1) 0.7/ 0.8/ 0.9/ 1.0
+                #   rule out, would not be working 2) 0.7: *10/7 | 0.8: * 5/4 | 0.9: * 10/9
+                # Ze-UD: we rule out the second part, just do the first one, use variability_min to control
                 if (
                     valid_number(observed_frontend_latency_ms)
                     and observed_frontend_latency_ms > 0
-                    and observed_frontend_latency_ms < 0.7 * frontend_slo_ms
+                    and observed_frontend_latency_ms < variability_min * frontend_slo_ms
                 ):
                     local_slo_candidate_ms = (observed_local_latency_ms)
+#                    local_slo_candidate_ms = (
+#                        observed_local_latency_ms
+#                        * frontend_slo_ms
+#                        / observed_frontend_latency_ms
+#                    )
+                    #local_slo_candidate_ms = (observed_local_latency_ms)
 
                     if add_local_slo_candidate(
                         adaptive_local_slo_history_ms,
@@ -846,26 +878,43 @@ def das_loop(
                 )
 
             # -----------------------------------------------------------------
-            # Scale down one replica at a time, with safety windows + cooldown
+            # Scale down, with safe latency windows and lambda and cooldown
             # -----------------------------------------------------------------
             elif desired_replicas < current_replicas:
-                candidate_replicas = max(min_replicas, current_replicas - 1)
-                predicted_local_latency_ms = predict_local_latency_mmc_ms(
-                    arrival_rate_rps,
-                    service_rate_rps,
-                    candidate_replicas,
-                    processing_time_s,
-                    queue_percentile,
-                )
 
-                scale_down_safe = (
-                    candidate_replicas >= min_replicas
-                    and math.isfinite(predicted_local_latency_ms)
-                    and predicted_local_latency_ms <= local_slo_ms
-                )
+                candidate_replicas = current_replicas
+                scale_down_safe = False
+                predicted_local_latency_ms = math.inf
+
+                for candidate in range(
+                    min_replicas,
+                    current_replicas-1,
+                ):
+                    predicted_latency = predict_local_latency_mmc_ms(
+                        arrival_rate_rps,
+                        service_rate_rps,
+                        candidate,
+                        processing_time_s,
+                        queue_percentile,
+                    )
+
+                    safe = (
+                        candidate >= min_replicas
+                        and math.isfinite(predicted_latency)
+                        and predicted_latency <= local_slo_ms
+                    )
+
+                    if safe:
+                        candidate_replicas = candidate
+                        predicted_local_latency_ms = predicted_latency
+                        scale_down_safe = True
+                        break
 
                 if scale_down_safe:
-                    scale_down_safe_windows += 1
+                    if load_is_not_increasing(lambda_history, scale_down_cooldown_s):
+                        scale_down_safe_windows += 1
+                    else:
+                        scale_down_safe_windows = 0
                 else:
                     scale_down_safe_windows = 0
 
@@ -876,11 +925,12 @@ def das_loop(
                 if (
                     scale_down_safe
                     and scale_down_safe_windows >= required_scale_down_windows
-                    and cooldown_finished
+                    #and cooldown_finished
                 ):
                     result = executor.scale_by(
                         deployment,
-                        delta=-1,
+                        delta=candidate_replicas-current_replicas,
+                        #delta=candidate_replicas-current_replicas,
                         min_replicas=min_replicas,
                         max_replicas=max_replicas,
                     )
@@ -893,7 +943,6 @@ def das_loop(
                         candidate_replicas,
                         result,
                     )
-
             else:
                 scale_down_safe_windows = 0
 
