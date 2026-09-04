@@ -492,7 +492,9 @@ def format_modeled_delay_s(value_s: float) -> str:
     return f"{value_s * 1000.0:.2f}ms"
 
 def load_is_not_increasing(lambda_history: list[float], cooldown_s: float) -> bool:
-    num_samples_to_check = max(2, math.ceil(cooldown_s / 15))
+    # essencially, we want to see the trend but not history, so three should be enough
+    # and so we are not worrying about cooldown_s
+    num_samples_to_check = min(3, math.ceil(cooldown_s / 15))
     if len(lambda_history) < num_samples_to_check:
         return False
 
