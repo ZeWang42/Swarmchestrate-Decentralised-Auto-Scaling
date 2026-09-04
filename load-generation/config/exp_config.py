@@ -16,14 +16,14 @@ class Config:
         # benchmark config
         self.benchmarks = {
             'online-boutique': {
-                'entry': 'http://3.8.148.228:8080/', # check the port of istio-ingress-gateway
+                'entry': 'http://18.169.241.77:8080/', # check the port of istio-ingress-gateway
                 'deploy_path': './benchmarks/online-boutique/online-boutique.yaml',
                 'istio_yaml': './benchmarks/online-boutique/istio-manifests.yaml',
                 'namespace': 'online-boutique',
                 'SLA': 500
             },
             'book-info': {
-                'entry': 'http://13.135.128.217:8080/', # check the port of istio-ingress-gateway
+                'entry': 'http://18.169.241.77:8080/', # check the port of istio-ingress-gateway
                 'SLA': 500
             }
         }

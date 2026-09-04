@@ -1,0 +1,5 @@
+Method,Name,Error,Occurrences
+POST,/setCurrency,"ReadTimeout(ReadTimeoutError(""HTTPConnectionPool(host='18.175.55.65', port=30341): Read timed out. (read timeout=None)""))",1
+GET,/product/2ZYFJ3GM2N,"ReadTimeout(ReadTimeoutError(""HTTPConnectionPool(host='18.175.55.65', port=30341): Read timed out. (read timeout=None)""))",1
+GET,/product/66VCHSJNUP,"ReadTimeout(ReadTimeoutError(""HTTPConnectionPool(host='18.175.55.65', port=30341): Read timed out. (read timeout=None)""))",1
+GET,/product/6E92ZMYYFZ,"ReadTimeout(ReadTimeoutError(""HTTPConnectionPool(host='18.175.55.65', port=30341): Read timed out. (read timeout=None)""))",1

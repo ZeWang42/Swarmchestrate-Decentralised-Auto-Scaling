@@ -13,7 +13,7 @@ python3 -m venv venv
 source venv/bin/activate
 
 # Install locust inside the environment
-pip install locust
+pip install -r requirements.txt
 
 ```
 ## Step 1: configure frontend gateway entry

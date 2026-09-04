@@ -1,0 +1,11 @@
+Method,Name,Error,Occurrences
+GET,/product/66VCHSJNUP,HTTPError('503 Server Error: Service Unavailable for url: /product/66VCHSJNUP'),1
+POST,/cart,HTTPError('503 Server Error: Service Unavailable for url: /cart'),2
+POST,/setCurrency,HTTPError('503 Server Error: Service Unavailable for url: /setCurrency'),3
+GET,/product/OLJCESPC7Z,HTTPError('503 Server Error: Service Unavailable for url: /product/OLJCESPC7Z'),3
+GET,/product/9SIQT8TOJO,HTTPError('503 Server Error: Service Unavailable for url: /product/9SIQT8TOJO'),1
+GET,/product/0PUK6V6EV0,HTTPError('503 Server Error: Service Unavailable for url: /product/0PUK6V6EV0'),1
+POST,/cart/checkout,HTTPError('503 Server Error: Service Unavailable for url: /cart/checkout'),3
+GET,/,HTTPError('503 Server Error: Service Unavailable for url: /'),1
+GET,/cart,HTTPError('503 Server Error: Service Unavailable for url: /cart'),2
+GET,/product/6E92ZMYYFZ,HTTPError('503 Server Error: Service Unavailable for url: /product/6E92ZMYYFZ'),2

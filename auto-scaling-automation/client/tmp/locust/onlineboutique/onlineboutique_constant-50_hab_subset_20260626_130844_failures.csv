@@ -1,0 +1,80 @@
+Method,Name,Error,Occurrences
+GET,/product/1YMWWN1N4O,"ConnectTimeoutError(<HTTPConnection(host='18.132.246.61', port=30977) at 0x111f08650>, 'Connection to 18.132.246.61 timed out. (connect timeout=None)')",1
+GET,/product/L9ECAV7KIM,"ConnectTimeoutError(<HTTPConnection(host='18.132.246.61', port=30977) at 0x111919550>, 'Connection to 18.132.246.61 timed out. (connect timeout=None)')",1
+GET,/product/1YMWWN1N4O,"ConnectTimeoutError(<HTTPConnection(host='18.132.246.61', port=30977) at 0x111f09850>, 'Connection to 18.132.246.61 timed out. (connect timeout=None)')",1
+GET,/cart,"ConnectionRefusedError(61, 'Connection refused')",10
+GET,/cart,"ConnectTimeoutError(<HTTPConnection(host='18.132.246.61', port=30977) at 0x111f09150>, 'Connection to 18.132.246.61 timed out. (connect timeout=None)')",1
+POST,/cart/checkout,"OSError(51, 'Network is unreachable')",471
+GET,/product/L9ECAV7KIM,"ConnectTimeoutError(<HTTPConnection(host='18.132.246.61', port=30977) at 0x111f09050>, 'Connection to 18.132.246.61 timed out. (connect timeout=None)')",1
+GET,/product/9SIQT8TOJO,"ConnectTimeoutError(<HTTPConnection(host='18.132.246.61', port=30977) at 0x1116d3050>, 'Connection to 18.132.246.61 timed out. (connect timeout=None)')",1
+GET,/product/L9ECAV7KIM,"ConnectTimeoutError(<HTTPConnection(host='18.132.246.61', port=30977) at 0x111f0a650>, 'Connection to 18.132.246.61 timed out. (connect timeout=None)')",1
+GET,/product/66VCHSJNUP,"ConnectTimeoutError(<HTTPConnection(host='18.132.246.61', port=30977) at 0x111f09750>, 'Connection to 18.132.246.61 timed out. (connect timeout=None)')",1
+GET,/product/2ZYFJ3GM2N,"ConnectTimeoutError(<HTTPConnection(host='18.132.246.61', port=30977) at 0x111f0a550>, 'Connection to 18.132.246.61 timed out. (connect timeout=None)')",1
+GET,/product/6E92ZMYYFZ,"ConnectTimeoutError(<HTTPConnection(host='18.132.246.61', port=30977) at 0x111f0aa50>, 'Connection to 18.132.246.61 timed out. (connect timeout=None)')",1
+GET,/cart,"ConnectTimeoutError(<HTTPConnection(host='18.132.246.61', port=30977) at 0x111ae5550>, 'Connection to 18.132.246.61 timed out. (connect timeout=None)')",1
+GET,/product/66VCHSJNUP,"ConnectTimeoutError(<HTTPConnection(host='18.132.246.61', port=30977) at 0x11191b150>, 'Connection to 18.132.246.61 timed out. (connect timeout=None)')",1
+GET,/product/1YMWWN1N4O,"ConnectTimeoutError(<HTTPConnection(host='18.132.246.61', port=30977) at 0x111918b50>, 'Connection to 18.132.246.61 timed out. (connect timeout=None)')",1
+GET,/product/2ZYFJ3GM2N,"OSError(51, 'Network is unreachable')",641
+POST,/setCurrency,"OSError(51, 'Network is unreachable')",429
+GET,/product/OLJCESPC7Z,"ConnectTimeoutError(<HTTPConnection(host='18.132.246.61', port=30977) at 0x11195e050>, 'Connection to 18.132.246.61 timed out. (connect timeout=None)')",1
+GET,/product/6E92ZMYYFZ,"ConnectTimeoutError(<HTTPConnection(host='18.132.246.61', port=30977) at 0x11191ad50>, 'Connection to 18.132.246.61 timed out. (connect timeout=None)')",1
+GET,/cart,"OSError(51, 'Network is unreachable')",1416
+GET,/product/1YMWWN1N4O,"ConnectTimeoutError(<HTTPConnection(host='18.132.246.61', port=30977) at 0x111f0b550>, 'Connection to 18.132.246.61 timed out. (connect timeout=None)')",1
+GET,/product/1YMWWN1N4O,"ConnectTimeoutError(<HTTPConnection(host='18.132.246.61', port=30977) at 0x111f0a050>, 'Connection to 18.132.246.61 timed out. (connect timeout=None)')",1
+GET,/product/L9ECAV7KIM,"OSError(51, 'Network is unreachable')",629
+GET,/product/9SIQT8TOJO,"ConnectionRefusedError(61, 'Connection refused')",10
+GET,/product/66VCHSJNUP,"ConnectTimeoutError(<HTTPConnection(host='18.132.246.61', port=30977) at 0x111f0b650>, 'Connection to 18.132.246.61 timed out. (connect timeout=None)')",1
+GET,/product/0PUK6V6EV0,RemoteDisconnected('Remote end closed connection without response'),1
+GET,/product/2ZYFJ3GM2N,RemoteDisconnected('Remote end closed connection without response'),1
+GET,/product/LS4PSXUNUM,"ConnectTimeoutError(<HTTPConnection(host='18.132.246.61', port=30977) at 0x11195ef50>, 'Connection to 18.132.246.61 timed out. (connect timeout=None)')",1
+GET,/product/6E92ZMYYFZ,RemoteDisconnected('Remote end closed connection without response'),1
+GET,/,"ConnectTimeoutError(<HTTPConnection(host='18.132.246.61', port=30977) at 0x11191a750>, 'Connection to 18.132.246.61 timed out. (connect timeout=None)')",1
+GET,/product/2ZYFJ3GM2N,"ConnectionRefusedError(61, 'Connection refused')",9
+GET,/product/L9ECAV7KIM,"ConnectTimeoutError(<HTTPConnection(host='18.132.246.61', port=30977) at 0x11191ac50>, 'Connection to 18.132.246.61 timed out. (connect timeout=None)')",1
+GET,/product/LS4PSXUNUM,"ConnectTimeoutError(<HTTPConnection(host='18.132.246.61', port=30977) at 0x111f08a50>, 'Connection to 18.132.246.61 timed out. (connect timeout=None)')",1
+GET,/product/1YMWWN1N4O,"OSError(51, 'Network is unreachable')",651
+GET,/product/6E92ZMYYFZ,"OSError(51, 'Network is unreachable')",648
+GET,/,"ConnectionRefusedError(61, 'Connection refused')",3
+POST,/cart,"ConnectionRefusedError(61, 'Connection refused')",13
+POST,/cart,"OSError(51, 'Network is unreachable')",1375
+GET,/cart,"ConnectTimeoutError(<HTTPConnection(host='18.132.246.61', port=30977) at 0x111ae5050>, 'Connection to 18.132.246.61 timed out. (connect timeout=None)')",1
+POST,/setCurrency,"ConnectionRefusedError(61, 'Connection refused')",5
+GET,/product/OLJCESPC7Z,"ConnectTimeoutError(<HTTPConnection(host='18.132.246.61', port=30977) at 0x111f09b50>, 'Connection to 18.132.246.61 timed out. (connect timeout=None)')",1
+GET,/product/OLJCESPC7Z,"ConnectionRefusedError(61, 'Connection refused')",13
+GET,/product/66VCHSJNUP,"ConnectionRefusedError(61, 'Connection refused')",10
+GET,/product/0PUK6V6EV0,"ConnectionRefusedError(61, 'Connection refused')",7
+GET,/product/66VCHSJNUP,RemoteDisconnected('Remote end closed connection without response'),1
+GET,/product/LS4PSXUNUM,"OSError(51, 'Network is unreachable')",645
+GET,/product/0PUK6V6EV0,"OSError(51, 'Network is unreachable')",675
+GET,/product/1YMWWN1N4O,"ConnectTimeoutError(<HTTPConnection(host='18.132.246.61', port=30977) at 0x111f09950>, 'Connection to 18.132.246.61 timed out. (connect timeout=None)')",1
+GET,/product/LS4PSXUNUM,"ConnectTimeoutError(<HTTPConnection(host='18.132.246.61', port=30977) at 0x111f09550>, 'Connection to 18.132.246.61 timed out. (connect timeout=None)')",1
+GET,/product/LS4PSXUNUM,"ConnectTimeoutError(<HTTPConnection(host='18.132.246.61', port=30977) at 0x111919150>, 'Connection to 18.132.246.61 timed out. (connect timeout=None)')",1
+POST,/setCurrency,"ConnectTimeoutError(<HTTPConnection(host='18.132.246.61', port=30977) at 0x11191b850>, 'Connection to 18.132.246.61 timed out. (connect timeout=None)')",1
+GET,/product/OLJCESPC7Z,"ConnectTimeoutError(<HTTPConnection(host='18.132.246.61', port=30977) at 0x111918550>, 'Connection to 18.132.246.61 timed out. (connect timeout=None)')",1
+GET,/product/9SIQT8TOJO,RemoteDisconnected('Remote end closed connection without response'),1
+GET,/product/66VCHSJNUP,"OSError(51, 'Network is unreachable')",660
+GET,/product/66VCHSJNUP,"ConnectTimeoutError(<HTTPConnection(host='18.132.246.61', port=30977) at 0x11191be50>, 'Connection to 18.132.246.61 timed out. (connect timeout=None)')",1
+GET,/cart,"ConnectTimeoutError(<HTTPConnection(host='18.132.246.61', port=30977) at 0x111f09350>, 'Connection to 18.132.246.61 timed out. (connect timeout=None)')",1
+GET,/,"OSError(51, 'Network is unreachable')",441
+GET,/product/6E92ZMYYFZ,"ConnectTimeoutError(<HTTPConnection(host='18.132.246.61', port=30977) at 0x11195c650>, 'Connection to 18.132.246.61 timed out. (connect timeout=None)')",1
+GET,/product/9SIQT8TOJO,"OSError(51, 'Network is unreachable')",665
+GET,/product/OLJCESPC7Z,"ConnectTimeoutError(<HTTPConnection(host='18.132.246.61', port=30977) at 0x111f0af50>, 'Connection to 18.132.246.61 timed out. (connect timeout=None)')",1
+GET,/product/9SIQT8TOJO,"ConnectTimeoutError(<HTTPConnection(host='18.132.246.61', port=30977) at 0x111f0ae50>, 'Connection to 18.132.246.61 timed out. (connect timeout=None)')",1
+GET,/product/2ZYFJ3GM2N,"ConnectTimeoutError(<HTTPConnection(host='18.132.246.61', port=30977) at 0x111f08150>, 'Connection to 18.132.246.61 timed out. (connect timeout=None)')",1
+POST,/cart/checkout,"ConnectionRefusedError(61, 'Connection refused')",4
+GET,/product/66VCHSJNUP,"ConnectTimeoutError(<HTTPConnection(host='18.132.246.61', port=30977) at 0x11191a450>, 'Connection to 18.132.246.61 timed out. (connect timeout=None)')",1
+GET,/product/LS4PSXUNUM,"ConnectionRefusedError(61, 'Connection refused')",10
+GET,/product/9SIQT8TOJO,"ConnectTimeoutError(<HTTPConnection(host='18.132.246.61', port=30977) at 0x11191b350>, 'Connection to 18.132.246.61 timed out. (connect timeout=None)')",1
+GET,/product/2ZYFJ3GM2N,"ConnectTimeoutError(<HTTPConnection(host='18.132.246.61', port=30977) at 0x111f0b850>, 'Connection to 18.132.246.61 timed out. (connect timeout=None)')",1
+GET,/product/OLJCESPC7Z,"OSError(51, 'Network is unreachable')",673
+GET,/product/LS4PSXUNUM,"ConnectTimeoutError(<HTTPConnection(host='18.132.246.61', port=30977) at 0x11195df50>, 'Connection to 18.132.246.61 timed out. (connect timeout=None)')",1
+GET,/product/6E92ZMYYFZ,"ConnectionRefusedError(61, 'Connection refused')",5
+GET,/product/1YMWWN1N4O,"ConnectionRefusedError(61, 'Connection refused')",6
+GET,/product/1YMWWN1N4O,"ConnectTimeoutError(<HTTPConnection(host='18.132.246.61', port=30977) at 0x11191bd50>, 'Connection to 18.132.246.61 timed out. (connect timeout=None)')",1
+GET,/product/2ZYFJ3GM2N,"ConnectTimeoutError(<HTTPConnection(host='18.132.246.61', port=30977) at 0x11195e450>, 'Connection to 18.132.246.61 timed out. (connect timeout=None)')",1
+GET,/product/6E92ZMYYFZ,"ConnectTimeoutError(<HTTPConnection(host='18.132.246.61', port=30977) at 0x111f0b450>, 'Connection to 18.132.246.61 timed out. (connect timeout=None)')",1
+GET,/product/OLJCESPC7Z,"ConnectTimeoutError(<HTTPConnection(host='18.132.246.61', port=30977) at 0x111f0a450>, 'Connection to 18.132.246.61 timed out. (connect timeout=None)')",1
+GET,/product/L9ECAV7KIM,"ConnectionRefusedError(61, 'Connection refused')",11
+POST,/cart,RemoteDisconnected('Remote end closed connection without response'),2
+GET,/product/9SIQT8TOJO,"ConnectTimeoutError(<HTTPConnection(host='18.132.246.61', port=30977) at 0x11191a250>, 'Connection to 18.132.246.61 timed out. (connect timeout=None)')",1
+GET,/product/1YMWWN1N4O,RemoteDisconnected('Remote end closed connection without response'),2

@@ -1,0 +1,10 @@
+Method,Name,Error,Occurrences,First Seen,Last Seen
+POST,/cart,HTTPError('503 Server Error: Service Unavailable for url: /cart'),1,2026-08-30T11:56:59Z,2026-08-30T11:56:59Z
+GET,/product/LS4PSXUNUM,HTTPError('503 Server Error: Service Unavailable for url: /product/LS4PSXUNUM'),1,2026-08-30T12:24:25Z,2026-08-30T12:24:25Z
+POST,/setCurrency,HTTPError('503 Server Error: Service Unavailable for url: /setCurrency'),1,2026-08-30T12:29:40Z,2026-08-30T12:29:40Z
+GET,/product/L9ECAV7KIM,ChunkedEncodingError(ProtocolError('Response ended prematurely')),1,2026-08-30T12:24:26Z,2026-08-30T12:24:26Z
+GET,/product/OLJCESPC7Z,HTTPError('503 Server Error: Service Unavailable for url: /product/OLJCESPC7Z'),2,2026-08-30T11:56:59Z,2026-08-30T12:29:40Z
+GET,/cart,HTTPError('503 Server Error: Service Unavailable for url: /cart'),3,2026-08-30T12:24:25Z,2026-08-30T12:34:46Z
+GET,/product/0PUK6V6EV0,HTTPError('500 Server Error: Internal Server Error for url: /product/0PUK6V6EV0'),1,2026-08-30T12:28:38Z,2026-08-30T12:28:38Z
+POST,/cart/checkout,HTTPError('500 Server Error: Internal Server Error for url: /cart/checkout'),1,2026-08-30T12:33:45Z,2026-08-30T12:33:45Z
+GET,/product/6E92ZMYYFZ,HTTPError('500 Server Error: Internal Server Error for url: /product/6E92ZMYYFZ'),1,2026-08-30T12:44:02Z,2026-08-30T12:44:02Z

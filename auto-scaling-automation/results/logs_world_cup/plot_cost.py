@@ -49,7 +49,7 @@ DISPLAY_NAMES = {
     "queue-CDT300": "QUEUE-CDT300",
     "hpa80-CDT120": "HPA80-CDT120",
     "hpa80-CDT300": "HPA80-CDT300",
-    #"das": "DAS",
+
 }
 
 COLORS = {

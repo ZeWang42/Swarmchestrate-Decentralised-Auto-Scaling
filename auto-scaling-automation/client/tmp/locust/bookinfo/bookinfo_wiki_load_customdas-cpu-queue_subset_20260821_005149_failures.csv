@@ -1,0 +1,7 @@
+Method,Name,Error,Occurrences,First Seen,Last Seen
+GET,/api/v1/products,HTTPError('503 Server Error: Service Unavailable for url: /api/v1/products'),10500,2026-08-20T23:59:03Z,2026-08-21T01:01:35Z
+GET,/api/v1/products/0/ratings,HTTPError('503 Server Error: Service Unavailable for url: /api/v1/products/0/ratings'),3654,2026-08-20T23:59:03Z,2026-08-21T01:01:30Z
+GET,/api/v1/products/0,HTTPError('503 Server Error: Service Unavailable for url: /api/v1/products/0'),10895,2026-08-20T23:59:03Z,2026-08-21T01:02:04Z
+GET,/api/v1/products/0/reviews,HTTPError('500 Server Error: Internal Server Error for url: /api/v1/products/0/reviews'),652,2026-08-21T00:04:08Z,2026-08-21T01:02:58Z
+GET,/api/v1/products/0/reviews,HTTPError('503 Server Error: Service Unavailable for url: /api/v1/products/0/reviews'),4574,2026-08-20T23:59:11Z,2026-08-21T01:03:50Z
+GET,/productpage,HTTPError('503 Server Error: Service Unavailable for url: /productpage'),7519,2026-08-20T23:59:03Z,2026-08-21T01:02:02Z

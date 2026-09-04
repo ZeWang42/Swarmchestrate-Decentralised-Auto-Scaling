@@ -125,12 +125,19 @@ def cleanup_experiment_logic(req: ExperimentCleanupRequest) -> dict[str, Any]:
 
     if req.delete_autoscaler:
         try:
-            result["autoscaler_deleted"] = delete_autoscaler_for_application(
+            autoscaler_deleted = delete_autoscaler_for_application(
                 app_name,
                 req.namespace,
                 req.autoscaler_name,
                 req.deployment_names,
             ).model_dump()
+            result["autoscaler_deleted"] = autoscaler_deleted
+            if not autoscaler_deleted.get("ok", False):
+                delete_errors = autoscaler_deleted.get("errors") or ["unknown autoscaler deletion error"]
+                result["errors"].extend(
+                    f"autoscaler delete failed: {error}"
+                    for error in delete_errors
+                )
         except Exception as exc:
             result["errors"].append(f"autoscaler delete failed: {str(exc)}")
 

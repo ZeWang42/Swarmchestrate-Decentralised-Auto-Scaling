@@ -1,0 +1,3 @@
+Method,Name,Error,Occurrences,First Seen,Last Seen
+GET,/productpage,"ConnectionRefusedError(61, 'Connection refused')",9621,2026-08-20T22:05:56Z,2026-08-20T22:08:58Z
+GET,/api/v1/products/0,"ConnectionRefusedError(61, 'Connection refused')",5595,2026-08-20T22:05:56Z,2026-08-20T22:08:58Z

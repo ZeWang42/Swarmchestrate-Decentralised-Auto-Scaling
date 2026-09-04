@@ -146,9 +146,7 @@ if __name__ == "__main__":
     from config.exp_config import Config
     import asyncio
     
-    print("before config")
     cfg = Config()
-    print("after config")
     injector = LoadInjector(cfg)
 
     asyncio.run(injector.inject())

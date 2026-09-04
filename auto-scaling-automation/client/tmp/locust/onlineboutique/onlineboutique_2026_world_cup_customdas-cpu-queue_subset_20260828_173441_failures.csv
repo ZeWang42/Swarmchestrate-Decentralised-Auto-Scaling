@@ -1,0 +1,5 @@
+Method,Name,Error,Occurrences,First Seen,Last Seen
+POST,/cart,HTTPError('503 Server Error: Service Unavailable for url: /cart'),3,2026-08-28T16:59:48Z,2026-08-28T17:23:23Z
+GET,/cart,HTTPError('503 Server Error: Service Unavailable for url: /cart'),1,2026-08-28T17:23:23Z,2026-08-28T17:23:23Z
+GET,/cart,HTTPError('500 Server Error: Internal Server Error for url: /cart'),1,2026-08-28T17:24:10Z,2026-08-28T17:24:10Z
+POST,/cart/checkout,HTTPError('500 Server Error: Internal Server Error for url: /cart/checkout'),2,2026-08-28T17:23:39Z,2026-08-28T17:23:39Z

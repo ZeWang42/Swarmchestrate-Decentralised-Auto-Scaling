@@ -39,7 +39,9 @@ def query_prometheus_vector(prom_url: str, query: str) -> list[dict]:
 # Aggregate metrics for one destination workload
 # ----------------------------------------------------------------------
 
-def get_http_rpm_as_dst(prom_url: str, deployment_name: str, period: str = "1m") -> float:
+
+#def get_http_rpm_as_dst(prom_url: str, deployment_name: str, period: str = "1m") -> float:
+def get_http_rpm_as_dst(prom_url: str, deployment_name: str, period: str = "15s") -> float:
     query = (
         f'sum(rate(istio_requests_total'
         f'{{request_protocol="http", destination_workload="{deployment_name}"}}'
@@ -48,7 +50,9 @@ def get_http_rpm_as_dst(prom_url: str, deployment_name: str, period: str = "1m")
     return query_prometheus_scalar(prom_url, query)
 
 
-def get_grpc_rpm_as_dst(prom_url: str, deployment_name: str, period: str = "1m") -> float:
+#def get_grpc_rpm_as_dst(prom_url: str, deployment_name: str, period: str = "1m") -> float:
+
+def get_grpc_rpm_as_dst(prom_url: str, deployment_name: str, period: str = "15s") -> float:
     query = (
         f'sum(rate(istio_requests_total'
         f'{{request_protocol="grpc", destination_workload="{deployment_name}"}}'

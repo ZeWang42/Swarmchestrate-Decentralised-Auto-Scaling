@@ -1,0 +1,10 @@
+Method,Name,Error,Occurrences
+GET,/,"ConnectTimeoutError(<HTTPConnection(host='3.10.173.127', port=30341) at 0x1064ad850>, 'Connection to 3.10.173.127 timed out. (connect timeout=None)')",1
+GET,/,"ConnectTimeoutError(<HTTPConnection(host='3.10.173.127', port=30341) at 0x1064f3250>, 'Connection to 3.10.173.127 timed out. (connect timeout=None)')",1
+GET,/,"ConnectTimeoutError(<HTTPConnection(host='3.10.173.127', port=30341) at 0x1064f1e50>, 'Connection to 3.10.173.127 timed out. (connect timeout=None)')",1
+GET,/product/9SIQT8TOJO,HTTPError('500 Server Error: Internal Server Error for url: /product/9SIQT8TOJO'),1
+GET,/,"ConnectTimeoutError(<HTTPConnection(host='3.10.173.127', port=30341) at 0x1065f0d50>, 'Connection to 3.10.173.127 timed out. (connect timeout=None)')",1
+GET,/product/OLJCESPC7Z,HTTPError('500 Server Error: Internal Server Error for url: /product/OLJCESPC7Z'),1
+GET,/cart,HTTPError('500 Server Error: Internal Server Error for url: /cart'),1
+GET,/,"ConnectTimeoutError(<HTTPConnection(host='3.10.173.127', port=30341) at 0x10678d050>, 'Connection to 3.10.173.127 timed out. (connect timeout=None)')",1
+GET,/,"ConnectTimeoutError(<HTTPConnection(host='3.10.173.127', port=30341) at 0x1063ef750>, 'Connection to 3.10.173.127 timed out. (connect timeout=None)')",1

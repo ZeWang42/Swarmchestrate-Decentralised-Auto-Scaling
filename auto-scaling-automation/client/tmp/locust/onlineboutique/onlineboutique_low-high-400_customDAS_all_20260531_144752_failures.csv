@@ -1,0 +1,24 @@
+Method,Name,Error,Occurrences
+GET,/,"ConnectTimeoutError(<HTTPConnection(host='35.179.161.125', port=30402) at 0x107ea7350>, 'Connection to 35.179.161.125 timed out. (connect timeout=None)')",1
+GET,/,"ConnectTimeoutError(<HTTPConnection(host='35.179.161.125', port=30402) at 0x107f74850>, 'Connection to 35.179.161.125 timed out. (connect timeout=None)')",1
+GET,/,"ConnectTimeoutError(<HTTPConnection(host='35.179.161.125', port=30402) at 0x107a27450>, 'Connection to 35.179.161.125 timed out. (connect timeout=None)')",1
+GET,/,"ConnectTimeoutError(<HTTPConnection(host='35.179.161.125', port=30402) at 0x107f75c50>, 'Connection to 35.179.161.125 timed out. (connect timeout=None)')",1
+GET,/,"ConnectTimeoutError(<HTTPConnection(host='35.179.161.125', port=30402) at 0x107ea5b50>, 'Connection to 35.179.161.125 timed out. (connect timeout=None)')",1
+GET,/,"ConnectTimeoutError(<HTTPConnection(host='35.179.161.125', port=30402) at 0x107f75850>, 'Connection to 35.179.161.125 timed out. (connect timeout=None)')",1
+GET,/,"ConnectTimeoutError(<HTTPConnection(host='35.179.161.125', port=30402) at 0x107f75050>, 'Connection to 35.179.161.125 timed out. (connect timeout=None)')",1
+GET,/,"ConnectTimeoutError(<HTTPConnection(host='35.179.161.125', port=30402) at 0x107f74050>, 'Connection to 35.179.161.125 timed out. (connect timeout=None)')",1
+POST,/cart,HTTPError('503 Server Error: Service Unavailable for url: /cart'),1
+GET,/,"ConnectTimeoutError(<HTTPConnection(host='35.179.161.125', port=30402) at 0x107f75450>, 'Connection to 35.179.161.125 timed out. (connect timeout=None)')",1
+GET,/,"ConnectTimeoutError(<HTTPConnection(host='35.179.161.125', port=30402) at 0x107ea6f50>, 'Connection to 35.179.161.125 timed out. (connect timeout=None)')",1
+GET,/,"ConnectTimeoutError(<HTTPConnection(host='35.179.161.125', port=30402) at 0x107c45050>, 'Connection to 35.179.161.125 timed out. (connect timeout=None)')",1
+GET,/,"ConnectTimeoutError(<HTTPConnection(host='35.179.161.125', port=30402) at 0x107ea6b50>, 'Connection to 35.179.161.125 timed out. (connect timeout=None)')",1
+GET,/,"ConnectTimeoutError(<HTTPConnection(host='35.179.161.125', port=30402) at 0x107ea6750>, 'Connection to 35.179.161.125 timed out. (connect timeout=None)')",1
+GET,/product/0PUK6V6EV0,HTTPError('503 Server Error: Service Unavailable for url: /product/0PUK6V6EV0'),1
+POST,/cart/checkout,HTTPError('503 Server Error: Service Unavailable for url: /cart/checkout'),1
+GET,/,"ConnectTimeoutError(<HTTPConnection(host='35.179.161.125', port=30402) at 0x107f76050>, 'Connection to 35.179.161.125 timed out. (connect timeout=None)')",1
+GET,/,"ConnectTimeoutError(<HTTPConnection(host='35.179.161.125', port=30402) at 0x107ea7b50>, 'Connection to 35.179.161.125 timed out. (connect timeout=None)')",1
+GET,/,"ConnectTimeoutError(<HTTPConnection(host='35.179.161.125', port=30402) at 0x107f74c50>, 'Connection to 35.179.161.125 timed out. (connect timeout=None)')",1
+GET,/,"ConnectTimeoutError(<HTTPConnection(host='35.179.161.125', port=30402) at 0x107ea7750>, 'Connection to 35.179.161.125 timed out. (connect timeout=None)')",1
+GET,/,"ConnectTimeoutError(<HTTPConnection(host='35.179.161.125', port=30402) at 0x107ea6350>, 'Connection to 35.179.161.125 timed out. (connect timeout=None)')",1
+GET,/,"ConnectTimeoutError(<HTTPConnection(host='35.179.161.125', port=30402) at 0x107f74450>, 'Connection to 35.179.161.125 timed out. (connect timeout=None)')",1
+GET,/,"ConnectTimeoutError(<HTTPConnection(host='35.179.161.125', port=30402) at 0x107ea5f50>, 'Connection to 35.179.161.125 timed out. (connect timeout=None)')",1

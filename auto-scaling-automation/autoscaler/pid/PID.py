@@ -130,6 +130,18 @@ def percentile(values: list[float], q: float) -> float | None:
     return clean[lo] * (hi - pos) + clean[hi] * (pos - lo)
 
 
+LATENCY_SLO_MODE_FIXED = "fixed"
+LATENCY_SLO_MODE_ONLINE_LEARNING = "online_learning"
+
+
+def normalize_latency_slo_mode(raw_mode: str) -> str:
+    """Map LATENCY_SLO_MODE env values to one of the two supported modes."""
+    mode = (raw_mode or "").strip().lower()
+    if mode in ("online_learning", "online-learning", "adaptive", "learning"):
+        return LATENCY_SLO_MODE_ONLINE_LEARNING
+    return LATENCY_SLO_MODE_FIXED
+
+
 def get_configured_latency_slo_ms(app_name: str, deployment: str) -> float:
     """Get configured latency SLO from environment or baseline config table."""
     env_names = (
@@ -247,9 +259,16 @@ def das_loop_pid(
     # Local Adaptive Target State
     healthy_self_percentile_history_ms: list[float] = []
 
+    is_root = deployment in ROOT_SERVICES
+    startup_mode = (
+        LATENCY_SLO_MODE_FIXED
+        if is_root
+        else normalize_latency_slo_mode(os.getenv("LATENCY_SLO_MODE", LATENCY_SLO_MODE_ONLINE_LEARNING))
+    )
+
     logging.info(
-        "Starting Decentralized PID Controller for '%s' [Kp=%.4f, Ki=%.4f, Kd=%.4f]",
-        deployment, PID_KP, PID_KI, PID_KD
+        "Starting Decentralized PID Controller for '%s' [Kp=%.4f, Ki=%.4f, Kd=%.4f] | Latency SLO Mode: %s",
+        deployment, PID_KP, PID_KI, PID_KD, startup_mode
     )
 
     while True:
@@ -281,13 +300,22 @@ def das_loop_pid(
             # Determine Target SLO (R_target)
             APP_NAME = os.getenv("APP_NAME", "onlineboutique").strip().lower()
             configured_slo_ms = get_configured_latency_slo_ms(APP_NAME, deployment)
-            
-            is_root = deployment in ROOT_SERVICES
-            effective_mode = "fixed" if is_root else os.getenv("LATENCY_SLO_MODE", "adaptive").strip().lower()
 
-            if effective_mode == "adaptive":
-                frontend_latency = monitor.get_http_latency_p95_as_dst(ROOT_SERVICE)
-                if valid_number(frontend_latency) and frontend_latency < configured_slo_ms:
+            is_root = deployment in ROOT_SERVICES
+            effective_mode = (
+                LATENCY_SLO_MODE_FIXED
+                if is_root
+                else normalize_latency_slo_mode(os.getenv("LATENCY_SLO_MODE", LATENCY_SLO_MODE_ONLINE_LEARNING))
+            )
+
+            if effective_mode == LATENCY_SLO_MODE_ONLINE_LEARNING:
+                # Non-root SLO target starts at the configured/root-derived baseline, then
+                # online-learns its own healthy latency percentile whenever the root
+                # service is currently within its own SLO (i.e. the system is healthy).
+                root_slo_ms = get_configured_latency_slo_ms(APP_NAME, ROOT_SERVICE)
+                root_latency_ms = monitor.get_http_latency_p95_as_dst(ROOT_SERVICE)
+                root_is_healthy = valid_number(root_latency_ms) and root_latency_ms < root_slo_ms
+                if root_is_healthy:
                     update_healthy_latency_history(
                         healthy_self_percentile_history_ms,
                         R_observed_ms,
@@ -315,6 +343,10 @@ def das_loop_pid(
 
             # Quantize continuous PID signal to discrete replica counts
             # Positive u_t suggests adding pods; Negative u_t suggests removing pods
+            if not math.isfinite(u_t):
+                logging.warning("[%s PID] Non-finite control output u(t)=%s, skipping this cycle.", deployment, u_t)
+                wait_for_next_loop(interval)
+                continue
             recommended_delta = math.floor(u_t) if u_t < 0 else math.ceil(u_t)
             
             # Ignore minor fractional noise around zero

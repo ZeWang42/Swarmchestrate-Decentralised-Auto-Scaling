@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import math
+
 import requests
 
 
@@ -20,7 +22,9 @@ def query_prometheus_scalar(prom_url: str, query: str) -> float:
         result = payload.get("data", {}).get("result", [])
         if not result:
             return 0.0
-        return float(result[0].get("value", [None, "0"])[1])
+        value = float(result[0].get("value", [None, "0"])[1])
+        # histogram_quantile() yields NaN when no samples fall in the window (e.g. no traffic)
+        return value if math.isfinite(value) else 0.0
     except Exception:
         return 0.0
 

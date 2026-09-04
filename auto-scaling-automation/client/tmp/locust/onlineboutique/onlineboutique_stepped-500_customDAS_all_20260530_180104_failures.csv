@@ -1,0 +1,6 @@
+Method,Name,Error,Occurrences
+GET,/product/L9ECAV7KIM,HTTPError('503 Server Error: Service Unavailable for url: /product/L9ECAV7KIM'),1
+POST,/cart,HTTPError('503 Server Error: Service Unavailable for url: /cart'),2
+GET,/,HTTPError('503 Server Error: Service Unavailable for url: /'),1
+GET,/cart,HTTPError('503 Server Error: Service Unavailable for url: /cart'),1
+POST,/cart,ChunkedEncodingError(ProtocolError('Response ended prematurely')),1

@@ -1,0 +1,9 @@
+Method,Name,Error,Occurrences,First Seen,Last Seen
+GET,/product/1YMWWN1N4O,HTTPError('500 Server Error: Internal Server Error for url: /product/1YMWWN1N4O'),1,2026-08-31T02:12:12Z,2026-08-31T02:12:12Z
+POST,/cart,HTTPError('503 Server Error: Service Unavailable for url: /cart'),3,2026-08-31T02:08:41Z,2026-08-31T02:15:42Z
+POST,/setCurrency,HTTPError('503 Server Error: Service Unavailable for url: /setCurrency'),2,2026-08-31T02:12:12Z,2026-08-31T02:15:42Z
+GET,/product/OLJCESPC7Z,HTTPError('503 Server Error: Service Unavailable for url: /product/OLJCESPC7Z'),2,2026-08-31T02:08:41Z,2026-08-31T02:12:12Z
+GET,/product/0PUK6V6EV0,HTTPError('503 Server Error: Service Unavailable for url: /product/0PUK6V6EV0'),1,2026-08-31T02:12:12Z,2026-08-31T02:12:12Z
+GET,/product/2ZYFJ3GM2N,HTTPError('503 Server Error: Service Unavailable for url: /product/2ZYFJ3GM2N'),1,2026-08-31T02:12:12Z,2026-08-31T02:12:12Z
+GET,/cart,HTTPError('503 Server Error: Service Unavailable for url: /cart'),1,2026-08-31T02:08:41Z,2026-08-31T02:08:41Z
+GET,/product/6E92ZMYYFZ,HTTPError('503 Server Error: Service Unavailable for url: /product/6E92ZMYYFZ'),1,2026-08-31T02:08:41Z,2026-08-31T02:08:41Z

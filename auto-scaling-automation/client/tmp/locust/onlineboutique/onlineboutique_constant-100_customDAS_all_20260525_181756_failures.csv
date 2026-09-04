@@ -1,0 +1,7 @@
+Method,Name,Error,Occurrences
+POST,/cart,HTTPError('503 Server Error: Service Unavailable for url: /cart'),1
+POST,/setCurrency,HTTPError('503 Server Error: Service Unavailable for url: /setCurrency'),1
+POST,/cart/checkout,HTTPError('503 Server Error: Service Unavailable for url: /cart/checkout'),2
+GET,/,HTTPError('503 Server Error: Service Unavailable for url: /'),1
+GET,/cart,HTTPError('503 Server Error: Service Unavailable for url: /cart'),1
+GET,/cart,HTTPError('500 Server Error: Internal Server Error for url: /cart'),2

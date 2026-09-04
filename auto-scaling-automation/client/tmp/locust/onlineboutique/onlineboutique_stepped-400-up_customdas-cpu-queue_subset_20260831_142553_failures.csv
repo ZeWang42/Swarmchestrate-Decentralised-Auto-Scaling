@@ -1,0 +1,22 @@
+Method,Name,Error,Occurrences,First Seen,Last Seen
+GET,/product/1YMWWN1N4O,HTTPError('500 Server Error: Internal Server Error for url: /product/1YMWWN1N4O'),1,2026-08-31T14:30:37Z,2026-08-31T14:30:37Z
+GET,/product/L9ECAV7KIM,HTTPError('503 Server Error: Service Unavailable for url: /product/L9ECAV7KIM'),4,2026-08-31T13:52:48Z,2026-08-31T14:36:04Z
+POST,/cart,HTTPError('500 Server Error: Internal Server Error for url: /cart'),3,2026-08-31T14:08:10Z,2026-08-31T14:25:28Z
+GET,/product/1YMWWN1N4O,HTTPError('503 Server Error: Service Unavailable for url: /product/1YMWWN1N4O'),1,2026-08-31T13:52:48Z,2026-08-31T13:52:48Z
+GET,/product/66VCHSJNUP,HTTPError('503 Server Error: Service Unavailable for url: /product/66VCHSJNUP'),4,2026-08-31T13:58:50Z,2026-08-31T14:29:51Z
+POST,/cart,HTTPError('503 Server Error: Service Unavailable for url: /cart'),4,2026-08-31T14:23:38Z,2026-08-31T14:31:56Z
+GET,/product/LS4PSXUNUM,HTTPError('503 Server Error: Service Unavailable for url: /product/LS4PSXUNUM'),1,2026-08-31T13:52:48Z,2026-08-31T13:52:48Z
+POST,/setCurrency,HTTPError('503 Server Error: Service Unavailable for url: /setCurrency'),5,2026-08-31T13:52:48Z,2026-08-31T14:25:43Z
+GET,/product/9SIQT8TOJO,HTTPError('500 Server Error: Internal Server Error for url: /product/9SIQT8TOJO'),2,2026-08-31T14:25:28Z,2026-08-31T14:30:37Z
+GET,/product/OLJCESPC7Z,HTTPError('503 Server Error: Service Unavailable for url: /product/OLJCESPC7Z'),1,2026-08-31T14:31:56Z,2026-08-31T14:31:56Z
+GET,/product/9SIQT8TOJO,HTTPError('503 Server Error: Service Unavailable for url: /product/9SIQT8TOJO'),3,2026-08-31T13:52:48Z,2026-08-31T13:52:48Z
+GET,/product/0PUK6V6EV0,HTTPError('503 Server Error: Service Unavailable for url: /product/0PUK6V6EV0'),2,2026-08-31T13:52:48Z,2026-08-31T14:23:38Z
+POST,/cart/checkout,HTTPError('503 Server Error: Service Unavailable for url: /cart/checkout'),2,2026-08-31T14:23:38Z,2026-08-31T14:27:48Z
+GET,/,HTTPError('503 Server Error: Service Unavailable for url: /'),1,2026-08-31T14:31:56Z,2026-08-31T14:31:56Z
+GET,/cart,HTTPError('503 Server Error: Service Unavailable for url: /cart'),5,2026-08-31T13:52:48Z,2026-08-31T14:29:51Z
+GET,/product/0PUK6V6EV0,HTTPError('500 Server Error: Internal Server Error for url: /product/0PUK6V6EV0'),1,2026-08-31T14:10:43Z,2026-08-31T14:10:43Z
+GET,/product/L9ECAV7KIM,HTTPError('500 Server Error: Internal Server Error for url: /product/L9ECAV7KIM'),1,2026-08-31T14:25:28Z,2026-08-31T14:25:28Z
+GET,/product/2ZYFJ3GM2N,HTTPError('500 Server Error: Internal Server Error for url: /product/2ZYFJ3GM2N'),1,2026-08-31T14:08:10Z,2026-08-31T14:08:10Z
+GET,/product/6E92ZMYYFZ,HTTPError('503 Server Error: Service Unavailable for url: /product/6E92ZMYYFZ'),3,2026-08-31T13:52:48Z,2026-08-31T14:25:43Z
+POST,/cart/checkout,HTTPError('500 Server Error: Internal Server Error for url: /cart/checkout'),1,2026-08-31T14:33:21Z,2026-08-31T14:33:21Z
+GET,/product/6E92ZMYYFZ,HTTPError('500 Server Error: Internal Server Error for url: /product/6E92ZMYYFZ'),1,2026-08-31T14:35:13Z,2026-08-31T14:35:13Z

@@ -1,0 +1,36 @@
+Method,Name,Error,Occurrences,First Seen,Last Seen
+GET,/product/1YMWWN1N4O,"ReadTimeout(ReadTimeoutError(""HTTPConnectionPool(host='193.225.251.227', port=30894): Read timed out. (read timeout=None)""))",3,2026-08-31T11:34:08Z,2026-08-31T11:34:30Z
+GET,/product/1YMWWN1N4O,HTTPError('500 Server Error: Internal Server Error for url: /product/1YMWWN1N4O'),1,2026-08-31T12:01:39Z,2026-08-31T12:01:39Z
+GET,/product/66VCHSJNUP,"ReadTimeout(ReadTimeoutError(""HTTPConnectionPool(host='193.225.251.227', port=30894): Read timed out. (read timeout=None)""))",6,2026-08-31T11:33:56Z,2026-08-31T11:34:24Z
+POST,/,"ReadTimeout(ReadTimeoutError(""HTTPConnectionPool(host='193.225.251.227', port=30894): Read timed out. (read timeout=None)""))",4,2026-08-31T11:33:52Z,2026-08-31T11:34:32Z
+GET,/product/L9ECAV7KIM,HTTPError('503 Server Error: Service Unavailable for url: /product/L9ECAV7KIM'),4,2026-08-31T11:35:15Z,2026-08-31T11:57:35Z
+POST,/cart,HTTPError('500 Server Error: Internal Server Error for url: /cart'),7,2026-08-31T11:28:30Z,2026-08-31T12:03:28Z
+GET,/product/2ZYFJ3GM2N,"ReadTimeout(ReadTimeoutError(""HTTPConnectionPool(host='193.225.251.227', port=30894): Read timed out. (read timeout=None)""))",4,2026-08-31T11:33:45Z,2026-08-31T11:34:22Z
+GET,/product/1YMWWN1N4O,HTTPError('503 Server Error: Service Unavailable for url: /product/1YMWWN1N4O'),2,2026-08-31T11:33:10Z,2026-08-31T11:49:01Z
+GET,/product/OLJCESPC7Z,"ReadTimeout(ReadTimeoutError(""HTTPConnectionPool(host='193.225.251.227', port=30894): Read timed out. (read timeout=None)""))",6,2026-08-31T11:34:02Z,2026-08-31T11:34:31Z
+GET,/product/66VCHSJNUP,HTTPError('503 Server Error: Service Unavailable for url: /product/66VCHSJNUP'),3,2026-08-31T11:33:10Z,2026-08-31T11:49:01Z
+POST,/cart,HTTPError('503 Server Error: Service Unavailable for url: /cart'),9,2026-08-31T11:30:03Z,2026-08-31T12:07:08Z
+GET,/product/LS4PSXUNUM,HTTPError('503 Server Error: Service Unavailable for url: /product/LS4PSXUNUM'),8,2026-08-31T11:33:10Z,2026-08-31T12:09:11Z
+POST,/setCurrency,HTTPError('503 Server Error: Service Unavailable for url: /setCurrency'),6,2026-08-31T11:33:10Z,2026-08-31T12:03:47Z
+GET,/product/9SIQT8TOJO,HTTPError('500 Server Error: Internal Server Error for url: /product/9SIQT8TOJO'),3,2026-08-31T11:33:17Z,2026-08-31T11:33:17Z
+GET,/product/OLJCESPC7Z,HTTPError('503 Server Error: Service Unavailable for url: /product/OLJCESPC7Z'),11,2026-08-31T11:35:15Z,2026-08-31T12:09:11Z
+GET,/product/9SIQT8TOJO,HTTPError('503 Server Error: Service Unavailable for url: /product/9SIQT8TOJO'),2,2026-08-31T11:41:59Z,2026-08-31T11:59:39Z
+GET,/product/0PUK6V6EV0,"ReadTimeout(ReadTimeoutError(""HTTPConnectionPool(host='193.225.251.227', port=30894): Read timed out. (read timeout=None)""))",8,2026-08-31T11:33:48Z,2026-08-31T11:34:29Z
+GET,/cart,"ReadTimeout(ReadTimeoutError(""HTTPConnectionPool(host='193.225.251.227', port=30894): Read timed out. (read timeout=None)""))",10,2026-08-31T11:33:53Z,2026-08-31T11:34:29Z
+GET,/product/0PUK6V6EV0,HTTPError('503 Server Error: Service Unavailable for url: /product/0PUK6V6EV0'),4,2026-08-31T11:41:59Z,2026-08-31T12:09:11Z
+POST,/cart/checkout,HTTPError('503 Server Error: Service Unavailable for url: /cart/checkout'),2,2026-08-31T11:49:01Z,2026-08-31T11:59:39Z
+GET,/product/6E92ZMYYFZ,"ReadTimeout(ReadTimeoutError(""HTTPConnectionPool(host='193.225.251.227', port=30894): Read timed out. (read timeout=None)""))",5,2026-08-31T11:33:55Z,2026-08-31T11:34:27Z
+POST,/cart,"ReadTimeout(ReadTimeoutError(""HTTPConnectionPool(host='193.225.251.227', port=30894): Read timed out. (read timeout=None)""))",6,2026-08-31T11:33:58Z,2026-08-31T11:34:18Z
+GET,/product/2ZYFJ3GM2N,HTTPError('503 Server Error: Service Unavailable for url: /product/2ZYFJ3GM2N'),3,2026-08-31T11:33:10Z,2026-08-31T11:37:50Z
+GET,/,HTTPError('500 Server Error: Internal Server Error for url: /'),2,2026-08-31T11:33:17Z,2026-08-31T11:57:16Z
+GET,/product/L9ECAV7KIM,"ReadTimeout(ReadTimeoutError(""HTTPConnectionPool(host='193.225.251.227', port=30894): Read timed out. (read timeout=None)""))",7,2026-08-31T11:33:52Z,2026-08-31T11:34:21Z
+GET,/product/LS4PSXUNUM,"ReadTimeout(ReadTimeoutError(""HTTPConnectionPool(host='193.225.251.227', port=30894): Read timed out. (read timeout=None)""))",9,2026-08-31T11:33:51Z,2026-08-31T11:34:15Z
+GET,/cart,HTTPError('503 Server Error: Service Unavailable for url: /cart'),3,2026-08-31T11:33:10Z,2026-08-31T11:59:39Z
+GET,/product/0PUK6V6EV0,HTTPError('500 Server Error: Internal Server Error for url: /product/0PUK6V6EV0'),3,2026-08-31T12:01:39Z,2026-08-31T12:01:39Z
+GET,/cart,HTTPError('500 Server Error: Internal Server Error for url: /cart'),3,2026-08-31T11:33:17Z,2026-08-31T12:03:28Z
+GET,/product/L9ECAV7KIM,HTTPError('500 Server Error: Internal Server Error for url: /product/L9ECAV7KIM'),1,2026-08-31T12:03:28Z,2026-08-31T12:03:28Z
+GET,/,"ReadTimeout(ReadTimeoutError(""HTTPConnectionPool(host='193.225.251.227', port=30894): Read timed out. (read timeout=None)""))",4,2026-08-31T11:33:48Z,2026-08-31T11:34:23Z
+GET,/product/6E92ZMYYFZ,HTTPError('503 Server Error: Service Unavailable for url: /product/6E92ZMYYFZ'),2,2026-08-31T11:39:55Z,2026-08-31T12:09:11Z
+POST,/cart/checkout,HTTPError('500 Server Error: Internal Server Error for url: /cart/checkout'),2,2026-08-31T11:13:15Z,2026-08-31T11:19:27Z
+GET,/product/6E92ZMYYFZ,HTTPError('500 Server Error: Internal Server Error for url: /product/6E92ZMYYFZ'),2,2026-08-31T11:28:30Z,2026-08-31T11:35:21Z
+GET,/product/9SIQT8TOJO,"ReadTimeout(ReadTimeoutError(""HTTPConnectionPool(host='193.225.251.227', port=30894): Read timed out. (read timeout=None)""))",5,2026-08-31T11:33:51Z,2026-08-31T11:34:21Z

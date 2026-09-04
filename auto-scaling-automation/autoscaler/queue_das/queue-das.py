@@ -890,7 +890,7 @@ def das_loop(
 
                 for candidate in range(
                     min_replicas,
-                    current_replicas-1,
+                    current_replicas,
                 ):
                     predicted_latency = predict_local_latency_mmc_ms(
                         arrival_rate_rps,
@@ -913,26 +913,24 @@ def das_loop(
                         break
 
                 if scale_down_safe:
-                    if load_is_not_increasing(lambda_history, scale_down_cooldown_s):
-                        scale_down_safe_windows += 1
-                    else:
-                        scale_down_safe_windows = 0
+                    scale_down_safe_windows += 1
                 else:
                     scale_down_safe_windows = 0
 
-                cooldown_finished = (
-                    now - last_scale_down_time >= scale_down_cooldown_s
-                )
-
+                # Ze: we want three conditions to be met before scaling down:
+                # 1. It's current recommended replica is 2 less than the current replicas
+                # 2. The safe condition has been met for the required number of windows
+                # 3. The load is not increasing and we are not in the cooldown period
                 if (
                     scale_down_safe
                     and scale_down_safe_windows >= required_scale_down_windows
+                    and load_is_not_increasing(lambda_history, scale_down_cooldown_s)
+                    and candidate_replicas < current_replicas-1
                     #and cooldown_finished
                 ):
                     result = executor.scale_by(
                         deployment,
                         delta=candidate_replicas-current_replicas,
-                        #delta=candidate_replicas-current_replicas,
                         min_replicas=min_replicas,
                         max_replicas=max_replicas,
                     )

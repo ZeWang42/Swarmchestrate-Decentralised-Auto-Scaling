@@ -1,0 +1,47 @@
+Method,Name,Error,Occurrences
+GET,/api/v1/products/0,"ConnectTimeoutError(<HTTPConnection(host='18.169.241.77', port=8080) at 0x10eccb650>, 'Connection to 18.169.241.77 timed out. (connect timeout=None)')",1
+GET,/api/v1/products,"ConnectTimeoutError(<HTTPConnection(host='18.169.241.77', port=8080) at 0x10efb2150>, 'Connection to 18.169.241.77 timed out. (connect timeout=None)')",1
+GET,/api/v1/products,HTTPError('503 Server Error: Service Unavailable for url: /api/v1/products'),144
+GET,/api/v1/products,"ConnectTimeoutError(<HTTPConnection(host='18.169.241.77', port=8080) at 0x10a6d6d50>, 'Connection to 18.169.241.77 timed out. (connect timeout=None)')",1
+GET,/api/v1/products/0/reviews,"ReadTimeout(ReadTimeoutError(""HTTPConnectionPool(host='18.169.241.77', port=8080): Read timed out. (read timeout=None)""))",13
+GET,/api/v1/products,"ConnectionResetError(54, 'Connection reset by peer')",2
+GET,/api/v1/products/0,"ConnectionResetError(54, 'Connection reset by peer')",3
+GET,/api/v1/products,"ReadTimeout(ReadTimeoutError(""HTTPConnectionPool(host='18.169.241.77', port=8080): Read timed out. (read timeout=None)""))",43
+GET,/api/v1/products/0/ratings,"ReadTimeout(ReadTimeoutError(""HTTPConnectionPool(host='18.169.241.77', port=8080): Read timed out. (read timeout=None)""))",17
+GET,/productpage,"ConnectTimeoutError(<HTTPConnection(host='18.169.241.77', port=8080) at 0x10edb2a50>, 'Connection to 18.169.241.77 timed out. (connect timeout=None)')",1
+GET,/api/v1/products/0,"ConnectTimeoutError(<HTTPConnection(host='18.169.241.77', port=8080) at 0x10edb3950>, 'Connection to 18.169.241.77 timed out. (connect timeout=None)')",1
+GET,/api/v1/products/0,"ReadTimeout(ReadTimeoutError(""HTTPConnectionPool(host='18.169.241.77', port=8080): Read timed out. (read timeout=None)""))",46
+GET,/api/v1/products/0,"ConnectTimeoutError(<HTTPConnection(host='18.169.241.77', port=8080) at 0x10e84b650>, 'Connection to 18.169.241.77 timed out. (connect timeout=None)')",1
+GET,/api/v1/products/0/ratings,"ConnectTimeoutError(<HTTPConnection(host='18.169.241.77', port=8080) at 0x10a6d5c50>, 'Connection to 18.169.241.77 timed out. (connect timeout=None)')",1
+GET,/api/v1/products,"ConnectTimeoutError(<HTTPConnection(host='18.169.241.77', port=8080) at 0x10edb1d50>, 'Connection to 18.169.241.77 timed out. (connect timeout=None)')",1
+GET,/api/v1/products/0/ratings,"ConnectTimeoutError(<HTTPConnection(host='18.169.241.77', port=8080) at 0x10a6d4c50>, 'Connection to 18.169.241.77 timed out. (connect timeout=None)')",1
+GET,/productpage,"ConnectTimeoutError(<HTTPConnection(host='18.169.241.77', port=8080) at 0x10a6d6b50>, 'Connection to 18.169.241.77 timed out. (connect timeout=None)')",1
+GET,/api/v1/products/0/reviews,"ConnectionResetError(54, 'Connection reset by peer')",1
+GET,/api/v1/products,"ConnectTimeoutError(<HTTPConnection(host='18.169.241.77', port=8080) at 0x10e848f50>, 'Connection to 18.169.241.77 timed out. (connect timeout=None)')",1
+GET,/api/v1/products/0/ratings,"ConnectTimeoutError(<HTTPConnection(host='18.169.241.77', port=8080) at 0x10a6d7050>, 'Connection to 18.169.241.77 timed out. (connect timeout=None)')",1
+GET,/api/v1/products/0/ratings,"ConnectTimeoutError(<HTTPConnection(host='18.169.241.77', port=8080) at 0x10eccb850>, 'Connection to 18.169.241.77 timed out. (connect timeout=None)')",1
+GET,/api/v1/products,"ConnectTimeoutError(<HTTPConnection(host='18.169.241.77', port=8080) at 0x10efb0950>, 'Connection to 18.169.241.77 timed out. (connect timeout=None)')",1
+GET,/api/v1/products/0/ratings,HTTPError('503 Server Error: Service Unavailable for url: /api/v1/products/0/ratings'),41
+GET,/api/v1/products,"ConnectTimeoutError(<HTTPConnection(host='18.169.241.77', port=8080) at 0x10eccac50>, 'Connection to 18.169.241.77 timed out. (connect timeout=None)')",1
+GET,/api/v1/products,"ConnectTimeoutError(<HTTPConnection(host='18.169.241.77', port=8080) at 0x10eccad50>, 'Connection to 18.169.241.77 timed out. (connect timeout=None)')",1
+GET,/api/v1/products/0/reviews,"ConnectTimeoutError(<HTTPConnection(host='18.169.241.77', port=8080) at 0x10efb3550>, 'Connection to 18.169.241.77 timed out. (connect timeout=None)')",1
+GET,/api/v1/products/0,"ConnectTimeoutError(<HTTPConnection(host='18.169.241.77', port=8080) at 0x10a6d4b50>, 'Connection to 18.169.241.77 timed out. (connect timeout=None)')",1
+GET,/productpage,"ConnectTimeoutError(<HTTPConnection(host='18.169.241.77', port=8080) at 0x10e848850>, 'Connection to 18.169.241.77 timed out. (connect timeout=None)')",1
+GET,/api/v1/products/0/reviews,"ConnectTimeoutError(<HTTPConnection(host='18.169.241.77', port=8080) at 0x10a6d6150>, 'Connection to 18.169.241.77 timed out. (connect timeout=None)')",1
+GET,/productpage,"ReadTimeout(ReadTimeoutError(""HTTPConnectionPool(host='18.169.241.77', port=8080): Read timed out. (read timeout=None)""))",30
+GET,/api/v1/products,"ConnectTimeoutError(<HTTPConnection(host='18.169.241.77', port=8080) at 0x10efb1c50>, 'Connection to 18.169.241.77 timed out. (connect timeout=None)')",1
+GET,/productpage,"ConnectTimeoutError(<HTTPConnection(host='18.169.241.77', port=8080) at 0x10ecc9650>, 'Connection to 18.169.241.77 timed out. (connect timeout=None)')",1
+GET,/api/v1/products/0,HTTPError('503 Server Error: Service Unavailable for url: /api/v1/products/0'),239
+GET,/productpage,"ConnectionResetError(54, 'Connection reset by peer')",2
+GET,/api/v1/products,"ConnectTimeoutError(<HTTPConnection(host='18.169.241.77', port=8080) at 0x10ecca150>, 'Connection to 18.169.241.77 timed out. (connect timeout=None)')",1
+GET,/api/v1/products,"ConnectTimeoutError(<HTTPConnection(host='18.169.241.77', port=8080) at 0x10edb0550>, 'Connection to 18.169.241.77 timed out. (connect timeout=None)')",1
+GET,/api/v1/products/0/reviews,HTTPError('503 Server Error: Service Unavailable for url: /api/v1/products/0/reviews'),45
+GET,/api/v1/products/0/ratings,"ConnectTimeoutError(<HTTPConnection(host='18.169.241.77', port=8080) at 0x10e84be50>, 'Connection to 18.169.241.77 timed out. (connect timeout=None)')",1
+GET,/productpage,HTTPError('503 Server Error: Service Unavailable for url: /productpage'),87
+GET,/api/v1/products/0,"ConnectTimeoutError(<HTTPConnection(host='18.169.241.77', port=8080) at 0x10edb0650>, 'Connection to 18.169.241.77 timed out. (connect timeout=None)')",1
+GET,/api/v1/products/0/ratings,"ConnectTimeoutError(<HTTPConnection(host='18.169.241.77', port=8080) at 0x10e84a550>, 'Connection to 18.169.241.77 timed out. (connect timeout=None)')",1
+GET,/productpage,"ConnectTimeoutError(<HTTPConnection(host='18.169.241.77', port=8080) at 0x10a6d7150>, 'Connection to 18.169.241.77 timed out. (connect timeout=None)')",1
+GET,/api/v1/products,"ConnectTimeoutError(<HTTPConnection(host='18.169.241.77', port=8080) at 0x10a6d6a50>, 'Connection to 18.169.241.77 timed out. (connect timeout=None)')",1
+GET,/api/v1/products/0/reviews,"ConnectTimeoutError(<HTTPConnection(host='18.169.241.77', port=8080) at 0x10a6d4450>, 'Connection to 18.169.241.77 timed out. (connect timeout=None)')",1
+GET,/productpage,"ConnectTimeoutError(<HTTPConnection(host='18.169.241.77', port=8080) at 0x10ed01e50>, 'Connection to 18.169.241.77 timed out. (connect timeout=None)')",1
+GET,/api/v1/products/0,"ConnectTimeoutError(<HTTPConnection(host='18.169.241.77', port=8080) at 0x10efb0150>, 'Connection to 18.169.241.77 timed out. (connect timeout=None)')",1

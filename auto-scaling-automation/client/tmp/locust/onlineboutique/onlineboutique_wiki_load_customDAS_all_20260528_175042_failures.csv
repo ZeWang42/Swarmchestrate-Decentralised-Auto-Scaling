@@ -1,0 +1,258 @@
+Method,Name,Error,Occurrences
+GET,/cart,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x1083b2750>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1
+GET,/product/OLJCESPC7Z,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x108af3150>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1
+GET,/product/OLJCESPC7Z,"ConnectionResetError(54, 'Connection reset by peer')",1
+GET,/product/1YMWWN1N4O,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x108ad8a50>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1
+GET,/product/66VCHSJNUP,"ReadTimeout(ReadTimeoutError(""HTTPConnectionPool(host='18.168.203.145', port=30402): Read timed out. (read timeout=None)""))",11
+GET,/product/66VCHSJNUP,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x108adb950>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1
+GET,/product/L9ECAV7KIM,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x108216950>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1
+GET,/cart,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x108b00b50>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1
+POST,/cart,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x10862e850>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1
+GET,/product/0PUK6V6EV0,"ReadTimeout(ReadTimeoutError(""HTTPConnectionPool(host='18.168.203.145', port=30402): Read timed out. (read timeout=None)""))",27
+GET,/product/OLJCESPC7Z,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x107de1650>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1
+GET,/product/OLJCESPC7Z,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x10862e350>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1
+GET,/product/6E92ZMYYFZ,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x107f06250>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1
+GET,/cart,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x108ad8550>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1
+GET,/product/2ZYFJ3GM2N,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x108b12d50>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1
+GET,/product/L9ECAV7KIM,HTTPError('503 Server Error: Service Unavailable for url: /product/L9ECAV7KIM'),3
+GET,/product/9SIQT8TOJO,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x1083b3750>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1
+GET,/product/OLJCESPC7Z,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x108abfb50>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1
+GET,/product/2ZYFJ3GM2N,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x108440c50>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1
+GET,/product/66VCHSJNUP,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x1083b0350>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1
+POST,/cart,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x108af0950>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1
+GET,/product/0PUK6V6EV0,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x108214150>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1
+GET,/product/LS4PSXUNUM,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x107e94850>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1
+GET,/product/66VCHSJNUP,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x108442f50>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1
+POST,/cart,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x107de1b50>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1
+GET,/product/6E92ZMYYFZ,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x108af3550>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1
+GET,/product/66VCHSJNUP,HTTPError('500 Server Error: Internal Server Error for url: /product/66VCHSJNUP'),1
+POST,/setCurrency,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x108443850>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1
+GET,/product/2ZYFJ3GM2N,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x10862f650>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1
+GET,/cart,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x107d22e50>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1
+POST,/cart,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x108b02550>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1
+GET,/cart,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x108acdc50>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1
+GET,/product/LS4PSXUNUM,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x108215c50>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1
+GET,/cart,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x10862e750>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1
+GET,/product/2ZYFJ3GM2N,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x108441250>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1
+GET,/product/2ZYFJ3GM2N,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x108098150>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1
+GET,/product/OLJCESPC7Z,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x108440450>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1
+GET,/,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x108abe650>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1
+POST,/cart,"ReadTimeout(ReadTimeoutError(""HTTPConnectionPool(host='18.168.203.145', port=30402): Read timed out. (read timeout=None)""))",10
+GET,/cart,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x108b00a50>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1
+POST,/cart,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x107de2450>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1
+GET,/cart,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x107fca350>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1
+POST,/setCurrency,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x107fc9250>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1
+GET,/product/LS4PSXUNUM,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x107de3050>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1
+POST,/cart,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x108ada450>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1
+GET,/product/LS4PSXUNUM,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x108098f50>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1
+GET,/product/0PUK6V6EV0,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x10862f550>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1
+POST,/cart,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x107d23050>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1
+GET,/product/2ZYFJ3GM2N,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x107f06150>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1
+POST,/cart,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x107f05a50>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1
+POST,/cart,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x108abfe50>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1
+GET,/product/2ZYFJ3GM2N,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x108217b50>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1
+GET,/product/LS4PSXUNUM,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x108acf950>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1
+GET,/product/6E92ZMYYFZ,"ConnectionResetError(54, 'Connection reset by peer')",1
+POST,/setCurrency,"ReadTimeout(ReadTimeoutError(""HTTPConnectionPool(host='18.168.203.145', port=30402): Read timed out. (read timeout=None)""))",20
+GET,/cart,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x10837a350>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1
+GET,/product/OLJCESPC7Z,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x108442d50>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1
+GET,/product/66VCHSJNUP,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x10809b950>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1
+GET,/,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x108214c50>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1
+GET,/product/1YMWWN1N4O,HTTPError('503 Server Error: Service Unavailable for url: /product/1YMWWN1N4O'),1
+POST,/cart,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x107fc9850>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1
+GET,/product/OLJCESPC7Z,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x107de1250>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1
+GET,/cart,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x10809a950>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1
+GET,/product/0PUK6V6EV0,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x107f07d50>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1
+GET,/product/2ZYFJ3GM2N,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x107e97750>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1
+GET,/cart,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x107fcab50>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1
+GET,/cart,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x10837bc50>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1
+GET,/cart,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x108b10f50>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1
+GET,/product/OLJCESPC7Z,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x108acc550>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1
+GET,/product/2ZYFJ3GM2N,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x107d23750>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1
+GET,/product/LS4PSXUNUM,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x108acf750>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1
+GET,/product/0PUK6V6EV0,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x1080f8150>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1
+POST,/cart,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x10837b650>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1
+GET,/product/2ZYFJ3GM2N,"ReadTimeout(ReadTimeoutError(""HTTPConnectionPool(host='18.168.203.145', port=30402): Read timed out. (read timeout=None)""))",18
+GET,/product/OLJCESPC7Z,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x108acd750>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1
+GET,/,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x108acfe50>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1
+GET,/product/0PUK6V6EV0,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x108b10550>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1
+GET,/product/1YMWWN1N4O,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x107f04e50>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1
+POST,/cart,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x1080f9650>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1
+POST,/setCurrency,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x108b02450>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1
+POST,/cart,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x107f07750>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1
+POST,/cart,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x10809b450>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1
+POST,/setCurrency,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x1083b1350>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1
+GET,/product/0PUK6V6EV0,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x108378450>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1
+POST,/cart,HTTPError('503 Server Error: Service Unavailable for url: /cart'),4
+GET,/cart,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x108ace950>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1
+GET,/product/6E92ZMYYFZ,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x107e94550>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1
+POST,/cart,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x10862fa50>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1
+POST,/cart,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x108abf150>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1
+POST,/setCurrency,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x108af2350>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1
+POST,/cart,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x107e96250>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1
+GET,/product/LS4PSXUNUM,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x107d20250>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1
+GET,/cart,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x107fc8550>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1
+GET,/product/OLJCESPC7Z,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x1083b1450>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1
+GET,/product/6E92ZMYYFZ,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x108b10650>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1
+POST,/cart/checkout,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x107e95e50>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1
+GET,/product/1YMWWN1N4O,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x108098b50>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1
+GET,/product/OLJCESPC7Z,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x107f05050>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1
+GET,/product/OLJCESPC7Z,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x108af3650>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1
+GET,/product/2ZYFJ3GM2N,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x107d23c50>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1
+GET,/product/0PUK6V6EV0,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x108214850>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1
+GET,/product/OLJCESPC7Z,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x108216d50>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1
+GET,/cart,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x108378650>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1
+GET,/product/6E92ZMYYFZ,"ReadTimeout(ReadTimeoutError(""HTTPConnectionPool(host='18.168.203.145', port=30402): Read timed out. (read timeout=None)""))",16
+GET,/product/6E92ZMYYFZ,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x108440d50>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1
+GET,/cart,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x107d23450>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1
+GET,/,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x108b10e50>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1
+POST,/setCurrency,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x107f07a50>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1
+GET,/product/LS4PSXUNUM,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x10809b250>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1
+POST,/setCurrency,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x107de3150>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1
+GET,/product/LS4PSXUNUM,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x108b11350>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1
+GET,/product/L9ECAV7KIM,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x108b01e50>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1
+GET,/product/6E92ZMYYFZ,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x1080fb950>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1
+GET,/product/2ZYFJ3GM2N,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x10862d550>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1
+POST,/cart,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x10862cf50>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1
+GET,/product/L9ECAV7KIM,"ReadTimeout(ReadTimeoutError(""HTTPConnectionPool(host='18.168.203.145', port=30402): Read timed out. (read timeout=None)""))",24
+GET,/product/6E92ZMYYFZ,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x1083b2850>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1
+GET,/product/LS4PSXUNUM,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x10862cc50>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1
+POST,/cart/checkout,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x10809b850>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1
+GET,/product/OLJCESPC7Z,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x108099a50>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1
+GET,/product/6E92ZMYYFZ,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x107d22c50>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1
+GET,/product/OLJCESPC7Z,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x108216a50>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1
+GET,/product/6E92ZMYYFZ,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x108b10750>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1
+GET,/product/OLJCESPC7Z,HTTPError('503 Server Error: Service Unavailable for url: /product/OLJCESPC7Z'),2
+GET,/,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x108443350>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1
+GET,/product/0PUK6V6EV0,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x108b01350>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1
+GET,/product/0PUK6V6EV0,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x107de1850>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1
+GET,/product/L9ECAV7KIM,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x108b00850>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1
+GET,/cart,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x108ada350>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1
+GET,/product/6E92ZMYYFZ,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x1083b3a50>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1
+GET,/product/0PUK6V6EV0,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x108abfd50>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1
+GET,/product/LS4PSXUNUM,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x108214950>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1
+GET,/product/LS4PSXUNUM,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x107fca150>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1
+POST,/cart/checkout,HTTPError('503 Server Error: Service Unavailable for url: /cart/checkout'),1
+GET,/cart,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x108098a50>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1
+GET,/product/L9ECAV7KIM,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x108215650>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1
+GET,/product/66VCHSJNUP,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x1083b1f50>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1
+GET,/product/66VCHSJNUP,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x10862dd50>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1
+GET,/product/OLJCESPC7Z,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x108acf450>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1
+GET,/product/LS4PSXUNUM,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x108abc650>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1
+GET,/product/L9ECAV7KIM,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x1083b1b50>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1
+GET,/cart,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x108adbd50>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1
+POST,/cart,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x107fcac50>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1
+POST,/cart,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x108ad9b50>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1
+GET,/,HTTPError('503 Server Error: Service Unavailable for url: /'),1
+GET,/product/1YMWWN1N4O,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x107f06550>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1
+GET,/product/OLJCESPC7Z,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x108098050>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1
+POST,/cart,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x108379450>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1
+GET,/cart,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x108abdd50>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1
+GET,/product/OLJCESPC7Z,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x107bcfc50>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1
+GET,/product/OLJCESPC7Z,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x107e95650>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1
+GET,/product/1YMWWN1N4O,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x108214750>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1
+GET,/product/66VCHSJNUP,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x108b00250>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1
+GET,/product/0PUK6V6EV0,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x107de2250>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1
+GET,/product/LS4PSXUNUM,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x108214450>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1
+GET,/product/1YMWWN1N4O,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x108af0750>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1
+GET,/product/6E92ZMYYFZ,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x10837a050>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1
+POST,/cart,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x108442050>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1
+GET,/product/66VCHSJNUP,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x108accf50>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1
+GET,/product/L9ECAV7KIM,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x108acd850>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1
+GET,/cart,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x108b00350>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1
+POST,/cart,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x108215950>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1
+GET,/cart,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x108abd350>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1
+GET,/product/1YMWWN1N4O,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x108215150>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1
+GET,/cart,"ReadTimeout(ReadTimeoutError(""HTTPConnectionPool(host='18.168.203.145', port=30402): Read timed out. (read timeout=None)""))",40
+POST,/cart,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x10862dc50>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1
+GET,/,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x107fc8b50>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1
+GET,/product/6E92ZMYYFZ,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x108ace350>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1
+POST,/cart,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x108442750>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1
+GET,/cart,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x107d20050>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1
+GET,/product/1YMWWN1N4O,"ReadTimeout(ReadTimeoutError(""HTTPConnectionPool(host='18.168.203.145', port=30402): Read timed out. (read timeout=None)""))",21
+GET,/product/9SIQT8TOJO,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x108ace450>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1
+GET,/product/OLJCESPC7Z,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x10837b550>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1
+POST,/cart,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x107de0150>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1
+GET,/product/9SIQT8TOJO,"ReadTimeout(ReadTimeoutError(""HTTPConnectionPool(host='18.168.203.145', port=30402): Read timed out. (read timeout=None)""))",19
+GET,/product/LS4PSXUNUM,"ReadTimeout(ReadTimeoutError(""HTTPConnectionPool(host='18.168.203.145', port=30402): Read timed out. (read timeout=None)""))",20
+GET,/product/0PUK6V6EV0,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x108379a50>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1
+GET,/product/L9ECAV7KIM,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x108ada250>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1
+GET,/,"ReadTimeout(ReadTimeoutError(""HTTPConnectionPool(host='18.168.203.145', port=30402): Read timed out. (read timeout=None)""))",15
+GET,/product/OLJCESPC7Z,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x108378850>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1
+GET,/product/66VCHSJNUP,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x10837b450>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1
+GET,/product/OLJCESPC7Z,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x108acfd50>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1
+GET,/product/LS4PSXUNUM,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x10862c850>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1
+GET,/product/66VCHSJNUP,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x10862f050>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1
+GET,/product/66VCHSJNUP,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x107fca050>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1
+GET,/cart,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x108af0650>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1
+GET,/cart,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x10862f250>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1
+GET,/product/2ZYFJ3GM2N,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x108abe750>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1
+GET,/product/1YMWWN1N4O,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x108ad9250>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1
+GET,/product/0PUK6V6EV0,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x108b11550>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1
+GET,/product/0PUK6V6EV0,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x107f04a50>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1
+GET,/cart,HTTPError('503 Server Error: Service Unavailable for url: /cart'),1
+GET,/product/0PUK6V6EV0,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x107de0950>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1
+GET,/product/0PUK6V6EV0,HTTPError('500 Server Error: Internal Server Error for url: /product/0PUK6V6EV0'),1
+GET,/product/9SIQT8TOJO,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x1080f9b50>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1
+GET,/product/9SIQT8TOJO,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x107e94e50>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1
+GET,/cart,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x10862c350>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1
+GET,/product/9SIQT8TOJO,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x108440a50>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1
+GET,/product/6E92ZMYYFZ,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x107de0350>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1
+GET,/product/LS4PSXUNUM,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x108abf650>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1
+GET,/product/6E92ZMYYFZ,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x108af1c50>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1
+GET,/product/66VCHSJNUP,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x107fc9450>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1
+GET,/cart,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x107f05750>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1
+POST,/cart,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x108379150>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1
+GET,/product/9SIQT8TOJO,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x108acf850>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1
+POST,/cart,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x108379250>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1
+GET,/cart,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x107fc9d50>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1
+POST,/cart,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x108442950>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1
+POST,/setCurrency,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x108ace850>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1
+GET,/product/2ZYFJ3GM2N,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x108adbe50>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1
+GET,/product/LS4PSXUNUM,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x108441a50>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1
+GET,/product/LS4PSXUNUM,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x108ad8650>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1
+POST,/cart,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x108abd950>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1
+GET,/product/66VCHSJNUP,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x108378a50>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1
+GET,/product/OLJCESPC7Z,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x1080f8050>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1
+GET,/product/OLJCESPC7Z,"ReadTimeout(ReadTimeoutError(""HTTPConnectionPool(host='18.168.203.145', port=30402): Read timed out. (read timeout=None)""))",18
+POST,/cart/checkout,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x10837aa50>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1
+POST,/cart,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x1080faf50>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1
+GET,/product/LS4PSXUNUM,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x108abf550>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1
+POST,/setCurrency,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x107fcb450>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1
+GET,/product/2ZYFJ3GM2N,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x108098750>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1
+GET,/product/9SIQT8TOJO,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x108b11450>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1
+GET,/cart,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x1083b3850>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1
+GET,/cart,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x107de1d50>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1
+GET,/product/L9ECAV7KIM,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x108af2450>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1
+GET,/product/2ZYFJ3GM2N,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x108acf550>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1
+GET,/product/9SIQT8TOJO,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x107de1e50>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1
+GET,/,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x10862f150>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1
+POST,/setCurrency,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x107f06650>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1
+GET,/product/2ZYFJ3GM2N,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x108acf650>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1
+GET,/product/9SIQT8TOJO,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x10837a650>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1
+GET,/cart,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x108440f50>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1
+GET,/product/L9ECAV7KIM,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x108098e50>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1
+GET,/product/OLJCESPC7Z,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x108acd650>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1
+GET,/product/9SIQT8TOJO,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x107de1950>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1
+GET,/,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x107f04b50>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1
+POST,/cart,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x108216450>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1
+POST,/setCurrency,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x1080f8350>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1
+GET,/cart,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x1083b3d50>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1
+GET,/product/0PUK6V6EV0,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x10862cd50>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1
+GET,/product/LS4PSXUNUM,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x1083b0b50>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1
+POST,/cart,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x10862d650>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1
+GET,/product/9SIQT8TOJO,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x10837ba50>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1
+GET,/cart,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x108216e50>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1
+GET,/product/OLJCESPC7Z,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x108443c50>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1
+GET,/product/L9ECAV7KIM,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x10862ef50>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1
+GET,/product/OLJCESPC7Z,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x107d20650>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1
+GET,/product/OLJCESPC7Z,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x107f07150>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1
+POST,/cart,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x108af3750>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1
+GET,/cart,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x10809a750>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1
+GET,/cart,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x107fca250>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1
+POST,/cart,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x108441450>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1
+GET,/,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x107d23350>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1
+GET,/product/6E92ZMYYFZ,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x107e95f50>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1
+GET,/cart,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x108acc450>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1
+GET,/cart,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x107d23b50>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1
+GET,/product/9SIQT8TOJO,"ConnectTimeoutError(<HTTPConnection(host='18.168.203.145', port=30402) at 0x1083b1850>, 'Connection to 18.168.203.145 timed out. (connect timeout=None)')",1

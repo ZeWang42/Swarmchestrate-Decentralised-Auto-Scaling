@@ -487,6 +487,23 @@ _DELETE_MAP: dict[str, tuple[str, str, str]] = {
 
 
 
+def _default_cpu_hpa_object(deployment_name: str, namespace: str) -> dict[str, Any]:
+    """Return the minimal object identity needed to delete a default CPU HPA.
+
+    Cleanup must not re-render the full HPA deployment template: deployment-time
+    settings such as stabilization windows and scaling policies are irrelevant to
+    deletion and may not be present in a cleanup request.
+    """
+    return {
+        "apiVersion": "autoscaling/v2",
+        "kind": "HorizontalPodAutoscaler",
+        "metadata": {
+            "name": f"{deployment_name}-hpa",
+            "namespace": namespace,
+        },
+    }
+
+
 def _autoscaler_service_object(autoscaler_name: str, deployment_name: str, namespace: str) -> dict[str, Any]:
     safe_name = _safe_k8s_name(deployment_name)
     return {
@@ -571,14 +588,24 @@ def delete_autoscaler_for_application(app_name: str, namespace: str, autoscaler_
             resolved_deployments = _validate_and_filter_dadqn_deployments(app_name, deployment_names, resolved_deployments)
         if autoscaler_name == "hab":
             resolved_deployments = _validate_and_filter_hab_deployments(app_name, deployment_names, resolved_deployments)
-        req = DeployAutoscalerRequest(
-            namespace=namespace,
-            deployment_names=resolved_deployments,
-            autoscaler_name=autoscaler_name,
-            config={},
-        )
-        objects = _render_autoscaler_objects(req, resolved_deployments, app_name)
-        objects = _append_companion_service_objects(objects, autoscaler_name, resolved_deployments, namespace)
+        if autoscaler_name == "default_cpu":
+            # HPA cleanup only needs resource identity. Do not re-render the full
+            # HPA manifest with config={}, because deployment-time behavior fields
+            # (for example scale_up_stabilization_window_seconds) are not supplied
+            # by cleanup requests and must not prevent deletion.
+            objects = [
+                _default_cpu_hpa_object(deployment_name, namespace)
+                for deployment_name in resolved_deployments
+            ]
+        else:
+            req = DeployAutoscalerRequest(
+                namespace=namespace,
+                deployment_names=resolved_deployments,
+                autoscaler_name=autoscaler_name,
+                config={},
+            )
+            objects = _render_autoscaler_objects(req, resolved_deployments, app_name)
+            objects = _append_companion_service_objects(objects, autoscaler_name, resolved_deployments, namespace)
         seen: set[tuple[str, str, str]] = set()
         for obj in objects:
             kind = obj.get("kind")

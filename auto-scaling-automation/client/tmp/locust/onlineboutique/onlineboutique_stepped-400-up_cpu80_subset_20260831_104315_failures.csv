@@ -1,0 +1,4 @@
+Method,Name,Error,Occurrences,First Seen,Last Seen
+POST,/cart,HTTPError('500 Server Error: Internal Server Error for url: /cart'),1,2026-08-31T10:53:24Z,2026-08-31T10:53:24Z
+GET,/product/66VCHSJNUP,HTTPError('503 Server Error: Service Unavailable for url: /product/66VCHSJNUP'),1,2026-08-31T10:49:08Z,2026-08-31T10:49:08Z
+GET,/product/LS4PSXUNUM,HTTPError('503 Server Error: Service Unavailable for url: /product/LS4PSXUNUM'),1,2026-08-31T10:49:08Z,2026-08-31T10:49:08Z

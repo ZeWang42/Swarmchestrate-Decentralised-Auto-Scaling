@@ -1,0 +1,7 @@
+Method,Name,Error,Occurrences
+POST,/cart,HTTPError('500 Server Error: Internal Server Error for url: /cart'),1
+GET,/product/9SIQT8TOJO,HTTPError('500 Server Error: Internal Server Error for url: /product/9SIQT8TOJO'),1
+POST,/setCurrency,HTTPError('500 Server Error: Internal Server Error for url: /setCurrency'),1
+GET,/,HTTPError('500 Server Error: Internal Server Error for url: /'),1
+GET,/product/L9ECAV7KIM,HTTPError('500 Server Error: Internal Server Error for url: /product/L9ECAV7KIM'),2
+GET,/product/2ZYFJ3GM2N,HTTPError('500 Server Error: Internal Server Error for url: /product/2ZYFJ3GM2N'),1

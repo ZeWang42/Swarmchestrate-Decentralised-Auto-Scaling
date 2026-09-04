@@ -1,0 +1,138 @@
+*** Overall
+ 1. The service time estimation for leaf nodes is accurate, but its setting shall use the data when its usage is low
+ 2. For leaf nodes, the SLO tolerance should be set dynamically and should not be fixed as xxx
+ 3. For other nodes, service time estimation is not accurate, slo should also be set according to root's assignment
+ 4. Only scale when a node is a bottleneck:
+	1) received bottleneck msg and itself is bottleneck, then scale based on queue.
+
+*** New setting
+ 1. We add functions to plot per-microservice pod count for the purpose of analysing detailed behaviour of each autoscaler.
+    This should be suffcient since all the other data such as cpu utilisation and usage come from pod count.
+ 2. We used linear-500 data, this is a linear increase data 0-100-200-300-400-500, in between, the number of users increases
+    with a stepwise of 20. This is inspired by Sajid's experiments, it's interesting because imaging if one could adapt
+    constant loads, then it should be good at varied loads as well. More interestingly, this gives us how does each AS think
+    a pod allocation should be to accommendate the loads.
+
+*** New Observations
+ 3. We observed sharper increase of pod counts in das than hpa-80, even though the threshold of the two are the same (this is not true
+    since das's p(scale-up) = 1 when \rho > 90%, but hpa-80 is 80%), this may due to the fact that when the pod is initialised at first, 
+    it has a high cpu utilisation or due to sharper cool down time
+    We may also want to see their performance using cpu limit 
+
+4. The queue-das has significantly more pods than the others which is terrible, and this is mainly due to the following microservices:
+
+   1) frontend: 
+	Root
+	cpu=37
+	upstream=[gateway]
+	dst_p50=93  dst_p95=345
+	downstreams=[checkout, frontend, recommendation, currency, product catalog, cart, ad, shipping] 
+	src_p50=5.58 src_p95=19.82
+	Bottleneck: checkout, cart, recommendation
+
+
+   2) checkout:
+	Middle 
+	cpu=30
+	Upstream: [frontend] 
+	dst_p50=93  dst_p95=345
+	Downstream: [currency, productcatalog, payment, shipping, cart, email] 
+	src_p50=5.58 src_p95=9.85
+	Bottleneck: cart p50=33, p95=45
+
+
+   3) productcatalog:
+	Leaf
+	cpu=60.8
+	Upstream=[frontend, checkout, recommendation]
+	dst_p50=4.3 dst_p95=9.9
+	downstream=[]
+	p50=  p95=
+	bottleneck: itself
+
+	(why DAS is not changing with the load while HPA-80 is changing, they have different limit)
+
+
+
+
+5. The queue-das has a significantly fewer pods (but higher latency) than the others, and this is mainly due to the following microservices:
+
+   1) currency:
+	Leaf
+	cpu=110.33 
+	Upstream=[frontend, checkout]
+	p50=3.18 p95=8.96
+	downstream=[]
+	p50=  p95=
+	bottleneck: itself
+	
+
+   2) cart:
+	Leaf
+	cpu=94.5 
+	Upstream=[frontend mostly, checkout]
+	p50=19.32 p95=35.74
+	downstream=[]
+	p50=  p95=
+	bottleneck: itself
+	problem: p50 is too low
+
+   3) recommendation:
+	Middle 
+	cpu=100
+	Upstream: [frontend] 
+	dst_p50=11.21  dst_p95=36.64
+	Downstream: [productcatalog] 
+	src_p50=1.98 src_p95=6.63
+	Bottleneck: itself
+	
+6 Other services:
+    1) email:
+
+	Leaf
+	cpu=12 
+	Upstream=[checkout]
+	p50=2.8 p95=8.5
+	downstream=[]
+	p50=  p95=
+	bottleneck: itself
+
+    2) shipping:
+	Leaf
+	cpu=29 
+	Upstream=[frontend, checkout]
+	p50=2.2 p95=7.18
+	downstream=[]
+	p50=  p95=
+	bottleneck: itself
+
+
+    3) payment:
+	Leaf
+	cpu=29 
+	Upstream=[checkout]
+	p50=3.82 p95=8.67
+	downstream=[]
+	p50=  p95=
+	bottleneck: itself
+
+    4) ad:
+	Leaf
+	cpu= 
+	Upstream=[?]
+	p50= p95=
+	downstream=[?]
+	p50=  p95=
+	bottleneck: itself
+
+   
+*** New Design Ideas
+
+ 1. Distinguish Frontend, middle, and leaf nodes.
+    Higher level determines the SLO of the lower level nodes
+
+    Leaf nodes should be scaled with M/M/c model and 
+
+*** New Experiments Ideas 
+1. Inspired by SGL+25's motivation example (Fig 1), we could add an experiments of stressing a single microservice using hpa, das, queue-das, m/m/c, and m/m/c/setup
+2. Stress application under contention to see its performance of using queueing based model

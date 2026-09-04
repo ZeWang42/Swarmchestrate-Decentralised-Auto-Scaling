@@ -1,0 +1,10 @@
+Method,Name,Error,Occurrences
+POST,/cart,HTTPError('500 Server Error: Internal Server Error for url: /cart'),2
+GET,/product/66VCHSJNUP,HTTPError('503 Server Error: Service Unavailable for url: /product/66VCHSJNUP'),1
+POST,/cart,HTTPError('503 Server Error: Service Unavailable for url: /cart'),2
+GET,/product/LS4PSXUNUM,HTTPError('503 Server Error: Service Unavailable for url: /product/LS4PSXUNUM'),1
+GET,/product/9SIQT8TOJO,HTTPError('500 Server Error: Internal Server Error for url: /product/9SIQT8TOJO'),2
+POST,/cart/checkout,HTTPError('503 Server Error: Service Unavailable for url: /cart/checkout'),1
+GET,/product/2ZYFJ3GM2N,HTTPError('503 Server Error: Service Unavailable for url: /product/2ZYFJ3GM2N'),1
+GET,/cart,HTTPError('500 Server Error: Internal Server Error for url: /cart'),1
+POST,/cart/checkout,HTTPError('500 Server Error: Internal Server Error for url: /cart/checkout'),1

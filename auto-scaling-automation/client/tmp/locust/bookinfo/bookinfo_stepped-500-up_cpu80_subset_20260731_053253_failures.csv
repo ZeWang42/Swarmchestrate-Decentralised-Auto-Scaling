@@ -1,0 +1,7 @@
+Method,Name,Error,Occurrences,First Seen,Last Seen
+GET,/api/v1/products,HTTPError('503 Server Error: Service Unavailable for url: /api/v1/products'),58,2026-07-31T04:41:11Z,2026-07-31T05:28:38Z
+GET,/api/v1/products/0/ratings,HTTPError('503 Server Error: Service Unavailable for url: /api/v1/products/0/ratings'),31,2026-07-31T04:41:11Z,2026-07-31T05:13:31Z
+GET,/api/v1/products/0,HTTPError('503 Server Error: Service Unavailable for url: /api/v1/products/0'),133,2026-07-31T04:41:11Z,2026-07-31T05:33:15Z
+GET,/api/v1/products/0/reviews,HTTPError('503 Server Error: Service Unavailable for url: /api/v1/products/0/reviews'),21,2026-07-31T04:41:11Z,2026-07-31T05:13:31Z
+GET,/productpage,HTTPError('503 Server Error: Service Unavailable for url: /productpage'),37,2026-07-31T04:41:11Z,2026-07-31T05:30:14Z
+GET,/productpage,"ConnectTimeoutError(<HTTPConnection(host='193.225.251.227', port=30830) at 0x10c260b50>, 'Connection to 193.225.251.227 timed out. (connect timeout=None)')",1,2026-07-31T05:22:12Z,2026-07-31T05:22:12Z

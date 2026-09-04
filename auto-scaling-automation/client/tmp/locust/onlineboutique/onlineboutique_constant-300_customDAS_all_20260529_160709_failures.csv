@@ -1,0 +1,4 @@
+Method,Name,Error,Occurrences
+POST,/cart,HTTPError('500 Server Error: Internal Server Error for url: /cart'),1
+GET,/product/2ZYFJ3GM2N,HTTPError('500 Server Error: Internal Server Error for url: /product/2ZYFJ3GM2N'),1
+POST,/cart/checkout,HTTPError('500 Server Error: Internal Server Error for url: /cart/checkout'),2

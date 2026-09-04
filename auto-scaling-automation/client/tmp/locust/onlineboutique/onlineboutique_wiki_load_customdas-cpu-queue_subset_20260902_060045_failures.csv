@@ -1,0 +1,59 @@
+Method,Name,Error,Occurrences,First Seen,Last Seen
+GET,/product/1YMWWN1N4O,HTTPError('500 Server Error: Internal Server Error for url: /product/1YMWWN1N4O'),2,2026-09-02T05:24:50Z,2026-09-02T05:49:50Z
+GET,/,"ConnectTimeoutError(<HTTPConnection(host='193.225.251.227', port=30894) at 0x113a3ae50>, 'Connection to 193.225.251.227 timed out. (connect timeout=None)')",1,2026-09-02T05:43:12Z,2026-09-02T05:43:12Z
+GET,/,"ConnectTimeoutError(<HTTPConnection(host='193.225.251.227', port=30894) at 0x1139c0250>, 'Connection to 193.225.251.227 timed out. (connect timeout=None)')",1,2026-09-02T05:09:01Z,2026-09-02T05:09:01Z
+GET,/product/L9ECAV7KIM,HTTPError('503 Server Error: Service Unavailable for url: /product/L9ECAV7KIM'),1,2026-09-02T05:31:19Z,2026-09-02T05:31:19Z
+POST,/cart,HTTPError('500 Server Error: Internal Server Error for url: /cart'),7,2026-09-02T05:33:05Z,2026-09-02T05:49:50Z
+GET,/product/66VCHSJNUP,HTTPError('500 Server Error: Internal Server Error for url: /product/66VCHSJNUP'),1,2026-09-02T05:49:50Z,2026-09-02T05:49:50Z
+GET,/,"ConnectTimeoutError(<HTTPConnection(host='193.225.251.227', port=30894) at 0x110a91f50>, 'Connection to 193.225.251.227 timed out. (connect timeout=None)')",1,2026-09-02T05:26:13Z,2026-09-02T05:26:13Z
+GET,/,"ConnectTimeoutError(<HTTPConnection(host='193.225.251.227', port=30894) at 0x11419d550>, 'Connection to 193.225.251.227 timed out. (connect timeout=None)')",1,2026-09-02T05:52:13Z,2026-09-02T05:52:13Z
+GET,/,"ConnectTimeoutError(<HTTPConnection(host='193.225.251.227', port=30894) at 0x11098eb50>, 'Connection to 193.225.251.227 timed out. (connect timeout=None)')",1,2026-09-02T05:05:02Z,2026-09-02T05:05:02Z
+GET,/,"ConnectTimeoutError(<HTTPConnection(host='193.225.251.227', port=30894) at 0x113e1a250>, 'Connection to 193.225.251.227 timed out. (connect timeout=None)')",1,2026-09-02T05:34:05Z,2026-09-02T05:34:05Z
+GET,/,"ConnectTimeoutError(<HTTPConnection(host='193.225.251.227', port=30894) at 0x113b9fc50>, 'Connection to 193.225.251.227 timed out. (connect timeout=None)')",1,2026-09-02T05:17:03Z,2026-09-02T05:17:03Z
+GET,/,"ConnectTimeoutError(<HTTPConnection(host='193.225.251.227', port=30894) at 0x113b9e050>, 'Connection to 193.225.251.227 timed out. (connect timeout=None)')",1,2026-09-02T05:51:10Z,2026-09-02T05:51:10Z
+GET,/,"ConnectTimeoutError(<HTTPConnection(host='193.225.251.227', port=30894) at 0x1141fc150>, 'Connection to 193.225.251.227 timed out. (connect timeout=None)')",1,2026-09-02T06:09:05Z,2026-09-02T06:09:05Z
+GET,/product/1YMWWN1N4O,HTTPError('503 Server Error: Service Unavailable for url: /product/1YMWWN1N4O'),4,2026-09-02T05:23:03Z,2026-09-02T06:05:32Z
+GET,/,"ConnectTimeoutError(<HTTPConnection(host='193.225.251.227', port=30894) at 0x11380df50>, 'Connection to 193.225.251.227 timed out. (connect timeout=None)')",1,2026-09-02T05:42:06Z,2026-09-02T05:42:06Z
+GET,/,"ConnectTimeoutError(<HTTPConnection(host='193.225.251.227', port=30894) at 0x1139c3650>, 'Connection to 193.225.251.227 timed out. (connect timeout=None)')",1,2026-09-02T05:10:02Z,2026-09-02T05:10:02Z
+GET,/,"ConnectTimeoutError(<HTTPConnection(host='193.225.251.227', port=30894) at 0x113ed4c50>, 'Connection to 193.225.251.227 timed out. (connect timeout=None)')",1,2026-09-02T05:17:03Z,2026-09-02T05:17:03Z
+GET,/product/66VCHSJNUP,HTTPError('503 Server Error: Service Unavailable for url: /product/66VCHSJNUP'),2,2026-09-02T05:39:54Z,2026-09-02T05:39:54Z
+GET,/,"ConnectTimeoutError(<HTTPConnection(host='193.225.251.227', port=30894) at 0x11419f850>, 'Connection to 193.225.251.227 timed out. (connect timeout=None)')",1,2026-09-02T05:24:10Z,2026-09-02T05:24:10Z
+GET,/,"ConnectTimeoutError(<HTTPConnection(host='193.225.251.227', port=30894) at 0x110a90550>, 'Connection to 193.225.251.227 timed out. (connect timeout=None)')",1,2026-09-02T05:43:08Z,2026-09-02T05:43:08Z
+GET,/,"ConnectTimeoutError(<HTTPConnection(host='193.225.251.227', port=30894) at 0x113e19950>, 'Connection to 193.225.251.227 timed out. (connect timeout=None)')",1,2026-09-02T05:17:02Z,2026-09-02T05:17:02Z
+POST,/cart,HTTPError('503 Server Error: Service Unavailable for url: /cart'),10,2026-09-02T05:23:03Z,2026-09-02T06:05:32Z
+GET,/,"ConnectTimeoutError(<HTTPConnection(host='193.225.251.227', port=30894) at 0x11390b450>, 'Connection to 193.225.251.227 timed out. (connect timeout=None)')",1,2026-09-02T05:16:10Z,2026-09-02T05:16:10Z
+GET,/,"ConnectTimeoutError(<HTTPConnection(host='193.225.251.227', port=30894) at 0x113909a50>, 'Connection to 193.225.251.227 timed out. (connect timeout=None)')",1,2026-09-02T06:09:22Z,2026-09-02T06:09:22Z
+GET,/,"ConnectTimeoutError(<HTTPConnection(host='193.225.251.227', port=30894) at 0x113cb8a50>, 'Connection to 193.225.251.227 timed out. (connect timeout=None)')",1,2026-09-02T05:13:01Z,2026-09-02T05:13:01Z
+GET,/product/LS4PSXUNUM,HTTPError('503 Server Error: Service Unavailable for url: /product/LS4PSXUNUM'),1,2026-09-02T06:05:32Z,2026-09-02T06:05:32Z
+POST,/setCurrency,HTTPError('503 Server Error: Service Unavailable for url: /setCurrency'),2,2026-09-02T05:57:16Z,2026-09-02T06:05:31Z
+GET,/,"ConnectTimeoutError(<HTTPConnection(host='193.225.251.227', port=30894) at 0x11419cc50>, 'Connection to 193.225.251.227 timed out. (connect timeout=None)')",1,2026-09-02T05:24:10Z,2026-09-02T05:24:10Z
+GET,/,"ConnectTimeoutError(<HTTPConnection(host='193.225.251.227', port=30894) at 0x113a3ab50>, 'Connection to 193.225.251.227 timed out. (connect timeout=None)')",1,2026-09-02T05:10:01Z,2026-09-02T05:10:01Z
+GET,/product/OLJCESPC7Z,HTTPError('503 Server Error: Service Unavailable for url: /product/OLJCESPC7Z'),4,2026-09-02T05:23:03Z,2026-09-02T05:57:16Z
+GET,/product/9SIQT8TOJO,HTTPError('503 Server Error: Service Unavailable for url: /product/9SIQT8TOJO'),4,2026-09-02T05:31:19Z,2026-09-02T06:05:32Z
+GET,/,"ConnectTimeoutError(<HTTPConnection(host='193.225.251.227', port=30894) at 0x110a90050>, 'Connection to 193.225.251.227 timed out. (connect timeout=None)')",1,2026-09-02T05:26:14Z,2026-09-02T05:26:14Z
+GET,/product/LS4PSXUNUM,HTTPError('500 Server Error: Internal Server Error for url: /product/LS4PSXUNUM'),2,2026-09-02T05:24:49Z,2026-09-02T05:49:50Z
+GET,/product/0PUK6V6EV0,HTTPError('503 Server Error: Service Unavailable for url: /product/0PUK6V6EV0'),2,2026-09-02T05:39:54Z,2026-09-02T06:05:31Z
+POST,/cart/checkout,HTTPError('503 Server Error: Service Unavailable for url: /cart/checkout'),4,2026-09-02T05:31:19Z,2026-09-02T06:05:32Z
+GET,/,"ConnectTimeoutError(<HTTPConnection(host='193.225.251.227', port=30894) at 0x113909950>, 'Connection to 193.225.251.227 timed out. (connect timeout=None)')",1,2026-09-02T05:34:07Z,2026-09-02T05:34:07Z
+GET,/,"ConnectTimeoutError(<HTTPConnection(host='193.225.251.227', port=30894) at 0x113a3a750>, 'Connection to 193.225.251.227 timed out. (connect timeout=None)')",1,2026-09-02T05:43:11Z,2026-09-02T05:43:11Z
+GET,/,"ConnectTimeoutError(<HTTPConnection(host='193.225.251.227', port=30894) at 0x113b9c750>, 'Connection to 193.225.251.227 timed out. (connect timeout=None)')",1,2026-09-02T05:58:00Z,2026-09-02T05:58:00Z
+GET,/product/2ZYFJ3GM2N,HTTPError('503 Server Error: Service Unavailable for url: /product/2ZYFJ3GM2N'),2,2026-09-02T05:23:03Z,2026-09-02T05:39:54Z
+GET,/,"ConnectTimeoutError(<HTTPConnection(host='193.225.251.227', port=30894) at 0x113cba750>, 'Connection to 193.225.251.227 timed out. (connect timeout=None)')",1,2026-09-02T06:01:03Z,2026-09-02T06:01:03Z
+GET,/,"ConnectTimeoutError(<HTTPConnection(host='193.225.251.227', port=30894) at 0x11419f450>, 'Connection to 193.225.251.227 timed out. (connect timeout=None)')",1,2026-09-02T06:00:04Z,2026-09-02T06:00:04Z
+GET,/cart,HTTPError('503 Server Error: Service Unavailable for url: /cart'),5,2026-09-02T05:23:03Z,2026-09-02T05:57:16Z
+GET,/product/0PUK6V6EV0,HTTPError('500 Server Error: Internal Server Error for url: /product/0PUK6V6EV0'),1,2026-09-02T05:49:50Z,2026-09-02T05:49:50Z
+GET,/cart,HTTPError('500 Server Error: Internal Server Error for url: /cart'),2,2026-09-02T05:41:21Z,2026-09-02T05:41:21Z
+GET,/product/L9ECAV7KIM,HTTPError('500 Server Error: Internal Server Error for url: /product/L9ECAV7KIM'),3,2026-09-02T05:33:05Z,2026-09-02T05:41:21Z
+GET,/,"ConnectTimeoutError(<HTTPConnection(host='193.225.251.227', port=30894) at 0x110a92450>, 'Connection to 193.225.251.227 timed out. (connect timeout=None)')",1,2026-09-02T05:43:07Z,2026-09-02T05:43:07Z
+GET,/,"ConnectTimeoutError(<HTTPConnection(host='193.225.251.227', port=30894) at 0x1141fe250>, 'Connection to 193.225.251.227 timed out. (connect timeout=None)')",1,2026-09-02T05:51:10Z,2026-09-02T05:51:10Z
+GET,/,"ConnectTimeoutError(<HTTPConnection(host='193.225.251.227', port=30894) at 0x113b36450>, 'Connection to 193.225.251.227 timed out. (connect timeout=None)')",1,2026-09-02T05:18:03Z,2026-09-02T05:18:03Z
+GET,/product/2ZYFJ3GM2N,HTTPError('500 Server Error: Internal Server Error for url: /product/2ZYFJ3GM2N'),4,2026-09-02T05:24:49Z,2026-09-02T05:41:21Z
+GET,/,"ConnectTimeoutError(<HTTPConnection(host='193.225.251.227', port=30894) at 0x11380ca50>, 'Connection to 193.225.251.227 timed out. (connect timeout=None)')",1,2026-09-02T05:16:10Z,2026-09-02T05:16:10Z
+GET,/,"ConnectTimeoutError(<HTTPConnection(host='193.225.251.227', port=30894) at 0x11380ef50>, 'Connection to 193.225.251.227 timed out. (connect timeout=None)')",1,2026-09-02T05:16:10Z,2026-09-02T05:16:10Z
+GET,/,"ConnectTimeoutError(<HTTPConnection(host='193.225.251.227', port=30894) at 0x113b9dd50>, 'Connection to 193.225.251.227 timed out. (connect timeout=None)')",1,2026-09-02T06:09:05Z,2026-09-02T06:09:05Z
+GET,/product/6E92ZMYYFZ,HTTPError('503 Server Error: Service Unavailable for url: /product/6E92ZMYYFZ'),6,2026-09-02T05:23:03Z,2026-09-02T06:05:31Z
+POST,/cart/checkout,HTTPError('500 Server Error: Internal Server Error for url: /cart/checkout'),1,2026-09-02T05:41:21Z,2026-09-02T05:41:21Z
+GET,/,"ConnectTimeoutError(<HTTPConnection(host='193.225.251.227', port=30894) at 0x113b34250>, 'Connection to 193.225.251.227 timed out. (connect timeout=None)')",1,2026-09-02T06:00:03Z,2026-09-02T06:00:03Z
+GET,/,"ConnectTimeoutError(<HTTPConnection(host='193.225.251.227', port=30894) at 0x113cbb050>, 'Connection to 193.225.251.227 timed out. (connect timeout=None)')",1,2026-09-02T06:01:03Z,2026-09-02T06:01:03Z
+GET,/,"ConnectTimeoutError(<HTTPConnection(host='193.225.251.227', port=30894) at 0x113b9c550>, 'Connection to 193.225.251.227 timed out. (connect timeout=None)')",1,2026-09-02T05:17:03Z,2026-09-02T05:17:03Z
+GET,/,"ConnectTimeoutError(<HTTPConnection(host='193.225.251.227', port=30894) at 0x11380d850>, 'Connection to 193.225.251.227 timed out. (connect timeout=None)')",1,2026-09-02T05:16:10Z,2026-09-02T05:16:10Z

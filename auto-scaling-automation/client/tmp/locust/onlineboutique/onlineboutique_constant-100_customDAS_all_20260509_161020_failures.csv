@@ -1,0 +1,4 @@
+Method,Name,Error,Occurrences
+GET,/product/1YMWWN1N4O,HTTPError('503 Server Error: Service Unavailable for url: /product/1YMWWN1N4O'),1
+POST,/setCurrency,HTTPError('503 Server Error: Service Unavailable for url: /setCurrency'),1
+GET,/product/9SIQT8TOJO,HTTPError('503 Server Error: Service Unavailable for url: /product/9SIQT8TOJO'),1

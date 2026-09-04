@@ -1,0 +1,16 @@
+Method,Name,Error,Occurrences,First Seen,Last Seen
+GET,/product/L9ECAV7KIM,HTTPError('503 Server Error: Service Unavailable for url: /product/L9ECAV7KIM'),5,2026-08-27T13:43:16Z,2026-08-27T13:52:18Z
+GET,/product/1YMWWN1N4O,HTTPError('503 Server Error: Service Unavailable for url: /product/1YMWWN1N4O'),1,2026-08-27T13:52:17Z,2026-08-27T13:52:17Z
+GET,/product/66VCHSJNUP,HTTPError('503 Server Error: Service Unavailable for url: /product/66VCHSJNUP'),1,2026-08-27T13:34:30Z,2026-08-27T13:34:30Z
+POST,/cart,HTTPError('503 Server Error: Service Unavailable for url: /cart'),9,2026-08-27T13:34:30Z,2026-08-27T14:01:19Z
+GET,/product/LS4PSXUNUM,HTTPError('503 Server Error: Service Unavailable for url: /product/LS4PSXUNUM'),1,2026-08-27T13:34:30Z,2026-08-27T13:34:30Z
+POST,/setCurrency,HTTPError('503 Server Error: Service Unavailable for url: /setCurrency'),3,2026-08-27T13:43:31Z,2026-08-27T13:52:18Z
+GET,/product/OLJCESPC7Z,HTTPError('503 Server Error: Service Unavailable for url: /product/OLJCESPC7Z'),4,2026-08-27T13:35:15Z,2026-08-27T14:01:19Z
+GET,/product/9SIQT8TOJO,HTTPError('503 Server Error: Service Unavailable for url: /product/9SIQT8TOJO'),1,2026-08-27T13:52:17Z,2026-08-27T13:52:17Z
+GET,/cart,ChunkedEncodingError(ProtocolError('Response ended prematurely')),1,2026-08-27T13:52:18Z,2026-08-27T13:52:18Z
+GET,/product/0PUK6V6EV0,HTTPError('503 Server Error: Service Unavailable for url: /product/0PUK6V6EV0'),2,2026-08-27T13:35:15Z,2026-08-27T13:43:31Z
+POST,/cart/checkout,HTTPError('503 Server Error: Service Unavailable for url: /cart/checkout'),2,2026-08-27T13:34:30Z,2026-08-27T13:52:17Z
+GET,/,HTTPError('503 Server Error: Service Unavailable for url: /'),1,2026-08-27T14:01:19Z,2026-08-27T14:01:19Z
+GET,/product/2ZYFJ3GM2N,HTTPError('503 Server Error: Service Unavailable for url: /product/2ZYFJ3GM2N'),3,2026-08-27T13:43:16Z,2026-08-27T13:59:33Z
+GET,/cart,HTTPError('503 Server Error: Service Unavailable for url: /cart'),4,2026-08-27T13:35:15Z,2026-08-27T13:52:17Z
+GET,/product/6E92ZMYYFZ,HTTPError('503 Server Error: Service Unavailable for url: /product/6E92ZMYYFZ'),2,2026-08-27T13:43:31Z,2026-08-27T13:52:17Z

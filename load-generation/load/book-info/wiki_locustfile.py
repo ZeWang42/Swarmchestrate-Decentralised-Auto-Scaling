@@ -2,15 +2,17 @@ import random
 import numpy as np
 import pandas as pd
 from locust import HttpUser, LoadTestShape, TaskSet, between
+from locust import task, constant_throughput
 
 # ---- CONFIG ----
 BOOK_IDS = ["0"]
-CSV_PATH = "load/online-boutique/workloads/linear.csv"     # put CSV in same folder
-#CSV_PATH = "load/online-boutique/workloads/wiki_train.csv"     # put CSV in same folder
+CSV_PATH = "load/book-info/workloads/constant-300.csv"     # put CSV in same folder
+#CSV_PATH = "load/book-info/workloads/linear.csv"     # put CSV in same folder
+TIME_MINUTE = 3
 SCALE_FACTOR = 1
-SPAWN_RATE = 50
-TIME_LIMIT = 70 * 60
-WINDOW_NUM = 70
+SPAWN_RATE = 20
+TIME_LIMIT = TIME_MINUTE * 60
+WINDOW_NUM = TIME_MINUTE
 # ----------------
 
 def productpage(l):
@@ -36,18 +38,25 @@ class UserBehavior(TaskSet):
 
     # Behavior pattern (edit weights to change traffic mix)
     tasks = {
-        productpage: 10,
-        reviews: 8,
-        details: 5,
-        ratings: 5,
-        list_products: 2,
+        productpage: 0,
+        reviews: 0,
+        details: 0,
+        ratings: 1,
+        list_products: 0,
     }
-
-
+"""
+    tasks = {
+        productpage: 2,
+        reviews: 1,
+        details: 3,
+        ratings: 1,
+        list_products: 3,
+    }
+"""
 class WebsiteUser(HttpUser):
     tasks = [UserBehavior]
-    wait_time = between(1, 2)
-
+    wait_time = between(1, 1)
+#    wait_time = constant_throughput(300)
 
 class StagesShapeFromCSV(LoadTestShape):
     wave_df = pd.read_csv(CSV_PATH)

@@ -1,0 +1,13 @@
+Timestamp,Scope,Name,CPU_m,MEM_MiB,Pods,CPU_pct,MEM_pct,HTTP_LAT_ms
+2026-06-15 14:30:28,deployment,details-v1,0,12,1,,,
+2026-06-15 14:30:28,deployment,productpage-v1,1,266,1,,,
+2026-06-15 14:30:28,http_p95_latency,productpage-v1,,,,,,0.0
+2026-06-15 14:30:28,deployment,ratings-v1,0,8,1,,,
+2026-06-15 14:30:28,deployment,reviews-v1,4,78,1,,,
+2026-06-15 14:30:28,deployment,reviews-v2,2,90,1,,,
+2026-06-15 14:30:28,deployment,reviews-v3,3,89,1,,,
+2026-06-15 14:30:28,node,master,522,1508,,26.1,39.3,
+2026-06-15 14:30:28,node,worker-1,423,890,,21.1,23.2,
+2026-06-15 14:30:28,node,worker-2,421,1175,,21.1,30.6,
+2026-06-15 14:30:28,node,worker-3,187,730,,9.3,19.0,
+2026-06-15 14:30:28,node,worker-4,650,1407,,32.5,36.7,

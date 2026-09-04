@@ -1,0 +1,7 @@
+Method,Name,Error,Occurrences
+GET,/api/v1/products,HTTPError('503 Server Error: Service Unavailable for url: /api/v1/products'),24
+GET,/api/v1/products/0,HTTPError('500 Server Error: Internal Server Error for url: /api/v1/products/0'),81
+GET,/api/v1/products/0/ratings,HTTPError('503 Server Error: Service Unavailable for url: /api/v1/products/0/ratings'),8
+GET,/api/v1/products/0,HTTPError('503 Server Error: Service Unavailable for url: /api/v1/products/0'),85
+GET,/api/v1/products/0/reviews,HTTPError('503 Server Error: Service Unavailable for url: /api/v1/products/0/reviews'),11
+GET,/productpage,HTTPError('503 Server Error: Service Unavailable for url: /productpage'),22

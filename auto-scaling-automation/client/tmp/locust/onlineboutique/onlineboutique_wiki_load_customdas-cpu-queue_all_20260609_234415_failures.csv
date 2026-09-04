@@ -1,0 +1,3 @@
+Method,Name,Error,Occurrences
+POST,/cart,HTTPError('500 Server Error: Internal Server Error for url: /cart'),3
+POST,/setCurrency,HTTPError('500 Server Error: Internal Server Error for url: /setCurrency'),1

@@ -1,0 +1,5 @@
+Method,Name,Error,Occurrences
+POST,/cart,HTTPError('503 Server Error: Service Unavailable for url: /cart'),1
+POST,/cart/checkout,HTTPError('503 Server Error: Service Unavailable for url: /cart/checkout'),1
+GET,/product/0PUK6V6EV0,HTTPError('500 Server Error: Internal Server Error for url: /product/0PUK6V6EV0'),1
+GET,/product/6E92ZMYYFZ,HTTPError('500 Server Error: Internal Server Error for url: /product/6E92ZMYYFZ'),1
