@@ -536,9 +536,9 @@ def das_loop(
             local_slo_mode,
         )
         local_slo_mode = "adaptive"
-                    lambda_history.append(arrival_rate_rps)
-                    if len(lambda_history) > 40:
-                        del lambda_history[: len(lambda_history) - 40]
+        lambda_history.append(arrival_rate_rps)
+        if len(lambda_history) > 40:
+            del lambda_history[: len(lambda_history) - 40]
 
     queue_model = os.getenv("QUEUE_MODEL", "mmc").strip().lower()
     if queue_model not in {"mmc", "ggc"}:
